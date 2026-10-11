@@ -1,542 +1,417 @@
 <!DOCTYPE html>
-<html lang="es" class="h-full bg-slate-50">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Venta de Bicicletas y más - Catálogo Oficial</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Venta de Bicicletas y más</title>
 
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'sans-serif'],
-                    },
-                    colors: {
-                        brand: {
-                            50: '#f0fdf4',
-                            100: '#dcfce7',
-                            500: '#22c55e',
-                            600: '#16a34a',
-                            700: '#15803d',
-                            800: '#166534',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
     <style>
-        .glass-card {
-            background: rgba(255, 255, 255, 0.95);
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+
+        /* Custom smooth scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Glassmorphism effect for sticky bar */
+        .glass-header {
+            background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
         }
-        .animate-pulse-slow {
-            animation: pulse 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+
+        /* Carousel transitions */
+        .carousel-slide {
+            transition: opacity 0.3s ease-in-out;
         }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.6; }
+
+        /* Button click effect */
+        .btn-active {
+            transform: scale(0.97);
         }
     </style>
 </head>
-<body class="h-full flex flex-col font-sans text-slate-800 antialiased selection:bg-brand-500 selection:text-white">
+<body class="text-slate-800 antialiased min-h-screen flex flex-col justify-between">
 
-    <!-- Header principal -->
-    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200/80 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <div class="bg-brand-600 text-white p-2.5 rounded-2xl shadow-md shadow-brand-600/20">
-                    <i class="fa-solid fa-bicycle text-xl"></i>
-                </div>
-                <div>
-                    <h1 class="font-bold text-lg leading-tight text-slate-900">Venta de Bicicletas <span class="text-brand-600">& más</span></h1>
-                    <p class="text-[11px] text-slate-500 font-medium">Atención inmediata vía WhatsApp</p>
-                </div>
-            </div>
-
-            <!-- Botón WhatsApp global -->
-            <a href="https://wa.me/5356255364?text=Hola%2C%20se%20ha%20comunicado%20con%20la%20tienda%20de%20bicicletas%20y%20m%C3%A1s.%20Me%20gustar%C3%ADa%20obtener%20informaci%C3%B3n%20sobre%20sus%20productos." 
-               target="_blank" 
-               rel="noopener noreferrer"
-               class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-semibold px-3.5 sm:px-4 py-2.5 rounded-xl shadow-sm transition-all duration-200 hover:shadow-md active:scale-95">
-                <i class="fa-brands fa-whatsapp text-lg"></i>
-                <span class="hidden sm:inline">Contactar (+53 56255364)</span>
-                <span class="sm:hidden">WhatsApp</span>
-            </a>
-        </div>
-    </header>
-
-    <main class="flex-grow">
-        <!-- Hero Section con Conversor CUP -->
-        <section class="bg-gradient-to-b from-slate-900 via-slate-900 to-slate-800 text-white py-8 sm:py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-            <div class="absolute -right-10 -bottom-10 opacity-10 text-white pointer-events-none">
-                <i class="fa-solid fa-person-biking text-[220px]"></i>
-            </div>
-
-            <div class="max-w-7xl mx-auto">
-                <div class="grid md:grid-cols-12 gap-6 items-center">
-                    <div class="md:col-span-7 space-y-3">
-                        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-brand-500/20 text-brand-400 border border-brand-500/30">
-                            <span class="w-2 h-2 rounded-full bg-brand-400 animate-pulse-slow"></span>
-                            Nuevas en Caja · Medida 26"
-                        </span>
-                        <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight text-white leading-tight">
-                            Bicicletas de Alta Calidad
-                        </h2>
-                        <p class="text-slate-300 text-xs sm:text-sm max-w-xl leading-relaxed">
-                            Aprovecha nuestras ofertas exclusivas en USD o su equivalente en Moneda Nacional. Elige entre el modelo Deportivo MTB o el modelo Clásico de Paseo.
+    <div>
+        <!-- Sticky Navigation / Header -->
+        <header class="glass-header sticky top-0 z-50 border-b border-slate-200/80 shadow-sm">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-col md:flex-row items-center justify-between gap-4">
+                
+                <!-- Logo / Title -->
+                <div class="flex items-center gap-3 text-center md:text-left">
+                    <div class="w-12 h-12 bg-emerald-500 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-emerald-500/30">
+                        <i class="fa-solid fa-bicycle text-2xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-extrabold tracking-tight text-slate-900 leading-tight">
+                            Venta de Bicicletas y más
+                        </h1>
+                        <p class="text-xs font-medium text-slate-500 flex items-center justify-center md:justify-start gap-1">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
+                            Catálogo Oficial de Disponibilidad
                         </p>
                     </div>
+                </div>
 
-                    <!-- Calculadora Tasa de Cambio -->
-                    <div class="md:col-span-5">
-                        <div class="glass-card bg-slate-800/80 border border-slate-700/80 rounded-2xl p-4 sm:p-5 shadow-xl">
-                            <div class="flex items-center justify-between mb-3">
-                                <label class="text-xs uppercase font-bold tracking-wider text-slate-300 flex items-center gap-1.5">
-                                    <i class="fa-solid fa-calculator text-brand-400"></i>
-                                    Calculadora Moneda Nacional (CUP)
-                                </label>
-                                <span class="text-[10px] bg-slate-700 text-slate-300 px-2 py-0.5 rounded-full font-medium">Tasa editable</span>
-                            </div>
-
-                            <div class="space-y-3">
-                                <div>
-                                    <div class="flex justify-between text-xs text-slate-400 mb-1">
-                                        <span>Tasa del día (1 USD = ? CUP):</span>
-                                        <span id="rateLabel" class="font-bold text-brand-400">320 CUP</span>
-                                    </div>
-                                    <div class="relative rounded-xl shadow-sm">
-                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
-                                            <i class="fa-solid fa-money-bill-transfer text-xs"></i>
-                                        </div>
-                                        <input type="number" 
-                                               id="exchangeRateInput" 
-                                               value="320" 
-                                               min="1" 
-                                               step="1"
-                                               class="w-full pl-9 pr-12 py-2.5 bg-slate-900/90 border border-slate-700 rounded-xl text-white font-semibold text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all"
-                                               placeholder="Ingresa la tasa">
-                                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-slate-400 text-xs font-semibold">
-                                            CUP
-                                        </div>
-                                    </div>
-                                </div>
-                                <p class="text-[11px] text-slate-400 leading-snug flex items-center gap-1.5">
-                                    <i class="fa-solid fa-circle-info text-slate-400"></i>
-                                    Los valores en CUP se ajustarán automáticamente en los productos.
-                                </p>
-                            </div>
-                        </div>
+                <!-- Contact & Currency Exchange Bar -->
+                <div class="flex flex-wrap items-center justify-center gap-3 w-full md:w-auto">
+                    <!-- Exchange Rate Input -->
+                    <div class="flex items-center bg-slate-100 px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold">
+                        <span class="text-slate-500 mr-2 flex items-center gap-1">
+                            <i class="fa-solid fa-calculator text-slate-400"></i> Tasa CUP:
+                        </span>
+                        <input 
+                            type="number" 
+                            id="exchangeRateInput" 
+                            value="320" 
+                            min="1" 
+                            class="w-16 bg-white border border-slate-300 rounded-lg px-2 py-1 text-center text-slate-800 font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
+                            oninput="updateCurrencyExchange()"
+                        >
+                        <span class="ml-1 text-slate-500">CUP</span>
                     </div>
+
+                    <!-- Direct WhatsApp Button -->
+                    <a 
+                        href="https://wa.me/5356255364" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        class="flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md shadow-emerald-500/20 transition-all"
+                    >
+                        <i class="fa-brands fa-whatsapp text-base"></i>
+                        <span>Contactar +53 56255364</span>
+                    </a>
                 </div>
             </div>
-        </section>
+        </header>
 
-        <!-- Filtros y Productos -->
-        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-5">
-                <div>
-                    <h3 class="text-xl font-bold text-slate-900">Catálogo de Productos</h3>
-                    <p class="text-xs text-slate-500">Haz clic en un modelo para ver todos sus detalles</p>
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <!-- Filter Bar -->
+            <section class="mb-8">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-sliders text-emerald-500"></i> Filtrar por Medida:
+                    </h2>
+                    <span id="resultsCount" class="text-xs font-medium text-slate-500 bg-slate-200 px-2.5 py-1 rounded-full">
+                        5 modelos disponibles
+                    </span>
                 </div>
 
-                <!-- Botones de filtro -->
-                <div class="flex flex-wrap gap-2" id="filterContainer">
-                    <button onclick="filterCategory('all')" 
-                            data-filter="all"
-                            class="filter-btn active-filter px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-200 bg-brand-600 text-white shadow-sm shadow-brand-600/30">
-                        <i class="fa-solid fa-border-all mr-1.5"></i>Todas
+                <!-- Filter Buttons -->
+                <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+                    <button onclick="filterCatalog('all')" id="filter-all" class="filter-btn active-filter bg-slate-900 text-white px-4 py-2 rounded-xl text-sm font-semibold transition-all shadow-sm shrink-0">
+                        Todas
                     </button>
-                    <button onclick="filterCategory('MTB')" 
-                            data-filter="MTB"
-                            class="filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 transition-all duration-200">
-                        <i class="fa-solid fa-mountain mr-1.5"></i>MTB / Montañera
+                    <button onclick="filterCatalog('12')" id="filter-12" class="filter-btn bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 px-4 py-2 rounded-xl text-sm font-semibold transition-all shrink-0">
+                        Medida 12
                     </button>
-                    <button onclick="filterCategory('Paseo')" 
-                            data-filter="Paseo"
-                            class="filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 transition-all duration-200">
-                        <i class="fa-solid fa-city mr-1.5"></i>Paseo / Clásica
+                    <button onclick="filterCatalog('16')" id="filter-16" class="filter-btn bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 px-4 py-2 rounded-xl text-sm font-semibold transition-all shrink-0">
+                        Medida 16
+                    </button>
+                    <button onclick="filterCatalog('20')" id="filter-20" class="filter-btn bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 px-4 py-2 rounded-xl text-sm font-semibold transition-all shrink-0">
+                        Medida 20
+                    </button>
+                    <button onclick="filterCatalog('24')" id="filter-24" class="filter-btn bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 px-4 py-2 rounded-xl text-sm font-semibold transition-all shrink-0">
+                        Medida 24
+                    </button>
+                    <button onclick="filterCatalog('26')" id="filter-26" class="filter-btn bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 px-4 py-2 rounded-xl text-sm font-semibold transition-all shrink-0">
+                        Medida 26
                     </button>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- Grilla de Productos -->
-        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div class="grid md:grid-cols-2 gap-8" id="productGrid">
-
-                <!-- PRODUCTO 1: VYRON M1 -->
-                <article class="product-card bg-white rounded-3xl overflow-hidden border border-slate-200/90 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group" data-category="MTB">
-                    <!-- Vista previa de imagen -->
-                    <div class="relative bg-slate-900 aspect-[4/3] overflow-hidden flex items-center justify-center p-4 cursor-pointer" onclick="openModal('vyron')">
-                        <span class="absolute top-4 left-4 z-10 bg-slate-900/80 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-full border border-slate-700 flex items-center gap-1.5">
-                            <i class="fa-solid fa-mountain text-brand-400"></i> Montañera (MTB)
-                        </span>
-                        <span class="absolute top-4 right-4 z-10 bg-emerald-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
-                            Nueva en Caja
-                        </span>
-
-                        <!-- Ilustración vectorial SVG de la Vyron M1 -->
-                        <div class="w-full h-full flex items-center justify-center transition-transform duration-500 group-hover:scale-105">
-                            <svg viewBox="0 0 600 400" class="w-full h-full max-h-72 drop-shadow-2xl" xmlns="http://www.w3.org/2000/svg">
-                                <rect width="100%" height="100%" fill="#0f172a" rx="16"/>
-                                <circle cx="300" cy="200" r="180" fill="#1e293b" opacity="0.6"/>
-                                <!-- Ruedas R26 -->
-                                <circle cx="160" cy="260" r="80" stroke="#334155" stroke-width="12" fill="none"/>
-                                <circle cx="160" cy="260" r="70" stroke="#020617" stroke-width="4" fill="none"/>
-                                <circle cx="440" cy="260" r="80" stroke="#334155" stroke-width="12" fill="none"/>
-                                <circle cx="440" cy="260" r="70" stroke="#020617" stroke-width="4" fill="none"/>
-                                <!-- Frenos de Disco -->
-                                <circle cx="160" cy="260" r="28" stroke="#94a3b8" stroke-width="3" fill="none" stroke-dasharray="4,4"/>
-                                <circle cx="440" cy="260" r="28" stroke="#94a3b8" stroke-width="3" fill="none" stroke-dasharray="4,4"/>
-                                <!-- Guardabarros Deportivo -->
-                                <path d="M100 230 A85 85 0 0 1 200 200" stroke="#020617" stroke-width="10" fill="none" stroke-linecap="round"/>
-                                <path d="M380 200 A85 85 0 0 1 490 230" stroke="#020617" stroke-width="10" fill="none" stroke-linecap="round"/>
-                                <!-- Cuadro Vyron M1 -->
-                                <path d="M160 260 L270 260 L380 180 L230 180 Z" fill="none" stroke="#18181b" stroke-width="14" stroke-linejoin="round"/>
-                                <path d="M270 260 L330 130 L440 260" fill="none" stroke="#27272a" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
-                                <!-- Horquilla Suspensión -->
-                                <path d="M440 260 L400 140" stroke="#38bdf8" stroke-width="10" stroke-linecap="round"/>
-                                <!-- Manubrio & Asiento -->
-                                <path d="M360 115 L400 115" stroke="#09090b" stroke-width="8" stroke-linecap="round"/>
-                                <path d="M300 120 L350 120" stroke="#09090b" stroke-width="10" stroke-linecap="round"/>
-                                <path d="M330 130 L330 170" stroke="#52525b" stroke-width="8"/>
-                                <text x="240" y="225" fill="#22c55e" font-family="sans-serif" font-weight="900" font-size="20" transform="rotate(-18 240 225)">VYRON-M1</text>
-                            </svg>
-                        </div>
-                        <div class="absolute bottom-3 right-3 bg-white/20 backdrop-blur-md text-white px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1">
-                            <i class="fa-solid fa-expand"></i> Ampliar
-                        </div>
-                    </div>
-
-                    <!-- Datos Vyron -->
-                    <div class="p-6 flex-grow flex flex-col justify-between space-y-5">
-                        <div>
-                            <div class="flex justify-between items-start mb-2">
-                                <div>
-                                    <span class="text-xs font-bold text-brand-600 uppercase tracking-wider">Línea MTB</span>
-                                    <h3 class="text-2xl font-bold text-slate-900">Vyron M1 (R26)</h3>
-                                </div>
-                                <div class="text-right">
-                                    <span class="text-2xl font-extrabold text-slate-900 block">250 <span class="text-xs font-normal text-slate-500">USD</span></span>
-                                    <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-md border border-emerald-200 price-cup-display" data-usd="250">
-                                        ≈ 80,000 CUP
-                                    </span>
-                                </div>
-                            </div>
-                            <p class="text-slate-600 text-xs sm:text-sm leading-relaxed mb-4">
-                                Bicicleta deportiva montañera nueva en caja. Equipada con suspensión delantera, frenos de disco en ambas ruedas y guardabarros deportivos.
-                            </p>
-
-                            <!-- Características clave -->
-                            <div class="grid grid-cols-2 gap-2 pt-1">
-                                <div class="flex items-center gap-2 bg-slate-50 p-2 rounded-xl border border-slate-100 text-xs font-medium text-slate-700">
-                                    <i class="fa-solid fa-palette text-slate-500"></i> Color Negro
-                                </div>
-                                <div class="flex items-center gap-2 bg-slate-50 p-2 rounded-xl border border-slate-100 text-xs font-medium text-slate-700">
-                                    <i class="fa-solid fa-ruler-combined text-slate-500"></i> Medida 26"
-                                </div>
-                                <div class="flex items-center gap-2 bg-slate-50 p-2 rounded-xl border border-slate-100 text-xs font-medium text-slate-700">
-                                    <i class="fa-solid fa-compress text-brand-600"></i> Suspensión delantera
-                                </div>
-                                <div class="flex items-center gap-2 bg-slate-50 p-2 rounded-xl border border-slate-100 text-xs font-medium text-slate-700">
-                                    <i class="fa-solid fa-disc-drive text-brand-600"></i> Frenos de disco
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Botones de Acción -->
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2">
-                            <button onclick="openModal('vyron')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-3 px-3 rounded-xl transition-all text-xs flex items-center justify-center gap-1.5">
-                                <i class="fa-solid fa-eye"></i> Ver Detalles
-                            </button>
-                            <a href="https://wa.me/5356255364?text=Hola%2C%20se%20ha%20comunicado%20con%20la%20tienda%20de%20bicicletas%20y%20m%C3%A1s.%20Deseo%20comprar%20la%20bicicleta%20Vyron%20M1%20%28MTB%20Negra%2C%20Medida%2026%22%29%20de%20250%20USD." 
-                               target="_blank" 
-                               rel="noopener noreferrer"
-                               class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-3 rounded-xl shadow-md shadow-emerald-600/20 transition-all text-xs flex items-center justify-center gap-1.5">
-                                <i class="fa-brands fa-whatsapp text-sm"></i> Pedir por WhatsApp
-                            </a>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- PRODUCTO 2: FEIYANG WH-003-4 -->
-                <article class="product-card bg-white rounded-3xl overflow-hidden border border-slate-200/90 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group" data-category="Paseo">
-                    <!-- Vista previa de imagen -->
-                    <div class="relative bg-amber-50/70 aspect-[4/3] overflow-hidden flex items-center justify-center p-4 cursor-pointer" onclick="openModal('feiyang')">
-                        <span class="absolute top-4 left-4 z-10 bg-amber-900/80 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-full border border-amber-700/50 flex items-center gap-1.5">
-                            <i class="fa-solid fa-city text-amber-300"></i> Paseo / Clásica
-                        </span>
-                        <span class="absolute top-4 right-4 z-10 bg-emerald-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
-                            Nueva en Caja
-                        </span>
-
-                        <!-- Ilustración vectorial SVG de la Feiyang -->
-                        <div class="w-full h-full flex items-center justify-center transition-transform duration-500 group-hover:scale-105">
-                            <svg viewBox="0 0 600 400" class="w-full h-full max-h-72 drop-shadow-md" xmlns="http://www.w3.org/2000/svg">
-                                <rect width="100%" height="100%" fill="#fef3c7" rx="16"/>
-                                <circle cx="300" cy="200" r="180" fill="#fde68a" opacity="0.4"/>
-                                <!-- Ruedas R26 -->
-                                <circle cx="160" cy="260" r="80" stroke="#78350f" stroke-width="10" fill="none"/>
-                                <circle cx="440" cy="260" r="80" stroke="#78350f" stroke-width="10" fill="none"/>
-                                <!-- Guardabarros Beige -->
-                                <path d="M90 260 A85 85 0 0 1 230 200" stroke="#fef3c7" stroke-width="14" fill="none" stroke-linecap="round"/>
-                                <path d="M370 200 A85 85 0 0 1 510 260" stroke="#fef3c7" stroke-width="14" fill="none" stroke-linecap="round"/>
-                                <!-- Cuadro Curvo Beige -->
-                                <path d="M160 260 Q 280 300 410 160" fill="none" stroke="#f59e0b" stroke-width="14" stroke-linecap="round"/>
-                                <path d="M250 250 L 330 150" stroke="#d97706" stroke-width="10" stroke-linecap="round"/>
-                                <!-- Cesta Metálica Delantera -->
-                                <rect x="430" y="110" width="55" height="45" rx="5" fill="#f8fafc" stroke="#334155" stroke-width="4"/>
-                                <!-- Parrilla Trasera -->
-                                <path d="M140 210 L230 210 L250 250" stroke="#451a03" stroke-width="6" fill="none"/>
-                                <!-- Asiento Confort Marrón -->
-                                <path d="M300 135 Q 330 125 350 140" stroke="#78350f" stroke-width="16" stroke-linecap="round"/>
-                                <text x="200" y="275" fill="#78350f" font-family="sans-serif" font-weight="bold" font-size="16">FEIYANG WH-003-4</text>
-                            </svg>
-                        </div>
-                        <div class="absolute bottom-3 right-3 bg-slate-900/30 backdrop-blur-md text-slate-800 px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1">
-                            <i class="fa-solid fa-expand"></i> Ampliar
-                        </div>
-                    </div>
-
-                    <!-- Datos Feiyang -->
-                    <div class="p-6 flex-grow flex flex-col justify-between space-y-5">
-                        <div>
-                            <div class="flex justify-between items-start mb-2">
-                                <div>
-                                    <span class="text-xs font-bold text-amber-700 uppercase tracking-wider">Modelo WH-003-4</span>
-                                    <h3 class="text-2xl font-bold text-slate-900">Feiyang Paseo (R26)</h3>
-                                </div>
-                                <div class="text-right">
-                                    <span class="text-2xl font-extrabold text-slate-900 block">250 <span class="text-xs font-normal text-slate-500">USD</span></span>
-                                    <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-md border border-emerald-200 price-cup-display" data-usd="250">
-                                        ≈ 80,000 CUP
-                                    </span>
-                                </div>
-                            </div>
-                            <p class="text-slate-600 text-xs sm:text-sm leading-relaxed mb-4">
-                                Elegante bicicleta clásica de paseo urbana. Incluye cesta frontal, parrilla trasera, asiento acolchado de alto confort y cubrecadena integral.
-                            </p>
-
-                            <!-- Características clave -->
-                            <div class="grid grid-cols-2 gap-2 pt-1">
-                                <div class="flex items-center gap-2 bg-amber-50/60 p-2 rounded-xl border border-amber-100 text-xs font-medium text-amber-900">
-                                    <i class="fa-solid fa-palette text-amber-700"></i> Beige / Crema con Marrón
-                                </div>
-                                <div class="flex items-center gap-2 bg-amber-50/60 p-2 rounded-xl border border-amber-100 text-xs font-medium text-amber-900">
-                                    <i class="fa-solid fa-ruler-combined text-amber-700"></i> Medida 26"
-                                </div>
-                                <div class="flex items-center gap-2 bg-amber-50/60 p-2 rounded-xl border border-amber-100 text-xs font-medium text-amber-900">
-                                    <i class="fa-solid fa-shopping-basket text-amber-700"></i> Cesta frontal metálica
-                                </div>
-                                <div class="flex items-center gap-2 bg-amber-50/60 p-2 rounded-xl border border-amber-100 text-xs font-medium text-amber-900">
-                                    <i class="fa-solid fa-box text-amber-700"></i> Parrilla trasera
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Botones de Acción -->
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2">
-                            <button onclick="openModal('feiyang')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-3 px-3 rounded-xl transition-all text-xs flex items-center justify-center gap-1.5">
-                                <i class="fa-solid fa-eye"></i> Ver Detalles
-                            </button>
-                            <a href="https://wa.me/5356255364?text=Hola%2C%20se%20ha%20comunicado%20con%20la%20tienda%20de%20bicicletas%20y%20m%C3%A1s.%20Deseo%20comprar%20la%20bicicleta%20Feiyang%20Paseo%20%28Beige%2FCrema%2C%20Medida%2026%22%29%20de%20250%20USD." 
-                               target="_blank" 
-                               rel="noopener noreferrer"
-                               class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-3 rounded-xl shadow-md shadow-emerald-600/20 transition-all text-xs flex items-center justify-center gap-1.5">
-                                <i class="fa-brands fa-whatsapp text-sm"></i> Pedir por WhatsApp
-                            </a>
-                        </div>
-                    </div>
-                </article>
-
-            </div>
-        </section>
-    </main>
-
-    <!-- MODAL 1: VYRON M1 -->
-    <div id="modal-vyron" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm animate-fade-in">
-        <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-100 flex flex-col">
-            <div class="p-6 border-b border-slate-100 flex items-center justify-between sticky top-0 bg-white/95 backdrop-blur-md z-10">
-                <div>
-                    <span class="text-xs font-bold text-brand-600 uppercase tracking-wider">Detalles del Producto</span>
-                    <h3 class="text-xl font-bold text-slate-900">Bicicleta Vyron M1 (R26)</h3>
-                </div>
-                <button onclick="closeModal('vyron')" class="w-9 h-9 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-full flex items-center justify-center transition-colors">
-                    <i class="fa-solid fa-xmark text-lg"></i>
-                </button>
-            </div>
-
-            <div class="p-6 space-y-6">
-                <div class="bg-slate-900 rounded-2xl p-4 flex items-center justify-center min-h-[200px]">
-                    <i class="fa-solid fa-mountain-city text-7xl text-slate-700"></i>
-                </div>
-
-                <div class="flex items-center justify-between bg-slate-50 p-4 rounded-2xl border border-slate-200/60">
-                    <div>
-                        <span class="text-xs text-slate-500 font-medium">Precio oficial</span>
-                        <p class="text-2xl font-extrabold text-slate-900">250 USD</p>
-                    </div>
-                    <div class="text-right">
-                        <span class="text-xs text-slate-500 font-medium">Equivalente CUP</span>
-                        <p class="text-lg font-bold text-emerald-600 price-cup-display" data-usd="250">≈ 80,000 CUP</p>
-                    </div>
-                </div>
-
-                <div>
-                    <h4 class="font-bold text-sm text-slate-900 mb-3">Especificaciones Técnicas:</h4>
-                    <ul class="space-y-2 text-xs text-slate-600">
-                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-600"></i> <strong>Medida:</strong> Cuadro y Ruedas Rin 26"</li>
-                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-600"></i> <strong>Estado:</strong> Totalmente nueva en su caja original</li>
-                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-600"></i> <strong>Suspensión:</strong> Horquilla delantera de amortiguación</li>
-                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-600"></i> <strong>Frenos:</strong> Frenos de disco mecánico delantero y trasero</li>
-                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-600"></i> <strong>Accesorios:</strong> Guardabarros delantero y trasero integrados</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="p-6 border-t border-slate-100 bg-slate-50 rounded-b-3xl">
-                <a href="https://wa.me/5356255364?text=Hola%2C%20se%20ha%20comunicado%20con%20la%20tienda%20de%20bicicletas%20y%20m%C3%A1s.%20Deseo%20comprar%20la%20bicicleta%20Vyron%20M1%20%28MTB%20Negra%2C%20Medida%2026%22%29%20de%20250%20USD." 
-                   target="_blank" 
-                   rel="noopener noreferrer"
-                   class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-md transition-all text-sm flex items-center justify-center gap-2">
-                    <i class="fa-brands fa-whatsapp text-lg"></i>
-                    <span>Contactar por WhatsApp (+53 56255364)</span>
-                </a>
-            </div>
-        </div>
+            <section id="catalogGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Dynamic Bike Cards generated by JS -->
+            </section>
+        </main>
     </div>
 
-    <!-- MODAL 2: FEIYANG WH-003-4 -->
-    <div id="modal-feiyang" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm animate-fade-in">
-        <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-100 flex flex-col">
-            <div class="p-6 border-b border-slate-100 flex items-center justify-between sticky top-0 bg-white/95 backdrop-blur-md z-10">
-                <div>
-                    <span class="text-xs font-bold text-amber-700 uppercase tracking-wider">Detalles del Producto</span>
-                    <h3 class="text-xl font-bold text-slate-900">Bicicleta Feiyang WH-003-4 (R26)</h3>
-                </div>
-                <button onclick="closeModal('feiyang')" class="w-9 h-9 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-full flex items-center justify-center transition-colors">
-                    <i class="fa-solid fa-xmark text-lg"></i>
-                </button>
-            </div>
-
-            <div class="p-6 space-y-6">
-                <div class="bg-amber-50 rounded-2xl p-4 flex items-center justify-center min-h-[200px]">
-                    <i class="fa-solid fa-basket-shopping text-7xl text-amber-300"></i>
-                </div>
-
-                <div class="flex items-center justify-between bg-amber-50/60 p-4 rounded-2xl border border-amber-200/60">
-                    <div>
-                        <span class="text-xs text-slate-500 font-medium">Precio oficial</span>
-                        <p class="text-2xl font-extrabold text-slate-900">250 USD</p>
-                    </div>
-                    <div class="text-right">
-                        <span class="text-xs text-slate-500 font-medium">Equivalente CUP</span>
-                        <p class="text-lg font-bold text-emerald-600 price-cup-display" data-usd="250">≈ 80,000 CUP</p>
-                    </div>
-                </div>
-
-                <div>
-                    <h4 class="font-bold text-sm text-slate-900 mb-3">Especificaciones Técnicas:</h4>
-                    <ul class="space-y-2 text-xs text-slate-600">
-                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-600"></i> <strong>Medida:</strong> Cuadro y Ruedas Rin 26"</li>
-                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-600"></i> <strong>Estado:</strong> Totalmente nueva en su caja original</li>
-                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-600"></i> <strong>Color:</strong> Elegante acabado Beige/Crema con detalles y sillín Marrón</li>
-                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-600"></i> <strong>Carga:</strong> Cesta frontal metálica y parrilla trasera reforzada</li>
-                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-600"></i> <strong>Confort:</strong> Asiento acolchado ancho de resorte y guardabarros completos</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="p-6 border-t border-slate-100 bg-slate-50 rounded-b-3xl">
-                <a href="https://wa.me/5356255364?text=Hola%2C%20se%20ha%20comunicado%20con%20la%20tienda%20de%20bicicletas%20y%20m%C3%A1s.%20Deseo%20comprar%20la%20bicicleta%20Feiyang%20Paseo%20%28Beige%2FCrema%2C%20Medida%2026%22%29%20de%20250%20USD." 
-                   target="_blank" 
-                   rel="noopener noreferrer"
-                   class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-md transition-all text-sm flex items-center justify-center gap-2">
-                    <i class="fa-brands fa-whatsapp text-lg"></i>
-                    <span>Contactar por WhatsApp (+53 56255364)</span>
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Pie de Página -->
-    <footer class="bg-white border-t border-slate-200 py-6">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
-            <p><strong>Venta de Bicicletas y más</strong> · WhatsApp Directo: +53 56255364</p>
-            <p>&copy; <span id="year">2026</span> Todos los derechos reservados.</p>
+    <footer class="bg-white border-t border-slate-200 mt-12 py-6">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500">
+            <p class="font-medium text-slate-700 mb-1">Venta de Bicicletas y más © 2026</p>
+            <p>Atención inmediata por WhatsApp al <a href="https://wa.me/5356255364" class="text-emerald-600 underline font-semibold">+53 56255364</a></p>
         </div>
     </footer>
 
     <script>
-        document.getElementById('year').textContent = new Date().getFullYear();
+        // Exact Bicycle Catalog Dataset mapping the exact user image filenames
+        const bikeCatalog = [
+            {
+                id: "medida-12",
+                size: "12",
+                title: "Bicicleta Infantil Medida 12",
+                usdPrice: 150,
+                description: "Ideal para los más pequeños en sus primeros pedalazos. Excelente estabilidad y diseño resistente.",
+                images: [
+                    "Medida 12 jpg",
+                    "Medida 12 1 jpg",
+                    "Medida 12 2 jpg",
+                    "Medida 12 3 jpg",
+                    "Medida 12 4 jpg"
+                ]
+            },
+            {
+                id: "medida-16",
+                size: "16",
+                title: "Bicicleta Medida 16",
+                usdPrice: 165,
+                description: "Perfecta para niños en crecimiento. Equipada con cuadro robusto y accesorios de máxima seguridad.",
+                images: [
+                    "Medida 16 1 jpg",
+                    "Medida 16 2 jpg",
+                    "Medida 16 3 jpg",
+                    "Medida 16 4 jpg",
+                    "Medida 16 5 jpg",
+                    "Medida 16 6 jpg"
+                ]
+            },
+            {
+                id: "medida-20",
+                size: "20",
+                title: "Bicicleta Medida 20",
+                usdPrice: 190,
+                description: "Modelo dinámico y versátil. Excelente agarre, frenos seguros y múltiples opciones de color.",
+                images: [
+                    "Medida 20 1 jpg",
+                    "Medida 20 2 jpg",
+                    "Medida 20 3 jpg",
+                    "Medida 20 4 jpg",
+                    "Medida 20 5 jpg",
+                    "Medida 20 6 jpg",
+                    "Medida 20 7 jpg",
+                    "Medida 20 8 jpg",
+                    "Medida 20 9 jpg",
+                    "Medida 20 10 jpg",
+                    "Medida 20 11 jpg"
+                ]
+            },
+            {
+                id: "medida-24",
+                size: "24",
+                title: "Bicicleta Medida 24",
+                usdPrice: 220,
+                description: "Tamaño intermedio de gran durabilidad. Ideal tanto para paseos urbanos como para terrenos irregulares.",
+                images: [
+                    "Medida 24 1 jpg",
+                    "Medida 24 2 jpg",
+                    "Medida 24 3 jpg"
+                ]
+            },
+            {
+                id: "medida-26",
+                size: "26",
+                title: "Bicicleta Medida 26",
+                usdPrice: 250,
+                description: "Cuadro amplio de máxima comodidad y resistencia para adultos. Perfecta para el transporte diario.",
+                images: [
+                    "Medida 26 1 jpg",
+                    "Medida 26 2 jpg"
+                ]
+            }
+        ];
 
-        // Lógica de Tasa de Cambio
-        const exchangeRateInput = document.getElementById('exchangeRateInput');
-        const rateLabel = document.getElementById('rateLabel');
-        const cupDisplays = document.querySelectorAll('.price-cup-display');
+        // State variables tracking selected slide indices for each card
+        const currentIndices = {};
+        let activeFilter = 'all';
 
-        function updateCupPrices() {
-            let rate = parseFloat(exchangeRateInput.value);
-            if (isNaN(rate) || rate <= 0) rate = 0;
+        // Initialize state on render
+        bikeCatalog.forEach(bike => {
+            currentIndices[bike.id] = 0;
+        });
 
-            rateLabel.textContent = `${rate.toLocaleString()} CUP`;
+        function renderCatalog() {
+            const container = document.getElementById('catalogGrid');
+            const exchangeRate = parseFloat(document.getElementById('exchangeRateInput').value) || 320;
+            
+            const filteredBikes = activeFilter === 'all' 
+                ? bikeCatalog 
+                : bikeCatalog.filter(bike => bike.size === activeFilter);
 
-            cupDisplays.forEach(display => {
-                const usdPrice = parseFloat(display.getAttribute('data-usd'));
-                const cupTotal = usdPrice * rate;
-                display.textContent = `≈ ${cupTotal.toLocaleString('es-ES')} CUP`;
-            });
+            document.getElementById('resultsCount').innerText = `${filteredBikes.length} ${filteredBikes.length === 1 ? 'modelo disponible' : 'modelos disponibles'}`;
+
+            container.innerHTML = filteredBikes.map(bike => {
+                const currentIndex = currentIndices[bike.id] || 0;
+                const totalImages = bike.images.length;
+                const cupPrice = (bike.usdPrice * exchangeRate).toLocaleString('es-CU');
+                const currentImage = bike.images[currentIndex];
+
+                // Pre-filled WhatsApp message URL
+                const waMessage = encodeURIComponent(`Hola, estoy interesado en comprar la bicicleta Medida ${bike.size} ($${bike.usdPrice} USD). ¿Sigue disponible?`);
+                const waUrl = `https://wa.me/5356255364?text=${waMessage}`;
+
+                return `
+                    <div class="bg-white rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col justify-between group">
+                        
+                        <!-- Card Image Gallery Section -->
+                        <div class="relative bg-slate-100 aspect-[4/3] overflow-hidden select-none">
+                            
+                            <!-- Main Active Image -->
+                            <img 
+                                id="image-${bike.id}" 
+                                src="${encodeURI(currentImage)}" 
+                                alt="${bike.title}"
+                                class="w-full h-full object-cover object-center transition-all duration-300"
+                                onerror="this.onerror=null; this.src='https://placehold.co/600x450/e2e8f0/475569?text=Medida+${bike.size}';"
+                            />
+
+                            <!-- Size Badge Overlay -->
+                            <div class="absolute top-3 left-3 bg-slate-900/80 backdrop-blur-md text-white font-bold text-xs px-3 py-1.5 rounded-full shadow-lg">
+                                Medida ${bike.size}
+                            </div>
+
+                            <!-- Photo Counter Pill -->
+                            <div class="absolute top-3 right-3 bg-black/60 backdrop-blur-md text-white font-semibold text-xs px-2.5 py-1 rounded-full flex items-center gap-1.5">
+                                <i class="fa-solid fa-camera text-[10px]"></i>
+                                <span id="counter-${bike.id}">${currentIndex + 1}/${totalImages}</span>
+                            </div>
+
+                            <!-- Carousel Controls (Previous / Next) -->
+                            ${totalImages > 1 ? `
+                                <button 
+                                    onclick="navigateGallery('${bike.id}', -1)"
+                                    class="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-slate-800 w-9 h-9 rounded-full flex items-center justify-center shadow-md backdrop-blur-sm transition-all hover:scale-110 active:scale-95"
+                                    aria-label="Foto Anterior"
+                                >
+                                    <i class="fa-solid fa-chevron-left text-xs"></i>
+                                </button>
+                                <button 
+                                    onclick="navigateGallery('${bike.id}', 1)"
+                                    class="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-slate-800 w-9 h-9 rounded-full flex items-center justify-center shadow-md backdrop-blur-sm transition-all hover:scale-110 active:scale-95"
+                                    aria-label="Siguiente Foto"
+                                >
+                                    <i class="fa-solid fa-chevron-right text-xs"></i>
+                                </button>
+                            ` : ''}
+
+                            <!-- Dots Indicator at bottom of image -->
+                            <div class="absolute bottom-2 left-0 right-0 flex justify-center gap-1 px-2">
+                                ${bike.images.map((_, idx) => `
+                                    <span 
+                                        id="dot-${bike.id}-${idx}"
+                                        class="h-1.5 rounded-full transition-all duration-300 ${idx === currentIndex ? 'w-5 bg-emerald-500' : 'w-1.5 bg-white/60'}"
+                                    ></span>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <!-- Card Body Details -->
+                        <div class="p-5 flex-1 flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-slate-900 text-lg mb-1 group-hover:text-emerald-600 transition-colors">
+                                    ${bike.title}
+                                </h3>
+                                <p class="text-slate-500 text-xs leading-relaxed mb-4">
+                                    ${bike.description}
+                                </p>
+                            </div>
+
+                            <!-- Price Display & Action Button -->
+                            <div class="pt-3 border-t border-slate-100 flex flex-col gap-3">
+                                <div class="flex items-baseline justify-between">
+                                    <div>
+                                        <span class="text-xs text-slate-400 font-medium block">Precio Oficial</span>
+                                        <span class="text-2xl font-extrabold text-slate-900">$${bike.usdPrice} <span class="text-xs font-bold text-emerald-600">USD</span></span>
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="text-xs text-slate-400 font-medium block">Equivalente CUP</span>
+                                        <span class="text-sm font-bold text-slate-600">~${cupPrice} CUP</span>
+                                    </div>
+                                </div>
+
+                                <!-- WhatsApp Order Button -->
+                                <a 
+                                    href="${waUrl}" 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    class="w-full bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl shadow-md shadow-emerald-500/20 text-center flex items-center justify-center gap-2 text-sm transition-all transform hover:-translate-y-0.5"
+                                >
+                                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                                    <span>Encargar por WhatsApp</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
         }
 
-        exchangeRateInput.addEventListener('input', updateCupPrices);
-        updateCupPrices();
+        function navigateGallery(bikeId, direction) {
+            const bike = bikeCatalog.find(b => b.id === bikeId);
+            if (!bike) return;
 
-        // Filtros por Categoría
-        function filterCategory(category) {
-            const cards = document.querySelectorAll('.product-card');
-            const buttons = document.querySelectorAll('.filter-btn');
+            const total = bike.images.length;
+            let newIndex = (currentIndices[bikeId] + direction + total) % total;
+            currentIndices[bikeId] = newIndex;
 
-            buttons.forEach(btn => {
-                const btnFilter = btn.getAttribute('data-filter');
-                if (btnFilter === category) {
-                    btn.classList.add('bg-brand-600', 'text-white', 'shadow-sm', 'shadow-brand-600/30');
-                    btn.classList.remove('bg-white', 'text-slate-600', 'border', 'border-slate-200');
-                } else {
-                    btn.classList.remove('bg-brand-600', 'text-white', 'shadow-sm', 'shadow-brand-600/30');
-                    btn.classList.add('bg-white', 'text-slate-600', 'border', 'border-slate-200');
+            // Update Image Src
+            const imgElement = document.getElementById(`image-${bikeId}`);
+            if (imgElement) {
+                imgElement.src = encodeURI(bike.images[newIndex]);
+            }
+
+            // Update Text Counter
+            const counterElement = document.getElementById(`counter-${bikeId}`);
+            if (counterElement) {
+                counterElement.innerText = `${newIndex + 1}/${total}`;
+            }
+
+            // Update Dots Navigation
+            bike.images.forEach((_, idx) => {
+                const dot = document.getElementById(`dot-${bikeId}-${idx}`);
+                if (dot) {
+                    if (idx === newIndex) {
+                        dot.className = "h-1.5 rounded-full transition-all duration-300 w-5 bg-emerald-500";
+                    } else {
+                        dot.className = "h-1.5 rounded-full transition-all duration-300 w-1.5 bg-white/60";
+                    }
                 }
             });
+        }
 
-            cards.forEach(card => {
-                const cardCategory = card.getAttribute('data-category');
-                if (category === 'all' || cardCategory === category) {
-                    card.style.display = 'flex';
-                } else {
-                    card.style.display = 'none';
-                }
+        function filterCatalog(size) {
+            activeFilter = size;
+
+            // Update active state on filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('bg-slate-900', 'text-white', 'shadow-sm');
+                btn.classList.add('bg-white', 'text-slate-700', 'border', 'border-slate-200');
             });
+
+            const activeBtn = document.getElementById(`filter-${size}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('bg-white', 'text-slate-700', 'border', 'border-slate-200');
+                activeBtn.classList.add('bg-slate-900', 'text-white', 'shadow-sm');
+            }
+
+            renderCatalog();
         }
 
-        // Modales
-        function openModal(id) {
-            const modal = document.getElementById(`modal-${id}`);
-            if (modal) modal.classList.remove('hidden');
+        function updateCurrencyExchange() {
+            renderCatalog();
         }
 
-        function closeModal(id) {
-            const modal = document.getElementById(`modal-${id}`);
-            if (modal) modal.classList.add('hidden');
-        }
+        window.onload = function() {
+            renderCatalog();
+        };
     </script>
 </body>
 </html>
