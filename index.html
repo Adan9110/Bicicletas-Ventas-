@@ -1,417 +1,482 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Venta de Bicicletas y más</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Venta de Bicicletas y más</title>
+  <style>
+    :root {
+      --primary: #25d366;
+      --dark: #0f172a;
+      --light: #f8fafc;
+      --accent: #0284c7;
+      --card-bg: #ffffff;
+      --text: #334155;
+    }
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    }
 
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f8fafc;
-        }
+    body {
+      background-color: #f1f5f9;
+      color: var(--text);
+      line-height: 1.5;
+      padding-bottom: 60px;
+    }
 
-        /* Custom smooth scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1f5f9;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
+    header {
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
 
-        /* Glassmorphism effect for sticky bar */
-        .glass-header {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-        }
+    header h1 {
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
 
-        /* Carousel transitions */
-        .carousel-slide {
-            transition: opacity 0.3s ease-in-out;
-        }
+    header p {
+      color: #94a3b8;
+      font-size: 0.95rem;
+    }
 
-        /* Button click effect */
-        .btn-active {
-            transform: scale(0.97);
-        }
-    </style>
+    .converter-bar {
+      background: #ffffff;
+      max-width: 800px;
+      margin: -20px auto 20px;
+      padding: 15px 20px;
+      border-radius: 12px;
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      width: 90%;
+    }
+
+    .converter-bar label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #475569;
+    }
+
+    .converter-input-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .converter-input-group input {
+      width: 100px;
+      padding: 8px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .filters {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin: 1.5rem auto;
+      flex-wrap: wrap;
+      max-width: 800px;
+      padding: 0 10px;
+    }
+
+    .filter-btn {
+      background: white;
+      border: 1px solid #cbd5e1;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 0.85rem;
+    }
+
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 15px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Carousel Style */
+    .carousel {
+      position: relative;
+      width: 100%;
+      height: 250px;
+      background: #e2e8f0;
+      overflow: hidden;
+    }
+
+    .carousel-track {
+      display: flex;
+      height: 100%;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .carousel-slide {
+      min-width: 100%;
+      height: 100%;
+    }
+
+    .carousel-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.5);
+      color: white;
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      z-index: 2;
+    }
+
+    .carousel-btn.prev { left: 8px; }
+    .carousel-btn.next { right: 8px; }
+
+    .carousel-dots {
+      position: absolute;
+      bottom: 8px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+      z-index: 2;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      background: rgba(255,255,255,0.5);
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .dot.active {
+      background: white;
+      width: 12px;
+      border-radius: 4px;
+    }
+
+    .card-content {
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #e0f2fe;
+      color: #0369a1;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      width: fit-content;
+      margin-bottom: 10px;
+    }
+
+    .price-box {
+      margin-top: auto;
+      padding-top: 10px;
+      border-top: 1px solid #f1f5f9;
+    }
+
+    .price-usd {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .price-cup {
+      font-size: 0.9rem;
+      color: #64748b;
+      font-weight: 600;
+    }
+
+    .buy-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+      padding: 10px;
+      border-radius: 8px;
+      font-weight: 700;
+      margin-top: 12px;
+      transition: background 0.2s;
+    }
+
+    .buy-btn:hover {
+      background: #1da851;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #64748b;
+      font-size: 0.85rem;
+      margin-top: 40px;
+    }
+  </style>
 </head>
-<body class="text-slate-800 antialiased min-h-screen flex flex-col justify-between">
+<body>
 
-    <div>
-        <!-- Sticky Navigation / Header -->
-        <header class="glass-header sticky top-0 z-50 border-b border-slate-200/80 shadow-sm">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-col md:flex-row items-center justify-between gap-4">
-                
-                <!-- Logo / Title -->
-                <div class="flex items-center gap-3 text-center md:text-left">
-                    <div class="w-12 h-12 bg-emerald-500 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-emerald-500/30">
-                        <i class="fa-solid fa-bicycle text-2xl"></i>
-                    </div>
-                    <div>
-                        <h1 class="text-xl font-extrabold tracking-tight text-slate-900 leading-tight">
-                            Venta de Bicicletas y más
-                        </h1>
-                        <p class="text-xs font-medium text-slate-500 flex items-center justify-center md:justify-start gap-1">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
-                            Catálogo Oficial de Disponibilidad
-                        </p>
-                    </div>
-                </div>
+  <header>
+    <h1>Tienda de bicicletas y más</h1>
+    <p>Modelos disponibles para entrega inmediata</p>
+  </header>
 
-                <!-- Contact & Currency Exchange Bar -->
-                <div class="flex flex-wrap items-center justify-center gap-3 w-full md:w-auto">
-                    <!-- Exchange Rate Input -->
-                    <div class="flex items-center bg-slate-100 px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold">
-                        <span class="text-slate-500 mr-2 flex items-center gap-1">
-                            <i class="fa-solid fa-calculator text-slate-400"></i> Tasa CUP:
-                        </span>
-                        <input 
-                            type="number" 
-                            id="exchangeRateInput" 
-                            value="320" 
-                            min="1" 
-                            class="w-16 bg-white border border-slate-300 rounded-lg px-2 py-1 text-center text-slate-800 font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
-                            oninput="updateCurrencyExchange()"
-                        >
-                        <span class="ml-1 text-slate-500">CUP</span>
-                    </div>
-
-                    <!-- Direct WhatsApp Button -->
-                    <a 
-                        href="https://wa.me/5356255364" 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        class="flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md shadow-emerald-500/20 transition-all"
-                    >
-                        <i class="fa-brands fa-whatsapp text-base"></i>
-                        <span>Contactar +53 56255364</span>
-                    </a>
-                </div>
-            </div>
-        </header>
-
-        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <!-- Filter Bar -->
-            <section class="mb-8">
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
-                        <i class="fa-solid fa-sliders text-emerald-500"></i> Filtrar por Medida:
-                    </h2>
-                    <span id="resultsCount" class="text-xs font-medium text-slate-500 bg-slate-200 px-2.5 py-1 rounded-full">
-                        5 modelos disponibles
-                    </span>
-                </div>
-
-                <!-- Filter Buttons -->
-                <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
-                    <button onclick="filterCatalog('all')" id="filter-all" class="filter-btn active-filter bg-slate-900 text-white px-4 py-2 rounded-xl text-sm font-semibold transition-all shadow-sm shrink-0">
-                        Todas
-                    </button>
-                    <button onclick="filterCatalog('12')" id="filter-12" class="filter-btn bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 px-4 py-2 rounded-xl text-sm font-semibold transition-all shrink-0">
-                        Medida 12
-                    </button>
-                    <button onclick="filterCatalog('16')" id="filter-16" class="filter-btn bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 px-4 py-2 rounded-xl text-sm font-semibold transition-all shrink-0">
-                        Medida 16
-                    </button>
-                    <button onclick="filterCatalog('20')" id="filter-20" class="filter-btn bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 px-4 py-2 rounded-xl text-sm font-semibold transition-all shrink-0">
-                        Medida 20
-                    </button>
-                    <button onclick="filterCatalog('24')" id="filter-24" class="filter-btn bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 px-4 py-2 rounded-xl text-sm font-semibold transition-all shrink-0">
-                        Medida 24
-                    </button>
-                    <button onclick="filterCatalog('26')" id="filter-26" class="filter-btn bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 px-4 py-2 rounded-xl text-sm font-semibold transition-all shrink-0">
-                        Medida 26
-                    </button>
-                </div>
-            </section>
-
-            <section id="catalogGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Dynamic Bike Cards generated by JS -->
-            </section>
-        </main>
+  <div class="converter-bar">
+    <label for="exchange-rate">Tasa de cambio (USD ➔ CUP):</label>
+    <div class="converter-input-group">
+      <span>1 USD =</span>
+      <input type="number" id="exchange-rate" value="320" onchange="updatePrices()">
+      <span>CUP</span>
     </div>
+  </div>
 
-    <footer class="bg-white border-t border-slate-200 mt-12 py-6">
-        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500">
-            <p class="font-medium text-slate-700 mb-1">Venta de Bicicletas y más © 2026</p>
-            <p>Atención inmediata por WhatsApp al <a href="https://wa.me/5356255364" class="text-emerald-600 underline font-semibold">+53 56255364</a></p>
-        </div>
-    </footer>
+  <div class="filters">
+    <button class="filter-btn active" onclick="filterCategory('all')">Todas</button>
+    <button class="filter-btn" onclick="filterCategory('12')">Medida 12</button>
+    <button class="filter-btn" onclick="filterCategory('16')">Medida 16</button>
+    <button class="filter-btn" onclick="filterCategory('20')">Medida 20</button>
+    <button class="filter-btn" onclick="filterCategory('24')">Medida 24</button>
+    <button class="filter-btn" onclick="filterCategory('26')">Medida 26</button>
+  </div>
 
-    <script>
-        // Exact Bicycle Catalog Dataset mapping the exact user image filenames
-        const bikeCatalog = [
-            {
-                id: "medida-12",
-                size: "12",
-                title: "Bicicleta Infantil Medida 12",
-                usdPrice: 150,
-                description: "Ideal para los más pequeños en sus primeros pedalazos. Excelente estabilidad y diseño resistente.",
-                images: [
-                    "medida12-0.jpg",
-                    "medida12-1.jpg",
-                    "medida12-2.jpg",
-                    "medida12-3.jpg",
-                    "medida12-4.jpg"
-                ]
-            },
-            {
-                id: "medida-16",
-                size: "16",
-                title: "Bicicleta Medida 16",
-                usdPrice: 165,
-                description: "Perfecta para niños en crecimiento. Equipada con cuadro robusto y accesorios de máxima seguridad.",
-                images: [
-                    "medida16-1.jpg",
-                    "medida16-2.jpg",
-                    "medida16-3.jpg",
-                    "medida16-4.jpg",
-                    "medida16-5.jpg",
-                    "medida16-6.jpg"
-                ]
-            },
-            {
-                id: "medida-20",
-                size: "20",
-                title: "Bicicleta Medida 20",
-                usdPrice: 190,
-                description: "Modelo dinámico y versátil. Excelente agarre, frenos seguros y múltiples opciones de color.",
-                images: [
-                    "medida20-1.jpg",
-                    "medida20-2.jpg",
-                    "medida20-3.jpg",
-                    "medida20-4.jpg",
-                    "medida20-5.jpg",
-                    "medida20-6.jpg",
-                    "medida20-7.jpg",
-                    "medida20-8.jpg",
-                    "medida20-9.jpg",
-                    "medida20-10.jpg",
-                    "medida20-11.jpg"
-                ]
-            },
-            {
-                id: "medida-24",
-                size: "24",
-                title: "Bicicleta Medida 24",
-                usdPrice: 220,
-                description: "Tamaño intermedio de gran durabilidad. Ideal tanto para paseos urbanos como para terrenos irregulares.",
-                images: [
-                    "medida24-1.jpg",
-                    "medida24-2.jpg",
-                    "medida24-3.jpg"
-                ]
-            },
-            {
-                id: "medida-26",
-                size: "26",
-                title: "Bicicleta Medida 26",
-                usdPrice: 250,
-                description: "Cuadro amplio de máxima comodidad y resistencia para adultos. Perfecta para el transporte diario.",
-                images: [
-                    "medida26-1.jpg",
-                    "medida26-2.jpg"
-                ]
-            }
-        ];
+  <div class="container">
+    <div class="grid" id="catalog"></div>
+  </div>
 
-        // State variables tracking selected slide indices for each card
-        const currentIndices = {};
-        let activeFilter = 'all';
+  <footer>
+    <p>Catálogo de Bicicletas • Contacto directo por WhatsApp: +53 56255364</p>
+  </footer>
 
-        // Initialize state on render
-        bikeCatalog.forEach(bike => {
-            currentIndices[bike.id] = 0;
+  <script>
+    const products = [
+      {
+        id: 1,
+        title: "Bicicleta Medida 12",
+        category: "12",
+        priceUSD: 150,
+        images: [
+          "Medida 12 jpg.jpg",
+          "Medida 12 1.jpg.jpg",
+          "Medida 12 2.jpg.jpg",
+          "Medida 12 3.jpg.jpg",
+          "Medida 12 4.jpg.jpg"
+        ]
+      },
+      {
+        id: 2,
+        title: "Bicicleta Medida 16",
+        category: "16",
+        priceUSD: 165,
+        images: [
+          "Medida 16 1.jpg.jpg",
+          "Medida 16 2.jpg.jpg",
+          "Medida 16 3.jpg.jpg",
+          "Medida 16 4.jpg.jpg",
+          "Medida 16 5.jpg.jpg",
+          "Medida 16 6.jpg.jpg"
+        ]
+      },
+      {
+        id: 3,
+        title: "Bicicleta Medida 20",
+        category: "20",
+        priceUSD: 190,
+        images: [
+          "Medida 20 1.jpg.jpg",
+          "Medida 20 2.jpg.jpg",
+          "Medida 20 3.jpg.jpg",
+          "Medida 20 4.jpg.jpg",
+          "Medida 20 5.jpg.jpg",
+          "Medida 20 6.jpg.jpg",
+          "Medida 20 7.jpg.jpg",
+          "Medida 20 8.jpg.jpg",
+          "Medida 20 9.jpg.jpg",
+          "Medida 20 10.jpg.jpg",
+          "Medida 20 11.jpg.jpg"
+        ]
+      },
+      {
+        id: 4,
+        title: "Bicicleta Medida 24",
+        category: "24",
+        priceUSD: 220,
+        images: [
+          "Medida 24 1.jpg.jpg",
+          "Medida 24 2.jpg.jpg",
+          "Medida 24 3.jpg.jpg"
+        ]
+      },
+      {
+        id: 5,
+        title: "Bicicleta Medida 26",
+        category: "26",
+        priceUSD: 250,
+        images: [
+          "Medida 26 1.jpg.jpg",
+          "Medida 26 2.jpg.jpg"
+        ]
+      }
+    ];
+
+    const phone = "5356255364";
+
+    function renderCatalog(items) {
+      const catalog = document.getElementById('catalog');
+      catalog.innerHTML = '';
+      const rate = parseFloat(document.getElementById('exchange-rate').value) || 320;
+
+      items.forEach(product => {
+        const priceCUP = (product.priceUSD * rate).toLocaleString('es-CU');
+        const message = encodeURIComponent(`Hola, estoy interesado en comprar la ${product.title} de $${product.priceUSD} USD (o equivalente en CUP).`);
+        const whatsappUrl = `https://wa.me/${phone}?text=${message}`;
+
+        let slidesHTML = '';
+        let dotsHTML = '';
+
+        product.images.forEach((img, idx) => {
+          slidesHTML += `<div class="carousel-slide"><img src="${img}" alt="${product.title}" onerror="this.src='https://via.placeholder.com/400x300?text=Imagen+no+disponible'"></div>`;
+          dotsHTML += `<span class="dot ${idx === 0 ? 'active' : ''}" onclick="moveCarousel(${product.id}, ${idx})"></span>`;
         });
 
-        function renderCatalog() {
-            const container = document.getElementById('catalogGrid');
-            const exchangeRate = parseFloat(document.getElementById('exchangeRateInput').value) || 320;
-            
-            const filteredBikes = activeFilter === 'all' 
-                ? bikeCatalog 
-                : bikeCatalog.filter(bike => bike.size === activeFilter);
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <div class="carousel" id="carousel-${product.id}">
+            <div class="carousel-track" id="track-${product.id}">
+              ${slidesHTML}
+            </div>
+            ${product.images.length > 1 ? `
+              <button class="carousel-btn prev" onclick="prevSlide(${product.id},${product.images.length})">❮</button>
+              <button class="carousel-btn next" onclick="nextSlide(${product.id},${product.images.length})">❯</button>
+              <div class="carousel-dots" id="dots-${product.id}">
+                ${dotsHTML}
+              </div>
+            ` : ''}
+          </div>
+          <div class="card-content">
+            <span class="badge">Medida ${product.category}</span>
+            <h2 class="card-title">${product.title}</h2>
+            <div class="price-box">
+              <div class="price-usd">$${product.priceUSD} USD</div>
+              <div class="price-cup">o ≈ ${priceCUP} CUP</div>
+            </div>
+            <a href="${whatsappUrl}" target="_blank" class="buy-btn">
+               Pedir por WhatsApp
+            </a>
+          </div>
+        `;
+        catalog.appendChild(card);
+      });
+    }
 
-            document.getElementById('resultsCount').innerText = `${filteredBikes.length} ${filteredBikes.length === 1 ? 'modelo disponible' : 'modelos disponibles'}`;
+    const currentSlides = {};
 
-            container.innerHTML = filteredBikes.map(bike => {
-                const currentIndex = currentIndices[bike.id] || 0;
-                const totalImages = bike.images.length;
-                const cupPrice = (bike.usdPrice * exchangeRate).toLocaleString('es-CU');
-                const currentImage = bike.images[currentIndex];
+    function moveCarousel(productId, index) {
+      currentSlides[productId] = index;
+      const track = document.getElementById(`track-${productId}`);
+      track.style.transform = `translateX(-${index * 100}%)`;
 
-                // Pre-filled WhatsApp message URL
-                const waMessage = encodeURIComponent(`Hola, estoy interesado en comprar la bicicleta Medida ${bike.size} ($${bike.usdPrice} USD). ¿Sigue disponible?`);
-                const waUrl = `https://wa.me/5356255364?text=${waMessage}`;
+      const dots = document.querySelectorAll(`#dots-${productId} .dot`);
+      dots.forEach((dot, idx) => {
+        dot.classList.toggle('active', idx === index);
+      });
+    }
 
-                return `
-                    <div class="bg-white rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col justify-between group">
-                        
-                        <!-- Card Image Gallery Section -->
-                        <div class="relative bg-slate-100 aspect-[4/3] overflow-hidden select-none">
-                            
-                            <!-- Main Active Image -->
-                            <img 
-                                id="image-${bike.id}" 
-                                src="${encodeURI(currentImage)}" 
-                                alt="${bike.title}"
-                                class="w-full h-full object-cover object-center transition-all duration-300"
-                                onerror="this.onerror=null; this.src='https://placehold.co/600x450/e2e8f0/475569?text=Medida+${bike.size}';"
-                            />
+    function prevSlide(productId, total) {
+      let current = currentSlides[productId] || 0;
+      current = (current - 1 + total) % total;
+      moveCarousel(productId, current);
+    }
 
-                            <!-- Size Badge Overlay -->
-                            <div class="absolute top-3 left-3 bg-slate-900/80 backdrop-blur-md text-white font-bold text-xs px-3 py-1.5 rounded-full shadow-lg">
-                                Medida ${bike.size}
-                            </div>
+    function nextSlide(productId, total) {
+      let current = currentSlides[productId] || 0;
+      current = (current + 1) % total;
+      moveCarousel(productId, current);
+    }
 
-                            <!-- Photo Counter Pill -->
-                            <div class="absolute top-3 right-3 bg-black/60 backdrop-blur-md text-white font-semibold text-xs px-2.5 py-1 rounded-full flex items-center gap-1.5">
-                                <i class="fa-solid fa-camera text-[10px]"></i>
-                                <span id="counter-${bike.id}">${currentIndex + 1}/${totalImages}</span>
-                            </div>
+    function updatePrices() {
+      const activeFilterBtn = document.querySelector('.filter-btn.active');
+      const activeCategory = activeFilterBtn ? activeFilterBtn.textContent.replace('Medida ', '').replace('Todas', 'all').trim() : 'all';
+      filterCategory(activeCategory);
+    }
 
-                            <!-- Carousel Controls (Previous / Next) -->
-                            ${totalImages > 1 ? `
-                                <button 
-                                    onclick="navigateGallery('${bike.id}', -1)"
-                                    class="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-slate-800 w-9 h-9 rounded-full flex items-center justify-center shadow-md backdrop-blur-sm transition-all hover:scale-110 active:scale-95"
-                                    aria-label="Foto Anterior"
-                                >
-                                    <i class="fa-solid fa-chevron-left text-xs"></i>
-                                </button>
-                                <button 
-                                    onclick="navigateGallery('${bike.id}', 1)"
-                                    class="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-slate-800 w-9 h-9 rounded-full flex items-center justify-center shadow-md backdrop-blur-sm transition-all hover:scale-110 active:scale-95"
-                                    aria-label="Siguiente Foto"
-                                >
-                                    <i class="fa-solid fa-chevron-right text-xs"></i>
-                                </button>
-                            ` : ''}
-
-                            <!-- Dots Indicator at bottom of image -->
-                            <div class="absolute bottom-2 left-0 right-0 flex justify-center gap-1 px-2">
-                                ${bike.images.map((_, idx) => `
-                                    <span 
-                                        id="dot-${bike.id}-${idx}"
-                                        class="h-1.5 rounded-full transition-all duration-300 ${idx === currentIndex ? 'w-5 bg-emerald-500' : 'w-1.5 bg-white/60'}"
-                                    ></span>
-                                `).join('')}
-                            </div>
-                        </div>
-
-                        <!-- Card Body Details -->
-                        <div class="p-5 flex-1 flex flex-col justify-between">
-                            <div>
-                                <h3 class="font-bold text-slate-900 text-lg mb-1 group-hover:text-emerald-600 transition-colors">
-                                    ${bike.title}
-                                </h3>
-                                <p class="text-slate-500 text-xs leading-relaxed mb-4">
-                                    ${bike.description}
-                                </p>
-                            </div>
-
-                            <!-- Price Display & Action Button -->
-                            <div class="pt-3 border-t border-slate-100 flex flex-col gap-3">
-                                <div class="flex items-baseline justify-between">
-                                    <div>
-                                        <span class="text-xs text-slate-400 font-medium block">Precio Oficial</span>
-                                        <span class="text-2xl font-extrabold text-slate-900">$${bike.usdPrice} <span class="text-xs font-bold text-emerald-600">USD</span></span>
-                                    </div>
-                                    <div class="text-right">
-                                        <span class="text-xs text-slate-400 font-medium block">Equivalente CUP</span>
-                                        <span class="text-sm font-bold text-slate-600">~${cupPrice} CUP</span>
-                                    </div>
-                                </div>
-
-                                <!-- WhatsApp Order Button -->
-                                <a 
-                                    href="${waUrl}" 
-                                    target="_blank" 
-                                    rel="noopener noreferrer"
-                                    class="w-full bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl shadow-md shadow-emerald-500/20 text-center flex items-center justify-center gap-2 text-sm transition-all transform hover:-translate-y-0.5"
-                                >
-                                    <i class="fa-brands fa-whatsapp text-lg"></i>
-                                    <span>Encargar por WhatsApp</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
+    function filterCategory(category) {
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if ((category === 'all' && btn.textContent.includes('Todas')) || btn.textContent.includes(category)) {
+          btn.classList.add('active');
         }
+      });
 
-        function navigateGallery(bikeId, direction) {
-            const bike = bikeCatalog.find(b => b.id === bikeId);
-            if (!bike) return;
+      if (category === 'all') {
+        renderCatalog(products);
+      } else {
+        const filtered = products.filter(p => p.category === category);
+        renderCatalog(filtered);
+      }
+    }
 
-            const total = bike.images.length;
-            let newIndex = (currentIndices[bikeId] + direction + total) % total;
-            currentIndices[bikeId] = newIndex;
-
-            // Update Image Src
-            const imgElement = document.getElementById(`image-${bikeId}`);
-            if (imgElement) {
-                imgElement.src = encodeURI(bike.images[newIndex]);
-            }
-
-            // Update Text Counter
-            const counterElement = document.getElementById(`counter-${bikeId}`);
-            if (counterElement) {
-                counterElement.innerText = `${newIndex + 1}/${total}`;
-            }
-
-            // Update Dots Navigation
-            bike.images.forEach((_, idx) => {
-                const dot = document.getElementById(`dot-${bikeId}-${idx}`);
-                if (dot) {
-                    if (idx === newIndex) {
-                        dot.className = "h-1.5 rounded-full transition-all duration-300 w-5 bg-emerald-500";
-                    } else {
-                        dot.className = "h-1.5 rounded-full transition-all duration-300 w-1.5 bg-white/60";
-                    }
-                }
-            });
-        }
-
-        function filterCatalog(size) {
-            activeFilter = size;
-
-            // Update active state on filter buttons
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.remove('bg-slate-900', 'text-white', 'shadow-sm');
-                btn.classList.add('bg-white', 'text-slate-700', 'border', 'border-slate-200');
-            });
-
-            const activeBtn = document.getElementById(`filter-${size}`);
-            if (activeBtn) {
-                activeBtn.classList.remove('bg-white', 'text-slate-700', 'border', 'border-slate-200');
-                activeBtn.classList.add('bg-slate-900', 'text-white', 'shadow-sm');
-            }
-
-            renderCatalog();
-        }
-
-        function updateCurrencyExchange() {
-            renderCatalog();
-        }
-
-        window.onload = function() {
-            renderCatalog();
-        };
-    </script>
+    // Carga inicial
+    renderCatalog(products);
+  </script>
 </body>
 </html>
