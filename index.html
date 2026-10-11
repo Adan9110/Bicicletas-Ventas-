@@ -1,485 +1,411 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Venta de Bicicletas y más</title>
-  <style>
-    :root {
-      --primary: #25d366;
-      --dark: #0f172a;
-      --light: #f8fafc;
-      --accent: #0284c7;
-      --card-bg: #ffffff;
-      --text: #334155;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    }
-
-    body {
-      background-color: #f1f5f9;
-      color: var(--text);
-      line-height: 1.5;
-      padding-bottom: 60px;
-    }
-
-    header {
-      background: linear-gradient(135deg, #0f172a, #1e293b);
-      color: white;
-      padding: 2rem 1rem;
-      text-align: center;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    }
-
-    header h1 {
-      font-size: 1.8rem;
-      font-weight: 800;
-      margin-bottom: 0.5rem;
-    }
-
-    header p {
-      color: #94a3b8;
-      font-size: 0.95rem;
-    }
-
-    .converter-bar {
-      background: #ffffff;
-      max-width: 800px;
-      margin: -20px auto 20px;
-      padding: 15px 20px;
-      border-radius: 12px;
-      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      width: 90%;
-    }
-
-    .converter-bar label {
-      font-weight: 600;
-      font-size: 0.9rem;
-      color: #475569;
-    }
-
-    .converter-input-group {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .converter-input-group input {
-      width: 100px;
-      padding: 8px 12px;
-      border: 1px solid #cbd5e1;
-      border-radius: 6px;
-      font-weight: 700;
-      color: #0f172a;
-    }
-
-    .filters {
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-      margin: 1.5rem auto;
-      flex-wrap: wrap;
-      max-width: 800px;
-      padding: 0 10px;
-    }
-
-    .filter-btn {
-      background: white;
-      border: 1px solid #cbd5e1;
-      padding: 8px 16px;
-      border-radius: 20px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-      font-size: 0.85rem;
-    }
-
-    .filter-btn.active, .filter-btn:hover {
-      background: var(--accent);
-      color: white;
-      border-color: var(--accent);
-    }
-
-    .container {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 15px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 20px;
-    }
-
-    .card {
-      background: var(--card-bg);
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* Carousel Style */
-    .carousel {
-      position: relative;
-      width: 100%;
-      height: 250px;
-      background: #e2e8f0;
-      overflow: hidden;
-    }
-
-    .carousel-track {
-      display: flex;
-      height: 100%;
-      transition: transform 0.3s ease-in-out;
-    }
-
-    .carousel-slide {
-      min-width: 100%;
-      height: 100%;
-    }
-
-    .carousel-slide img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .carousel-btn {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(0,0,0,0.5);
-      color: white;
-      border: none;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      z-index: 2;
-    }
-
-    .carousel-btn.prev { left: 8px; }
-    .carousel-btn.next { right: 8px; }
-
-    .carousel-dots {
-      position: absolute;
-      bottom: 8px;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      gap: 5px;
-      z-index: 2;
-    }
-
-    .dot {
-      width: 8px;
-      height: 8px;
-      background: rgba(255,255,255,0.5);
-      border-radius: 50%;
-      cursor: pointer;
-    }
-
-    .dot.active {
-      background: white;
-      width: 12px;
-      border-radius: 4px;
-    }
-
-    .card-content {
-      padding: 15px;
-      display: flex;
-      flex-direction: column;
-      flex-grow: 1;
-    }
-
-    .card-title {
-      font-size: 1.2rem;
-      font-weight: 700;
-      margin-bottom: 5px;
-    }
-
-    .badge {
-      display: inline-block;
-      background: #e0f2fe;
-      color: #0369a1;
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      width: fit-content;
-      margin-bottom: 10px;
-    }
-
-    .price-box {
-      margin-top: auto;
-      padding-top: 10px;
-      border-top: 1px solid #f1f5f9;
-    }
-
-    .price-usd {
-      font-size: 1.4rem;
-      font-weight: 800;
-      color: #0f172a;
-    }
-
-    .price-cup {
-      font-size: 0.9rem;
-      color: #64748b;
-      font-weight: 600;
-    }
-
-    .buy-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      background: var(--primary);
-      color: white;
-      text-decoration: none;
-      padding: 10px;
-      border-radius: 8px;
-      font-weight: 700;
-      margin-top: 12px;
-      transition: background 0.2s;
-    }
-
-    .buy-btn:hover {
-      background: #1da851;
-    }
-
-    footer {
-      text-align: center;
-      padding: 20px;
-      color: #64748b;
-      font-size: 0.85rem;
-      margin-top: 40px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Venta de Bicicletas y más</title>
+<style>
+:root {
+--primary: #25d366;
+--dark: #0f172a;
+--light: #f8fafc;
+--accent: #0284c7;
+--card-bg: #ffffff;
+--text: #334155;
+}
+​* {
+box-sizing: border-box;
+margin: 0;
+padding: 0;
+font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+​body {
+background-color: #f1f5f9;
+color: var(--text);
+line-height: 1.5;
+padding-bottom: 60px;
+}
+​header {
+background: linear-gradient(135deg, #0f172a, #1e293b);
+color: white;
+padding: 2rem 1rem;
+text-align: center;
+box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+​header h1 {
+font-size: 1.8rem;
+font-weight: 800;
+margin-bottom: 0.5rem;
+}
+​header p {
+color: #94a3b8;
+font-size: 0.95rem;
+}
+​.converter-bar {
+background: #ffffff;
+max-width: 800px;
+margin: -20px auto 20px;
+padding: 15px 20px;
+border-radius: 12px;
+box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+display: flex;
+flex-wrap: wrap;
+align-items: center;
+justify-content: space-between;
+gap: 10px;
+width: 90%;
+}
+​.converter-bar label {
+font-weight: 600;
+font-size: 0.9rem;
+color: #475569;
+}
+​.converter-input-group {
+display: flex;
+align-items: center;
+gap: 8px;
+}
+​.converter-input-group input {
+width: 100px;
+padding: 8px 12px;
+border: 1px solid #cbd5e1;
+border-radius: 6px;
+font-weight: 700;
+color: #0f172a;
+}
+​.filters {
+display: flex;
+justify-content: center;
+gap: 8px;
+margin: 1.5rem auto;
+flex-wrap: wrap;
+max-width: 800px;
+padding: 0 10px;
+}
+​.filter-btn {
+background: white;
+border: 1px solid #cbd5e1;
+padding: 8px 16px;
+border-radius: 20px;
+font-weight: 600;
+cursor: pointer;
+transition: all 0.2s;
+font-size: 0.85rem;
+}
+​.filter-btn.active, .filter-btn:hover {
+background: var(--accent);
+color: white;
+border-color: var(--accent);
+}
+​.container {
+max-width: 1100px;
+margin: 0 auto;
+padding: 0 15px;
+}
+​.grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+gap: 20px;
+}
+​.card {
+background: var(--card-bg);
+border-radius: 16px;
+overflow: hidden;
+box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+display: flex;
+flex-direction: column;
+}
+​/* Carousel Style */
+.carousel {
+position: relative;
+width: 100%;
+height: 250px;
+background: #e2e8f0;
+overflow: hidden;
+}
+​.carousel-track {
+display: flex;
+height: 100%;
+transition: transform 0.3s ease-in-out;
+}
+​.carousel-slide {
+min-width: 100%;
+height: 100%;
+}
+​.carousel-slide img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+}
+​.carousel-btn {
+position: absolute;
+top: 50%;
+transform: translateY(-50%);
+background: rgba(0,0,0,0.5);
+color: white;
+border: none;
+width: 32px;
+height: 32px;
+border-radius: 50%;
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+font-weight: bold;
+z-index: 2;
+}
+​.carousel-btn.prev { left: 8px; }
+.carousel-btn.next { right: 8px; }
+​.carousel-dots {
+position: absolute;
+bottom: 8px;
+width: 100%;
+display: flex;
+justify-content: center;
+gap: 5px;
+z-index: 2;
+}
+​.dot {
+width: 8px;
+height: 8px;
+background: rgba(255,255,255,0.5);
+border-radius: 50%;
+cursor: pointer;
+}
+​.dot.active {
+background: white;
+width: 12px;
+border-radius: 4px;
+}
+​.card-content {
+padding: 15px;
+display: flex;
+flex-direction: column;
+flex-grow: 1;
+}
+​.card-title {
+font-size: 1.2rem;
+font-weight: 700;
+margin-bottom: 5px;
+}
+​.badge {
+display: inline-block;
+background: #e0f2fe;
+color: #0369a1;
+padding: 2px 8px;
+border-radius: 4px;
+font-size: 0.75rem;
+font-weight: 700;
+width: fit-content;
+margin-bottom: 10px;
+}
+​.price-box {
+margin-top: auto;
+padding-top: 10px;
+border-top: 1px solid #f1f5f9;
+}
+​.price-usd {
+font-size: 1.4rem;
+font-weight: 800;
+color: #0f172a;
+}
+​.price-cup {
+font-size: 0.9rem;
+color: #64748b;
+font-weight: 600;
+}
+​.buy-btn {
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 8px;
+background: var(--primary);
+color: white;
+text-decoration: none;
+padding: 10px;
+border-radius: 8px;
+font-weight: 700;
+margin-top: 12px;
+transition: background 0.2s;
+}
+​.buy-btn:hover {
+background: #1da851;
+}
+​footer {
+text-align: center;
+padding: 20px;
+color: #64748b;
+font-size: 0.85rem;
+margin-top: 40px;
+}
+</style>
 </head>
 <body>
-
-  <header>
-    <h1>Tienda de bicicletas y más</h1>
-    <p>Modelos disponibles para entrega inmediata</p>
-  </header>
-
-  <div class="converter-bar">
-    <label for="exchange-rate">Tasa de cambio (USD ➔ CUP):</label>
-    <div class="converter-input-group">
-      <span>1 USD =</span>
-      <input type="number" id="exchange-rate" value="320" onchange="updatePrices()">
-      <span>CUP</span>
-    </div>
-  </div>
-
-  <div class="filters">
-    <button class="filter-btn active" onclick="filterCategory('all')">Todas</button>
-    <button class="filter-btn" onclick="filterCategory('12')">Medida 12</button>
-    <button class="filter-btn" onclick="filterCategory('16')">Medida 16</button>
-    <button class="filter-btn" onclick="filterCategory('20')">Medida 20</button>
-    <button class="filter-btn" onclick="filterCategory('24')">Medida 24</button>
-    <button class="filter-btn" onclick="filterCategory('26')">Medida 26</button>
-  </div>
-
-  <div class="container">
-    <div class="grid" id="catalog"></div>
-  </div>
-
-  <footer>
-    <p>Catálogo de Bicicletas • Contacto directo por WhatsApp: +53 56255364</p>
-  </footer>
-
-  <script>
-    const products = [
-      {
-        id: 1,
-        title: "Bicicleta Medida 12",
-        category: "12",
-        priceUSD: 150,
-        images: [
-          medida12jpg.jpg
-          medida122jpg.jpg
-          medida123jpg.jpg
-          medida124jpg.jpg
-          
-        ]
-      },
-      {
-        id: 2,
-        title: "Bicicleta Medida 16",
-        category: "16",
-        priceUSD: 165,
-        images: [
-          medida161jpg.jpg
-          medida162jpg.jpg
-          medida163jpg.jpg
-          medida164jpg.jpg
-          medida165jpg.jpg
-          medida166jpg.jpg
-          medida167jpg.jpg
-          medida168jpg.jpg
-        ]
-      },
-      {
-        id: 3,
-        title: "Bicicleta Medida 20",
-        category: "20",
-        priceUSD: 190,
-        images: [
-          medida201jpg.jpg
-          medida202jpg.jpg
-          medida203jpg.jpg
-          medida204jpg.jpg
-          medida205jpg.jpg
-          medida206jpg.jpg
-          medida207jpg.jpg
-          medida208jpg.jpg
-          medida209jpg.jpg
-          medida2010jpg.jpg
-         
-        ]
-      },
-      {
-        id: 4,
-        title: "Bicicleta Medida 24",
-        category: "24",
-        priceUSD: 220,
-        images: [
-          medida241jpg.jpg
-          medida242jpg.jpg
-          medida243jpg.jpg
-          medida244jpg.jpg
-        ]
-      },
-      {
-        id: 5,
-        title: "Bicicleta Medida 26",
-        category: "26",
-        priceUSD: 250,
-        images: [
-          medida261jpg.jpg
-          medida262jpg.jpg
-        ]
-      }
-    ];
-
-    const phone = "5356255364";
-
-    function renderCatalog(items) {
-      const catalog = document.getElementById('catalog');
-      catalog.innerHTML = '';
-      const rate = parseFloat(document.getElementById('exchange-rate').value) || 320;
-
-      items.forEach(product => {
-        const priceCUP = (product.priceUSD * rate).toLocaleString('es-CU');
-        const message = encodeURIComponent(`Hola, estoy interesado en comprar la ${product.title} de $${product.priceUSD} USD (o equivalente en CUP).`);
-        const whatsappUrl = `https://wa.me/${phone}?text=${message}`;
-
-        let slidesHTML = '';
-        let dotsHTML = '';
-
-        product.images.forEach((img, idx) => {
-          slidesHTML += `<div class="carousel-slide"><img src="${img}" alt="${product.title}" onerror="this.src='https://via.placeholder.com/400x300?text=Imagen+no+disponible'"></div>`;
-          dotsHTML += `<span class="dot ${idx === 0 ? 'active' : ''}" onclick="moveCarousel(${product.id}, ${idx})"></span>`;
-        });
-
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `
-          <div class="carousel" id="carousel-${product.id}">
-            <div class="carousel-track" id="track-${product.id}">
-              ${slidesHTML}
-            </div>
-            ${product.images.length > 1 ? `
-              <button class="carousel-btn prev" onclick="prevSlide(${product.id},${product.images.length})">❮</button>
-              <button class="carousel-btn next" onclick="nextSlide(${product.id},${product.images.length})">❯</button>
-              <div class="carousel-dots" id="dots-${product.id}">
-                ${dotsHTML}
-              </div>
-            ` : ''}
-          </div>
-          <div class="card-content">
-            <span class="badge">Medida ${product.category}</span>
-            <h2 class="card-title">${product.title}</h2>
-            <div class="price-box">
-              <div class="price-usd">$${product.priceUSD} USD</div>
-              <div class="price-cup">o ≈ ${priceCUP} CUP</div>
-            </div>
-            <a href="${whatsappUrl}" target="_blank" class="buy-btn">
-               Pedir por WhatsApp
-            </a>
-          </div>
-        `;
-        catalog.appendChild(card);
-      });
-    }
-
-    const currentSlides = {};
-
-    function moveCarousel(productId, index) {
-      currentSlides[productId] = index;
-      const track = document.getElementById(`track-${productId}`);
-      track.style.transform = `translateX(-${index * 100}%)`;
-
-      const dots = document.querySelectorAll(`#dots-${productId} .dot`);
-      dots.forEach((dot, idx) => {
-        dot.classList.toggle('active', idx === index);
-      });
-    }
-
-    function prevSlide(productId, total) {
-      let current = currentSlides[productId] || 0;
-      current = (current - 1 + total) % total;
-      moveCarousel(productId, current);
-    }
-
-    function nextSlide(productId, total) {
-      let current = currentSlides[productId] || 0;
-      current = (current + 1) % total;
-      moveCarousel(productId, current);
-    }
-
-    function updatePrices() {
-      const activeFilterBtn = document.querySelector('.filter-btn.active');
-      const activeCategory = activeFilterBtn ? activeFilterBtn.textContent.replace('Medida ', '').replace('Todas', 'all').trim() : 'all';
-      filterCategory(activeCategory);
-    }
-
-    function filterCategory(category) {
-      document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.classList.remove('active');
-        if ((category === 'all' && btn.textContent.includes('Todas')) || btn.textContent.includes(category)) {
-          btn.classList.add('active');
-        }
-      });
-
-      if (category === 'all') {
-        renderCatalog(products);
-      } else {
-        const filtered = products.filter(p => p.category === category);
-        renderCatalog(filtered);
-      }
-    }
-
-    // Carga inicial
-    renderCatalog(products);
-  </script>
+​<header>
+<h1>Tienda de bicicletas y más</h1>
+<p>Modelos disponibles para entrega inmediata</p>
+</header>
+​<div class="converter-bar">
+<label for="exchange-rate">Tasa de cambio (USD ➔ CUP):</label>
+<div class="converter-input-group">
+<span>1 USD =</span>
+<input type="number" id="exchange-rate" value="320" onchange="updatePrices()">
+<span>CUP</span>
+</div>
+</div>
+​<div class="filters">
+<button class="filter-btn active" onclick="filterCategory('all')">Todas</button>
+<button class="filter-btn" onclick="filterCategory('12')">Medida 12</button>
+<button class="filter-btn" onclick="filterCategory('16')">Medida 16</button>
+<button class="filter-btn" onclick="filterCategory('20')">Medida 20</button>
+<button class="filter-btn" onclick="filterCategory('24')">Medida 24</button>
+<button class="filter-btn" onclick="filterCategory('26')">Medida 26</button>
+</div>
+​<div class="container">
+<div class="grid" id="catalog"></div>
+</div>
+​<footer>
+<p>Catálogo de Bicicletas • Contacto directo por WhatsApp: +53 56255364</p>
+</footer>
+​<script>
+const products = [
+{
+id: 1,
+title: "Bicicleta Medida 12",
+category: "12",
+priceUSD: 150,
+images: [
+"medida12jpg.jpg",
+"medida122jpg.jpg",
+"medida123jpg.jpg",
+"medida124jpg.jpg"
+]
+},
+{
+id: 2,
+title: "Bicicleta Medida 16",
+category: "16",
+priceUSD: 165,
+images: [
+"medida161jpg.jpg",
+"medida162jpg.jpg",
+"medida163jpg.jpg",
+"medida164jpg.jpg",
+"medida165jpg.jpg",
+"medida166jpg.jpg",
+"medida167jpg.jpg",
+"medida168jpg.jpg"
+]
+},
+{
+id: 3,
+title: "Bicicleta Medida 20",
+category: "20",
+priceUSD: 190,
+images: [
+"medida201jpg.jpg",
+"medida202jpg.jpg",
+"medida203jpg.jpg",
+"medida204jpg.jpg",
+"medida205jpg.jpg",
+"medida206jpg.jpg",
+"medida207jpg.jpg",
+"medida208jpg.jpg",
+"medida209jpg.jpg",
+"medida2010jpg.jpg"
+]
+},
+{
+id: 4,
+title: "Bicicleta Medida 24",
+category: "24",
+priceUSD: 220,
+images: [
+"medida241jpg.jpg",
+"medida242jpg.jpg",
+"medida243jpg.jpg",
+"medida244jpg.jpg"
+]
+},
+{
+id: 5,
+title: "Bicicleta Medida 26",
+category: "26",
+priceUSD: 250,
+images: [
+"medida261jpg.jpg",
+"medida262jpg.jpg"
+]
+}
+];
+​const phone = "5356255364";
+​function renderCatalog(items) {
+const catalog = document.getElementById('catalog');
+catalog.innerHTML = '';
+const rate = parseFloat(document.getElementById('exchange-rate').value) || 320;
+​items.forEach(product => {
+const priceCUP = (product.priceUSD * rate).toLocaleString('es-CU');
+const message = encodeURIComponent(Hola, estoy interesado en comprar la ${product.title} de $${product.priceUSD} USD (o equivalente en CUP).);
+const whatsappUrl = https://wa.me/${phone}?text=${message};
+​let slidesHTML = '';
+let dotsHTML = '';
+​product.images.forEach((img, idx) => {
+slidesHTML += <div class="carousel-slide"><img src="${img}" alt="${product.title}" onerror="this.src='https://via.placeholder.com/400x300?text=Imagen+no+disponible'"></div>;
+dotsHTML += <span class="dot ${idx === 0 ? 'active' : ''}" onclick="moveCarousel(${product.id}, ${idx})"></span>;
+});
+​const card = document.createElement('div');
+card.className = 'card';
+card.innerHTML = <div class="carousel" id="carousel-${product.id}"> <div class="carousel-track" id="track-${product.id}"> ${slidesHTML} </div> ${product.images.length > 1 ?
+<button class="carousel-btn prev" onclick="prevSlide(${product.id},${product.images.length})">❮</button>
+<button class="carousel-btn next" onclick="nextSlide(${product.id},${product.images.length})">❯</button>
+<div class="carousel-dots" id="dots-${product.id}">
+${dotsHTML}
+</div>
+: ''} </div> <div class="card-content"> <span class="badge">Medida ${product.category}</span> <h2 class="card-title">${product.title}</h2> <div class="price-box"> <div class="price-usd">$${product.priceUSD} USD</div> <div class="price-cup">o ≈ ${priceCUP} CUP</div> </div> <a href="${whatsappUrl}" target="_blank" class="buy-btn"> Pedir por WhatsApp </a> </div>;
+catalog.appendChild(card);
+});
+}
+​const currentSlides = {};
+​function moveCarousel(productId, index) {
+currentSlides[productId] = index;
+const track = document.getElementById(track-${productId});
+track.style.transform = translateX(-${index * 100}%);
+​const dots = document.querySelectorAll(#dots-${productId} .dot);
+dots.forEach((dot, idx) => {
+dot.classList.toggle('active', idx === index);
+});
+}
+​function prevSlide(productId, total) {
+let current = currentSlides[productId] || 0;
+current = (current - 1 + total) % total;
+moveCarousel(productId, current);
+}
+​function nextSlide(productId, total) {
+let current = currentSlides[productId] || 0;
+current = (current + 1) % total;
+moveCarousel(productId, current);
+}
+​function updatePrices() {
+const activeFilterBtn = document.querySelector('.filter-btn.active');
+const activeCategory = activeFilterBtn ? activeFilterBtn.textContent.replace('Medida ', '').replace('Todas', 'all').trim() : 'all';
+filterCategory(activeCategory);
+}
+​function filterCategory(category) {
+document.querySelectorAll('.filter-btn').forEach(btn => {
+btn.classList.remove('active');
+if ((category === 'all' && btn.textContent.includes('Todas')) || btn.textContent.includes(category)) {
+btn.classList.add('active');
+}
+});
+​if (category === 'all') {
+renderCatalog(products);
+} else {
+const filtered = products.filter(p => p.category === category);
+renderCatalog(filtered);
+}
+}
+​// Carga inicial
+renderCatalog(products);
+</script>
 </body>
 </html>
