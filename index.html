@@ -5,277 +5,113 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BicicletasAdan - Venta de Bicicletas y Accesorios</title>
   <meta name="description" content="BicicletasAdan: Venta de bicicletas nuevas, repuestos y accesorios. ¡Compra directo por WhatsApp!">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="BicicletasAdan">
-  <meta property="og:image" content="https://adan9110.github.io/Bicicletas-Ventas-/portada.jpg">
-
   <style>
-    :root {
-      --primary: #25d366;
-      --dark: #0f172a;
-      --accent: #0284c7;
-      --card-bg: #ffffff;
-      --text: #334155;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
-    body { background-color: #f1f5f9; color: var(--text); padding-bottom: 90px; }
-    
-    header {
-      background: linear-gradient(135deg, #0f172a, #1e293b);
-      color: white; padding: 2.5rem 1rem; text-align: center;
-    }
-    .logo-container { max-width: 380px; margin: 0 auto; }
-    header p { color: #94a3b8; font-size: 0.95rem; margin-top: 8px; }
-
-    .converter-bar {
-      background: #ffffff; max-width: 800px; margin: -20px auto 20px;
-      padding: 15px 20px; border-radius: 12px;
-      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
-      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; width: 90%;
-    }
-    .converter-bar input { width: 100px; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; font-weight: 700; }
-
-    .filters { display: flex; justify-content: center; gap: 8px; margin: 1.5rem auto; flex-wrap: wrap; max-width: 800px; padding: 0 10px; }
-    .filter-btn { background: white; border: 1px solid #cbd5e1; padding: 8px 16px; border-radius: 20px; font-weight: 600; cursor: pointer; }
-    .filter-btn.active, .filter-btn:hover { background: var(--accent); color: white; border-color: var(--accent); }
-
-    .container { max-width: 1100px; margin: 0 auto; padding: 0 15px; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-
-    .card { background: var(--card-bg); border-radius: 16px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: flex; flex-direction: column; }
-    
-    .card-img { width: 100%; height: 240px; object-fit: cover; background: #e2e8f0; cursor: pointer; }
-
-    .card-content { padding: 18px; display: flex; flex-direction: column; flex-grow: 1; }
-    .badge { display: inline-block; background: #e0f2fe; color: #0369a1; padding: 3px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; width: fit-content; margin-bottom: 8px; }
-    .card-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 5px; }
-    
-    .price-box { margin-top: 5px; padding-top: 8px; border-top: 1px solid #f1f5f9; margin-bottom: 12px; }
-    .price-usd { font-size: 1.3rem; font-weight: 800; color: #0f172a; }
-    .price-cup { font-size: 0.85rem; color: #64748b; font-weight: 600; }
-
-    .invoice-form { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px; display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
-    .invoice-form label { font-size: 0.72rem; font-weight: 700; color: #475569; display: flex; flex-direction: column; gap: 2px; }
-    .invoice-form input { padding: 6px 8px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.82rem; color: #0f172a; outline: none; }
-
-    .buy-btn {
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      background: var(--primary); color: white; padding: 11px; border-radius: 8px;
-      font-weight: 700; font-size: 0.95rem; cursor: pointer; border: none; width: 100%; text-decoration: none;
-      box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
-    }
-    .buy-btn:hover { background: #1da851; }
-
-    .cart-float-btn {
-      position: fixed; bottom: 25px; right: 25px; background: linear-gradient(135deg, #0284c7, #25d366);
-      color: white; border: none; border-radius: 50px; padding: 12px 22px; font-size: 1rem; font-weight: 800;
-      box-shadow: 0 10px 25px rgba(2, 132, 199, 0.4); cursor: pointer; display: flex; align-items: center; gap: 10px; z-index: 900;
-    }
-    .cart-badge-count { background: #ffffff; color: #0f172a; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 900; }
-
-    .cart-modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.75); z-index: 1001; justify-content: center; align-items: center; padding: 15px; }
-    .cart-modal { background: white; border-radius: 16px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; }
-    
-    footer { text-align: center; padding: 25px; color: #64748b; font-size: 0.85rem; margin-top: 40px; }
+    body { font-family: sans-serif; background: #f1f5f9; margin: 0; padding: 20px; color: #334155; }
+    header { background: #0f172a; color: white; padding: 20px; text-align: center; border-radius: 12px; margin-bottom: 20px; }
+    .container { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+    .card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: flex; flex-direction: column; }
+    .card img { width: 100%; height: 220px; object-fit: cover; background: #e2e8f0; }
+    .card-body { padding: 15px; display: flex; flex-direction: column; gap: 10px; flex-grow: 1; }
+    h2 { font-size: 1.2rem; margin: 0; color: #0f172a; }
+    .price { font-weight: 800; font-size: 1.1rem; color: #0284c7; }
+    .form-group { display: flex; flex-direction: column; gap: 4px; font-size: 0.8rem; font-weight: bold; color: #475569; }
+    .form-group input { padding: 6px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.85rem; }
+    .whatsapp-btn { background: #25d366; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; text-align: center; text-decoration: none; margin-top: auto; display: block; }
+    .whatsapp-btn:hover { background: #1da851; }
   </style>
 </head>
 <body>
 
   <header>
-    <div class="logo-container">
-      <svg width="100%" height="auto" viewBox="0 0 500 110" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" style="stop-color:#0284c7;stop-opacity:1" />
-            <stop offset="100%" style="stop-color:#25d366;stop-opacity:1" />
-          </linearGradient>
-        </defs>
-        <g stroke="url(#grad1)" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="40" cy="65" r="22" /><circle cx="120" cy="65" r="22" />
-          <polyline points="40 65 65 30 100 30 120 65" /><polyline points="65 30 80 65 120 65" />
-        </g>
-        <text x="155" y="60" font-family="system-ui" font-weight="900" font-size="36" fill="#ffffff">Bicicletas<tspan fill="#25d366">Adan</tspan></text>
-      </svg>
-    </div>
-    <p>Modelos disponibles para entrega inmediata</p>
+    <h1>BicicletasAdan</h1>
+    <p>Selecciona tu modelo y haz tu pedido directo por WhatsApp</p>
   </header>
 
-  <div class="converter-bar">
-    <label for="exchange-rate"><strong>Tasa de cambio (1 USD =):</strong></label>
-    <div>
-      <input type="number" id="exchange-rate" value="320" onchange="updatePrices()"> <span>CUP</span>
-    </div>
-  </div>
-
-  <div class="filters">
-    <button class="filter-btn active" onclick="filterCat('all', this)">Todas</button>
-    <button class="filter-btn" onclick="filterCat('12', this)">Medida 12</button>
-    <button class="filter-btn" onclick="filterCat('16', this)">Medida 16</button>
-    <button class="filter-btn" onclick="filterCat('20', this)">Medida 20</button>
-    <button class="filter-btn" onclick="filterCat('24', this)">Medida 24</button>
-    <button class="filter-btn" onclick="filterCat('26', this)">Medida 26</button>
-  </div>
-
   <div class="container">
-    <div class="grid" id="catalog">
 
-      <!-- Medida 12 -->
-      <div class="card" data-cat="12">
-        <img src="medida12jpg.jpg" class="card-img" alt="Medida 12" onerror="this.src='https://via.placeholder.com/400x300?text=Bicicleta+Medida+12'">
-        <div class="card-content">
-          <span class="badge">Medida 12</span>
-          <h2 class="card-title">Bicicleta Medida 12</h2>
-          <div class="price-box">
-            <div class="price-usd" data-usd="150">$150 USD</div>
-            <div class="price-cup" id="cup-1">o ≈ 48,000 CUP</div>
-          </div>
-          <div class="invoice-form">
-            <label>Nombre: <input type="text" id="name-1" placeholder="Tu nombre"></label>
-            <label>Teléfono: <input type="tel" id="phone-1" placeholder="+53 5xxxxxxx"></label>
-            <label>Dirección: <input type="text" id="address-1" placeholder="Dirección de entrega"></label>
-            <label>Día de entrega: <input type="date" id="date-1"></label>
-          </div>
-          <button class="buy-btn" onclick="sendOrder('Bicicleta Medida 12', 150, 1)">📱 Pedir por WhatsApp</button>
-        </div>
+    <!-- Medida 12 -->
+    <div class="card">
+      <img src="medida12jpg.jpg" alt="Medida 12" onerror="this.src='https://via.placeholder.com/400x300?text=Medida+12'">
+      <div class="card-body">
+        <h2>Bicicleta Medida 12</h2>
+        <div class="price">$150 USD</div>
+        <div class="form-group">Nombre: <input type="text" id="name-1" placeholder="Tu nombre"></div>
+        <div class="form-group">Teléfono: <input type="tel" id="phone-1" placeholder="+53 5xxxxxxx"></div>
+        <div class="form-group">Dirección: <input type="text" id="address-1" placeholder="Tu dirección"></div>
+        <div class="form-group">Día de entrega: <input type="date" id="date-1"></div>
+        <a href="#" class="whatsapp-btn" onclick="sendWhatsApp('Bicicleta Medida 12', 150, 1); return false;">📱 Pedir por WhatsApp</a>
       </div>
-
-      <!-- Medida 16 -->
-      <div class="card" data-cat="16">
-        <img src="medida161jpg.jpg" class="card-img" alt="Medida 16" onerror="this.src='https://via.placeholder.com/400x300?text=Bicicleta+Medida+16'">
-        <div class="card-content">
-          <span class="badge">Medida 16</span>
-          <h2 class="card-title">Bicicleta Medida 16</h2>
-          <div class="price-box">
-            <div class="price-usd" data-usd="165">$165 USD</div>
-            <div class="price-cup" id="cup-2">o ≈ 52,800 CUP</div>
-          </div>
-          <div class="invoice-form">
-            <label>Nombre: <input type="text" id="name-2" placeholder="Tu nombre"></label>
-            <label>Teléfono: <input type="tel" id="phone-2" placeholder="+53 5xxxxxxx"></label>
-            <label>Dirección: <input type="text" id="address-2" placeholder="Dirección de entrega"></label>
-            <label>Día de entrega: <input type="date" id="date-2"></label>
-          </div>
-          <button class="buy-btn" onclick="sendOrder('Bicicleta Medida 16', 165, 2)">📱 Pedir por WhatsApp</button>
-        </div>
-      </div>
-
-      <!-- Medida 20 -->
-      <div class="card" data-cat="20">
-        <img src="medida201jpg.jpg" class="card-img" alt="Medida 20" onerror="this.src='https://via.placeholder.com/400x300?text=Bicicleta+Medida+20'">
-        <div class="card-content">
-          <span class="badge">Medida 20</span>
-          <h2 class="card-title">Bicicleta Medida 20</h2>
-          <div class="price-box">
-            <div class="price-usd" data-usd="190">$190 USD</div>
-            <div class="price-cup" id="cup-3">o ≈ 60,800 CUP</div>
-          </div>
-          <div class="invoice-form">
-            <label>Nombre: <input type="text" id="name-3" placeholder="Tu nombre"></label>
-            <label>Teléfono: <input type="tel" id="phone-3" placeholder="+53 5xxxxxxx"></label>
-            <label>Dirección: <input type="text" id="address-3" placeholder="Dirección de entrega"></label>
-            <label>Día de entrega: <input type="date" id="date-3"></label>
-          </div>
-          <button class="buy-btn" onclick="sendOrder('Bicicleta Medida 20', 190, 3)">📱 Pedir por WhatsApp</button>
-        </div>
-      </div>
-
-      <!-- Medida 24 -->
-      <div class="card" data-cat="24">
-        <img src="medida241jpg.jpg" class="card-img" alt="Medida 24" onerror="this.src='https://via.placeholder.com/400x300?text=Bicicleta+Medida+24'">
-        <div class="card-content">
-          <span class="badge">Medida 24</span>
-          <h2 class="card-title">Bicicleta Medida 24</h2>
-          <div class="price-box">
-            <div class="price-usd" data-usd="220">$220 USD</div>
-            <div class="price-cup" id="cup-4">o ≈ 70,400 CUP</div>
-          </div>
-          <div class="invoice-form">
-            <label>Nombre: <input type="text" id="name-4" placeholder="Tu nombre"></label>
-            <label>Teléfono: <input type="tel" id="phone-4" placeholder="+53 5xxxxxxx"></label>
-            <label>Dirección: <input type="text" id="address-4" placeholder="Dirección de entrega"></label>
-            <label>Día de entrega: <input type="date" id="date-4"></label>
-          </div>
-          <button class="buy-btn" onclick="sendOrder('Bicicleta Medida 24', 220, 4)">📱 Pedir por WhatsApp</button>
-        </div>
-      </div>
-
-      <!-- Medida 26 -->
-      <div class="card" data-cat="26">
-        <img src="medida261jpg.jpg" class="card-img" alt="Medida 26" onerror="this.src='https://via.placeholder.com/400x300?text=Bicicleta+Medida+26'">
-        <div class="card-content">
-          <span class="badge">Medida 26</span>
-          <h2 class="card-title">Bicicleta Medida 26</h2>
-          <div class="price-box">
-            <div class="price-usd" data-usd="250">$250 USD</div>
-            <div class="price-cup" id="cup-5">o ≈ 80,000 CUP</div>
-          </div>
-          <div class="invoice-form">
-            <label>Nombre: <input type="text" id="name-5" placeholder="Tu nombre"></label>
-            <label>Teléfono: <input type="tel" id="phone-5" placeholder="+53 5xxxxxxx"></label>
-            <label>Dirección: <input type="text" id="address-5" placeholder="Dirección de entrega"></label>
-            <label>Día de entrega: <input type="date" id="date-5"></label>
-          </div>
-          <button class="buy-btn" onclick="sendOrder('Bicicleta Medida 26', 250, 5)">📱 Pedir por WhatsApp</button>
-        </div>
-      </div>
-
     </div>
-  </div>
 
-  <footer>
-    <p>BicicletasAdan • Contacto directo por WhatsApp: +53 56255364</p>
-  </footer>
+    <!-- Medida 16 -->
+    <div class="card">
+      <img src="medida161jpg.jpg" alt="Medida 16" onerror="this.src='https://via.placeholder.com/400x300?text=Medida+16'">
+      <div class="card-body">
+        <h2>Bicicleta Medida 16</h2>
+        <div class="price">$165 USD</div>
+        <div class="form-group">Nombre: <input type="text" id="name-2" placeholder="Tu nombre"></div>
+        <div class="form-group">Teléfono: <input type="tel" id="phone-2" placeholder="+53 5xxxxxxx"></div>
+        <div class="form-group">Dirección: <input type="text" id="address-2" placeholder="Tu dirección"></div>
+        <div class="form-group">Día de entrega: <input type="date" id="date-2"></div>
+        <a href="#" class="whatsapp-btn" onclick="sendWhatsApp('Bicicleta Medida 16', 165, 2); return false;">📱 Pedir por WhatsApp</a>
+      </div>
+    </div>
+
+    <!-- Medida 20 -->
+    <div class="card">
+      <img src="medida201jpg.jpg" alt="Medida 20" onerror="this.src='https://via.placeholder.com/400x300?text=Medida+20'">
+      <div class="card-body">
+        <h2>Bicicleta Medida 20</h2>
+        <div class="price">$190 USD</div>
+        <div class="form-group">Nombre: <input type="text" id="name-3" placeholder="Tu nombre"></div>
+        <div class="form-group">Teléfono: <input type="tel" id="phone-3" placeholder="+53 5xxxxxxx"></div>
+        <div class="form-group">Dirección: <input type="text" id="address-3" placeholder="Tu dirección"></div>
+        <div class="form-group">Día de entrega: <input type="date" id="date-3"></div>
+        <a href="#" class="whatsapp-btn" onclick="sendWhatsApp('Bicicleta Medida 20', 190, 3); return false;">📱 Pedir por WhatsApp</a>
+      </div>
+    </div>
+
+    <!-- Medida 24 -->
+    <div class="card">
+      <img src="medida241jpg.jpg" alt="Medida 24" onerror="this.src='https://via.placeholder.com/400x300?text=Medida+24'">
+      <div class="card-body">
+        <h2>Bicicleta Medida 24</h2>
+        <div class="price">$220 USD</div>
+        <div class="form-group">Nombre: <input type="text" id="name-4" placeholder="Tu nombre"></div>
+        <div class="form-group">Teléfono: <input type="tel" id="phone-4" placeholder="+53 5xxxxxxx"></div>
+        <div class="form-group">Dirección: <input type="text" id="address-4" placeholder="Tu dirección"></div>
+        <div class="form-group">Día de entrega: <input type="date" id="date-4"></div>
+        <a href="#" class="whatsapp-btn" onclick="sendWhatsApp('Bicicleta Medida 24', 220, 4); return false;">📱 Pedir por WhatsApp</a>
+      </div>
+    </div>
+
+    <!-- Medida 26 -->
+    <div class="card">
+      <img src="medida261jpg.jpg" alt="Medida 26" onerror="this.src='https://via.placeholder.com/400x300?text=Medida+26'">
+      <div class="card-body">
+        <h2>Bicicleta Medida 26</h2>
+        <div class="price">$250 USD</div>
+        <div class="form-group">Nombre: <input type="text" id="name-5" placeholder="Tu nombre"></div>
+        <div class="form-group">Teléfono: <input type="tel" id="phone-5" placeholder="+53 5xxxxxxx"></div>
+        <div class="form-group">Dirección: <input type="text" id="address-5" placeholder="Tu dirección"></div>
+        <div class="form-group">Día de entrega: <input type="date" id="date-5"></div>
+        <a href="#" class="whatsapp-btn" onclick="sendWhatsApp('Bicicleta Medida 26', 250, 5); return false;">📱 Pedir por WhatsApp</a>
+      </div>
+    </div>
+
+  </div>
 
   <script>
-    const phoneNum = "5356255364";
+    function sendWhatsApp(title, price, id) {
+      const name = document.getElementById(`name-${id}`).value || 'No especificado';
+      const phone = document.getElementById(`phone-${id}`).value || 'No especificado';
+      const address = document.getElementById(`address-${id}`).value || 'No especificada';
+      const date = document.getElementById(`date-${id}`).value || 'Inmediata';
 
-    function updatePrices() {
-      const rate = parseFloat(document.getElementById('exchange-rate').value) || 320;
-      for (let i = 1; i <= 5; i++) {
-        const usdElem = document.querySelector(`.card:nth-child(${i}) .price-usd`);
-        const cupElem = document.getElementById(`cup-${i}`);
-        if (usdElem && cupElem) {
-          const usd = parseFloat(usdElem.getAttribute('data-usd'));
-          const cup = (usd * rate).toLocaleString('es-CU');
-          cupElem.textContent = `o ≈ ${cup} CUP`;
-        }
-      }
-    }
-
-    function sendOrder(title, priceUSD, id) {
-      const rate = parseFloat(document.getElementById('exchange-rate').value) || 320;
-      const cup = (priceUSD * rate).toLocaleString('es-CU');
+      const msg = `📋 *FACTURA DE PEDIDO*\n\n🚲 *Artículo:* ${title}\n💵 *Precio:* $${price} USD\n\n👤 *Cliente:* ${name}\n📞 *Teléfono:* ${phone}\n🏠 *Dirección:* ${address}\n📅 *Entrega:* ${date}`;
       
-      const name = document.getElementById(`name-${id}`).value.trim();
-      const phone = document.getElementById(`phone-${id}`).value.trim();
-      const address = document.getElementById(`address-${id}`).value.trim();
-      const date = document.getElementById(`date-${id}`).value.trim();
-
-      let msg = `📋 *SOLICITUD DE PEDIDO*\n\n`;
-      msg += `🚲 *Producto:* ${title}\n`;
-      msg += `💵 *Precio:* $${priceUSD} USD (≈ ${cup} CUP)\n\n`;
-      msg += `👤 *Cliente:* ${name || 'No especificado'}\n`;
-      msg += `📞 *Teléfono:* ${phone || 'No especificado'}\n`;
-      msg += `🏠 *Dirección:* ${address || 'No especificada'}\n`;
-      msg += `📅 *Entrega:* ${date || 'Inmediata'}`;
-
-      window.open(`https://wa.me/${phoneNum}?text=` + encodeURIComponent(msg), '_blank');
+      window.open(`https://wa.me/5356255364?text=` + encodeURIComponent(msg), '_blank');
     }
-
-    function filterCat(cat, btn) {
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      document.querySelectorAll('.card').forEach(card => {
-        if (cat === 'all' || card.getAttribute('data-cat') === cat) {
-          card.style.display = 'flex';
-        } else {
-          card.style.display = 'none';
-        }
-      });
-    }
-
-    updatePrices();
   </script>
 </body>
 </html>
