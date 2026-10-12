@@ -3,89 +3,354 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SEO y Nombre Oficial de la Tienda -->
   <title>BicicletasAdan - Venta de Bicicletas y Accesorios</title>
-  <meta name="description" content="BicicletasAdan: Venta de bicicletas nuevas, repuestos y accesorios. ¡Compra directo por WhatsApp!">
+  <meta name="description" content="BicicletasAdan: Venta de bicicletas nuevas, repuestos y accesorios. ¡Consulta disponibilidad y compra directo por WhatsApp!">
+  <meta name="keywords" content="BicicletasAdan, venta de bicicletas, bicicletas, repuestos, accesorios">
+
+  <!-- Open Graph para vista previa en WhatsApp y Redes Sociales -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="BicicletasAdan">
+  <meta property="og:description" content="BicicletasAdan: Venta de bicicletas nuevas, repuestos y accesorios. ¡Consulta disponibilidad y compra directo por WhatsApp!">
+  <meta property="og:image" content="https://adan9110.github.io/Bicicletas-Ventas-/portada.jpg">
+  <meta property="og:url" content="https://adan9110.github.io/Bicicletas-Ventas-/">
+
   <style>
     :root {
       --primary: #25d366;
       --dark: #0f172a;
+      --light: #f8fafc;
       --accent: #0284c7;
       --card-bg: #ffffff;
       --text: #334155;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
-    body { background-color: #f1f5f9; color: var(--text); padding-bottom: 90px; }
-    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    }
+
+    body {
+      background-color: #f1f5f9;
+      color: var(--text);
+      line-height: 1.5;
+      padding-bottom: 60px;
+    }
+
     header {
       background: linear-gradient(135deg, #0f172a, #1e293b);
-      color: white; padding: 2.5rem 1rem; text-align: center;
+      color: white;
+      padding: 2.5rem 1rem;
+      text-align: center;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     }
-    .logo-container { max-width: 380px; margin: 0 auto; }
-    header p { color: #94a3b8; font-size: 0.95rem; margin-top: 8px; }
+
+    .logo-container {
+      max-width: 380px;
+      margin: 0 auto;
+    }
+
+    header p {
+      color: #94a3b8;
+      font-size: 0.95rem;
+      margin-top: 8px;
+    }
 
     .converter-bar {
-      background: #ffffff; max-width: 800px; margin: -20px auto 20px;
-      padding: 15px 20px; border-radius: 12px;
+      background: #ffffff;
+      max-width: 800px;
+      margin: -20px auto 20px;
+      padding: 15px 20px;
+      border-radius: 12px;
       box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
-      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; width: 90%;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      width: 90%;
     }
-    .converter-bar input { width: 100px; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; font-weight: 700; }
 
-    .filters { display: flex; justify-content: center; gap: 8px; margin: 1.5rem auto; flex-wrap: wrap; max-width: 800px; padding: 0 10px; }
-    .filter-btn { background: white; border: 1px solid #cbd5e1; padding: 8px 16px; border-radius: 20px; font-weight: 600; cursor: pointer; }
-    .filter-btn.active, .filter-btn:hover { background: var(--accent); color: white; border-color: var(--accent); }
+    .converter-bar label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #475569;
+    }
 
-    .container { max-width: 1100px; margin: 0 auto; padding: 0 15px; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+    .converter-input-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
-    .card { background: var(--card-bg); border-radius: 16px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: flex; flex-direction: column; }
-    
-    /* Estilos del Carrusel */
-    .carousel { position: relative; width: 100%; height: 240px; background: #e2e8f0; overflow: hidden; }
-    .carousel-track { display: flex; width: 100%; height: 100%; transition: transform 0.35s ease-in-out; }
-    .carousel-slide { min-width: 100%; width: 100%; height: 100%; flex-shrink: 0; }
-    .carousel-slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    
+    .converter-input-group input {
+      width: 100px;
+      padding: 8px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .filters {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin: 1.5rem auto;
+      flex-wrap: wrap;
+      max-width: 800px;
+      padding: 0 10px;
+    }
+
+    .filter-btn {
+      background: white;
+      border: 1px solid #cbd5e1;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 0.85rem;
+    }
+
+    .filter-btn:hover, .filter-btn.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 15px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .carousel {
+      position: relative;
+      width: 100%;
+      height: 250px;
+      background: #e2e8f0;
+      overflow: hidden;
+    }
+
+    .carousel-track {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.35s ease-in-out;
+    }
+
+    .carousel-slide {
+      min-width: 100%;
+      width: 100%;
+      height: 100%;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    .carousel-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
     .carousel-btn {
-      position: absolute; top: 50%; transform: translateY(-50%);
-      background: rgba(0,0,0,0.6); color: white; border: none;
-      width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
-      display: flex; align-items: center; justify-content: center; font-weight: bold; z-index: 5;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.6);
+      color: white;
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      z-index: 5;
     }
-    .carousel-btn.prev { left: 8px; }
-    .carousel-btn.next { right: 8px; }
-    .carousel-btn:hover { background: rgba(0,0,0,0.85); }
+
+    .carousel-btn.prev { left: 10px; }
+    .carousel-btn.next { right: 10px; }
 
     .carousel-dots {
-      position: absolute; bottom: 8px; width: 100%;
-      display: flex; justify-content: center; gap: 4px; z-index: 5;
-      padding: 0 5px; overflow-x: auto;
+      position: absolute;
+      bottom: 10px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      z-index: 5;
     }
-    .dot { width: 6px; height: 6px; background: rgba(255,255,255,0.6); border-radius: 50%; cursor: pointer; flex-shrink: 0; }
-    .dot.active { background: white; width: 14px; border-radius: 4px; }
 
-    .card-content { padding: 16px; display: flex; flex-direction: column; flex-grow: 1; }
-    .badge { display: inline-block; background: #e0f2fe; color: #0369a1; padding: 3px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; width: fit-content; margin-bottom: 8px; }
-    .card-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 5px; color: #0f172a; }
-    
-    .price-box { margin-top: 5px; padding-top: 8px; border-top: 1px solid #f1f5f9; margin-bottom: 12px; }
-    .price-usd { font-size: 1.3rem; font-weight: 800; color: #0f172a; }
-    .price-cup { font-size: 0.85rem; color: #64748b; font-weight: 600; }
+    .dot {
+      width: 8px;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
 
-    .invoice-form { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px; display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
-    .invoice-form label { font-size: 0.72rem; font-weight: 700; color: #475569; display: flex; flex-direction: column; gap: 2px; }
-    .invoice-form input { padding: 6px 8px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.82rem; color: #0f172a; outline: none; }
+    .dot.active {
+      background: white;
+      width: 16px;
+      border-radius: 4px;
+    }
+
+    #lightbox {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.92);
+      justify-content: center;
+      align-items: center;
+    }
+
+    #lightbox img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 8px;
+      object-fit: contain;
+    }
+
+    #lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      color: white;
+      font-size: 40px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .card-content {
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #e0f2fe;
+      color: #0369a1;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      width: fit-content;
+      margin-bottom: 10px;
+    }
+
+    .price-box {
+      margin-top: 5px;
+      padding-top: 8px;
+      border-top: 1px solid #f1f5f9;
+      margin-bottom: 12px;
+    }
+
+    .price-usd {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .price-cup {
+      font-size: 0.85rem;
+      color: #64748b;
+      font-weight: 600;
+    }
+
+    .invoice-form {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 12px;
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .invoice-form label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #475569;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .invoice-form input {
+      padding: 6px 10px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      color: #0f172a;
+      outline: none;
+    }
 
     .buy-btn {
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      background: var(--primary); color: white; padding: 11px; border-radius: 8px;
-      font-weight: 700; font-size: 0.95rem; cursor: pointer; border: none; width: 100%; text-decoration: none;
-      box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3); margin-top: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--primary);
+      color: white;
+      padding: 11px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-top: 10px;
+      cursor: pointer;
+      border: none;
+      width: 100%;
+      transition: background 0.2s;
     }
-    .buy-btn:hover { background: #1da851; }
 
-    footer { text-align: center; padding: 25px; color: #64748b; font-size: 0.85rem; margin-top: 40px; }
+    .buy-btn:hover {
+      background: #1da851;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      color: #64748b;
+      font-size: 0.85rem;
+      margin-top: 40px;
+    }
   </style>
 </head>
 <body>
@@ -99,4 +364,291 @@
             <stop offset="100%" style="stop-color:#25d366;stop-opacity:1" />
           </linearGradient>
         </defs>
-        <g stroke="url(#grad1)" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="
+        <g stroke="url(#grad1)" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="40" cy="65" r="22" />
+          <circle cx="120" cy="65" r="22" />
+          <polyline points="40 65 65 30 100 30 120 65" />
+          <polyline points="65 30 80 65 120 65" />
+          <path d="M 60 25 L 70 25" />
+          <path d="M 95 23 L 105 30" />
+        </g>
+        <text x="155" y="60" font-family="'Segoe UI', Roboto, sans-serif" font-weight="900" font-size="36" fill="#ffffff">
+          Bicicletas<tspan fill="#25d366">Adan</tspan>
+        </text>
+        <text x="158" y="85" font-family="'Segoe UI', Roboto, sans-serif" font-weight="600" font-size="12" fill="#94a3b8" letter-spacing="1">
+          VENTA & ACCESORIOS
+        </text>
+      </svg>
+    </div>
+    <p>Modelos disponibles para entrega inmediata</p>
+  </header>
+
+  <div class="converter-bar">
+    <label for="exchange-rate">Tasa de cambio (USD ➔ CUP):</label>
+    <div class="converter-input-group">
+      <span>1 USD =</span>
+      <input type="number" id="exchange-rate" value="320" onchange="updatePrices()">
+      <span>CUP</span>
+    </div>
+  </div>
+
+  <div class="filters">
+    <button class="filter-btn active" onclick="filterCategory('all')">Todas</button>
+    <button class="filter-btn" onclick="filterCategory('12')">Medida 12</button>
+    <button class="filter-btn" onclick="filterCategory('16')">Medida 16</button>
+    <button class="filter-btn" onclick="filterCategory('20')">Medida 20</button>
+    <button class="filter-btn" onclick="filterCategory('24')">Medida 24</button>
+    <button class="filter-btn" onclick="filterCategory('26')">Medida 26</button>
+  </div>
+
+  <div class="container">
+    <div class="grid" id="catalog"></div>
+  </div>
+
+  <div id="lightbox" onclick="closeLightbox()">
+    <span id="lightbox-close">&times;</span>
+    <img id="lightbox-img" src="" alt="Ampliada">
+  </div>
+
+  <footer>
+    <p>BicicletasAdan • Contacto directo por WhatsApp: +53 56255364</p>
+  </footer>
+
+  <script>
+    const products = [
+      {
+        id: 1,
+        title: "Bicicleta Medida 12",
+        category: "12",
+        priceUSD: 150,
+        images: [
+          "medida12jpg.jpg",
+          "medida122jpg.jpg",
+          "medida123jpg.jpg",
+          "medida124jpg.jpg"
+        ]
+      },
+      {
+        id: 2,
+        title: "Bicicleta Medida 16",
+        category: "16",
+        priceUSD: 165,
+        images: [
+          "medida161jpg.jpg",
+          "medida162jpg.jpg",
+          "medida163jpg.jpg",
+          "medida164jpg.jpg",
+          "medida165jpg.jpg",
+          "medida166jpg.jpg",
+          "medida167jpg.jpg",
+          "medida168jpg.jpg"
+        ]
+      },
+      {
+        id: 3,
+        title: "Bicicleta Medida 20",
+        category: "20",
+        priceUSD: 190,
+        images: [
+          "medida201jpg.jpg",
+          "medida202jpg.jpg",
+          "medida203jpg.jpg",
+          "medida204jpg.jpg",
+          "medida205jpg.jpg",
+          "medida206jpg.jpg",
+          "medida207jpg.jpg",
+          "medida208jpg.jpg",
+          "medida209jpg.jpg",
+          "medida2010jpg.jpg"
+        ]
+      },
+      {
+        id: 4,
+        title: "Bicicleta Medida 24",
+        category: "24",
+        priceUSD: 220,
+        images: [
+          "medida241jpg.jpg",
+          "medida242jpg.jpg",
+          "medida243jpg.jpg",
+          "medida244jpg.jpg"
+        ]
+      },
+      {
+        id: 5,
+        title: "Bicicleta Medida 26",
+        category: "26",
+        priceUSD: 250,
+        images: [
+          "medida261jpg.jpg",
+          "medida262jpg.jpg"
+        ]
+      }
+    ];
+
+    const phone = "5356255364";
+    const currentSlides = {};
+
+    function renderCatalog(items) {
+      const catalog = document.getElementById('catalog');
+      catalog.innerHTML = '';
+
+      items.forEach(product => {
+        if (currentSlides[product.id] === undefined) {
+          currentSlides[product.id] = 0;
+        }
+
+        let slidesHTML = '';
+        let dotsHTML = '';
+
+        product.images.forEach((img, idx) => {
+          slidesHTML += `<div class="carousel-slide" onclick="openLightbox('${img}')"><img src="${img}" alt="${product.title}" onerror="this.src='https://via.placeholder.com/400x300?text=Imagen+no+disponible'"></div>`;
+          dotsHTML += `<span class="dot ${idx === currentSlides[product.id] ? 'active' : ''}" onclick="event.stopPropagation(); goToSlide(${product.id}, ${idx}, ${product.images.length})"></span>`;
+        });
+
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <div class="carousel" id="carousel-${product.id}">
+            <div class="carousel-track" id="track-${product.id}" style="transform: translateX(-${currentSlides[product.id] * 100}%);">
+              ${slidesHTML}
+            </div>
+            ${product.images.length > 1 ? `
+              <button class="carousel-btn prev" onclick="event.stopPropagation(); changeSlide(${product.id}, -1,${product.images.length})">❮</button>
+              <button class="carousel-btn next" onclick="event.stopPropagation(); changeSlide(${product.id}, 1,${product.images.length})">❯</button>
+              <div class="carousel-dots" id="dots-${product.id}">
+                ${dotsHTML}
+              </div>
+            ` : ''}
+          </div>
+          <div class="card-content">
+            <span class="badge">Medida ${product.category}</span>
+            <h2 class="card-title">${product.title}</h2>
+            <div class="price-box">
+              <div class="price-usd" id="price-usd-${product.id}">$${product.priceUSD} USD</div>
+              <div class="price-cup" id="price-cup-${product.id}">o ≈ ... CUP</div>
+            </div>
+
+            <div class="invoice-form" onclick="event.stopPropagation()">
+              <label>Nombre del cliente:
+                <input type="text" id="name-${product.id}" placeholder="Ej. Carlos Pérez">
+              </label>
+              <label>Teléfono de contacto:
+                <input type="tel" id="phone-${product.id}" placeholder="Ej. +53 5xxxxxxx">
+              </label>
+              <label>Dirección de entrega:
+                <input type="text" id="address-${product.id}" placeholder="Ej. Calle 23 #45, La Habana">
+              </label>
+              <label>Día deseado para entrega:
+                <input type="date" id="date-${product.id}">
+              </label>
+            </div>
+
+            <button class="buy-btn" onclick="sendWhatsApp(${product.id}, '${product.title}', ${product.priceUSD})">
+               📱 Pedir por WhatsApp
+            </button>
+          </div>
+        `;
+        catalog.appendChild(card);
+      });
+
+      updatePrices();
+    }
+
+    function changeSlide(productId, direction, total) {
+      if (currentSlides[productId] === undefined) currentSlides[productId] = 0;
+      currentSlides[productId] += direction;
+
+      if (currentSlides[productId] >= total) {
+        currentSlides[productId] = 0;
+      } else if (currentSlides[productId] < 0) {
+        currentSlides[productId] = total - 1;
+      }
+
+      updateCarouselView(productId, total);
+    }
+
+    function goToSlide(productId, index, total) {
+      currentSlides[productId] = index;
+      updateCarouselView(productId, total);
+    }
+
+    function updateCarouselView(productId, total) {
+      const track = document.getElementById(`track-${productId}`);
+      if (track) {
+        track.style.transform = `translateX(-${currentSlides[productId] * 100}%)`;
+      }
+
+      const dotsContainer = document.getElementById(`dots-${productId}`);
+      if (dotsContainer) {
+        const dots = dotsContainer.querySelectorAll('.dot');
+        dots.forEach((dot, idx) => {
+          dot.classList.toggle('active', idx === currentSlides[productId]);
+        });
+      }
+    }
+
+    function openLightbox(imgSrc) {
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      lightboxImg.src = imgSrc;
+      lightbox.style.display = 'flex';
+    }
+
+    function closeLightbox() {
+      const lightbox = document.getElementById('lightbox');
+      lightbox.style.display = 'none';
+    }
+
+    function updatePrices() {
+      const rate = parseFloat(document.getElementById('exchange-rate').value) || 320;
+      products.forEach(product => {
+        const cupElem = document.getElementById(`price-cup-${product.id}`);
+        if (cupElem) {
+          const priceCUP = (product.priceUSD * rate).toLocaleString('es-CU');
+          cupElem.textContent = `o ≈ ${priceCUP} CUP`;
+        }
+      });
+    }
+
+    function sendWhatsApp(productId, title, priceUSD) {
+      const rate = parseFloat(document.getElementById('exchange-rate').value) || 320;
+      const priceCUP = (priceUSD * rate).toLocaleString('es-CU');
+
+      const name = document.getElementById(`name-${productId}`).value.trim();
+      const clientPhone = document.getElementById(`phone-${productId}`).value.trim();
+      const address = document.getElementById(`address-${productId}`).value.trim();
+      const date = document.getElementById(`date-${productId}`).value.trim();
+
+      let message = `📋 *SOLICITUD DE FACTURA / PEDIDO*\n\n`;
+      message += `🚲 *Producto:* ${title}\n`;
+      message += `💵 *Precio:* $${priceUSD} USD (≈ ${priceCUP} CUP)\n\n`;
+      message += `👤 *Cliente:* ${name || 'No especificado'}\n`;
+      message += `📞 *Teléfono:* ${clientPhone || 'No especificado'}\n`;
+      message += `🏠 *Dirección:* ${address || 'No especificada'}\n`;
+      message += `📅 *Día de entrega:* ${date || 'Inmediata'}`;
+
+      const encodedMessage = encodeURIComponent(message);
+      window.open(`https://wa.me/${phone}?text=${encodedMessage}`, '_blank');
+    }
+
+    function filterCategory(category) {
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if ((category === 'all' && btn.textContent.includes('Todas')) || btn.textContent.includes(category)) {
+          btn.classList.add('active');
+        }
+      });
+
+      if (category === 'all') {
+        renderCatalog(products);
+      } else {
+        const filtered = products.filter(p => p.category === category);
+        renderCatalog(filtered);
+      }
+    }
+
+    renderCatalog(products);
+  </script>
+</body>
+</html>
