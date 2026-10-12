@@ -157,7 +157,6 @@
       box-shadow: 0 12px 20px -3px rgba(0, 0, 0, 0.12);
     }
 
-    /* Carrusel Clásico con Desplazamiento por Bloques ID */
     .carousel {
       position: relative;
       width: 100%;
@@ -303,21 +302,57 @@
     }
 
     .price-box {
-      margin-top: auto;
-      padding-top: 12px;
+      margin-top: 5px;
+      padding-top: 8px;
       border-top: 1px solid #f1f5f9;
+      margin-bottom: 12px;
     }
 
     .price-usd {
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       font-weight: 800;
       color: #0f172a;
     }
 
     .price-cup {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: #64748b;
       font-weight: 600;
+    }
+
+    /* Estilos para el bloque de Factura / Datos del Cliente */
+    .invoice-form {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 12px;
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .invoice-form label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #475569;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .invoice-form input {
+      padding: 6px 10px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      color: #0f172a;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .invoice-form input:focus {
+      border-color: var(--accent);
     }
 
     /* Botón de WhatsApp Animado */
@@ -329,13 +364,17 @@
       background: var(--primary);
       color: white;
       text-decoration: none;
-      padding: 12px;
-      border-radius: 10px;
+      padding: 11px;
+      border-radius: 8px;
       font-weight: 700;
-      margin-top: 14px;
+      font-size: 0.95rem;
+      margin-top: 10px;
       transition: all 0.3s ease;
       animation: pulseWhatsApp 2s infinite;
       box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
+      cursor: pointer;
+      border: none;
+      width: 100%;
     }
 
     .buy-btn:hover {
@@ -518,16 +557,11 @@
     function renderCatalog(items) {
       const catalog = document.getElementById('catalog');
       catalog.innerHTML = '';
-      const rate = parseFloat(document.getElementById('exchange-rate').value) || 320;
 
       items.forEach(product => {
         if (currentSlides[product.id] === undefined) {
           currentSlides[product.id] = 0;
         }
-
-        const priceCUP = (product.priceUSD * rate).toLocaleString('es-CU');
-        const message = encodeURIComponent(`Hola, estoy interesado en comprar la ${product.title} de $${product.priceUSD} USD (o equivalente en CUP).`);
-        const whatsappUrl = `https://wa.me/${phone}?text=${message}`;
 
         let slidesHTML = '';
         let dotsHTML = '';
@@ -556,16 +590,35 @@
             <span class="badge">Medida ${product.category}</span>
             <h2 class="card-title">${product.title}</h2>
             <div class="price-box">
-              <div class="price-usd">$${product.priceUSD} USD</div>
-              <div class="price-cup">o ≈ ${priceCUP} CUP</div>
+              <div class="price-usd" id="price-usd-${product.id}">$${product.priceUSD} USD</div>
+              <div class="price-cup" id="price-cup-${product.id}">o ≈ ... CUP</div>
             </div>
-            <a href="${whatsappUrl}" target="_blank" class="buy-btn" onclick="event.stopPropagation()">
+
+            <!-- Datos para la factura del cliente -->
+            <div class="invoice-form" onclick="event.stopPropagation()">
+              <label>Nombre del cliente:
+                <input type="text" id="name-${product.id}" placeholder="Ej. Carlos Pérez">
+              </label>
+              <label>Teléfono de contacto:
+                <input type="tel" id="phone-${product.id}" placeholder="Ej. +53 5xxxxxxx">
+              </label>
+              <label>Dirección de entrega:
+                <input type="text" id="address-${product.id}" placeholder="Ej. Calle 23 #45, La Habana">
+              </label>
+              <label>Día deseado para entrega:
+                <input type="date" id="date-${product.id}">
+              </label>
+            </div>
+
+            <button class="buy-btn" onclick="sendWhatsApp(${product.id}, '${product.title}', ${product.priceUSD})">
                📱 Pedir por WhatsApp
-            </a>
+            </button>
           </div>
         `;
         catalog.appendChild(card);
       });
+
+      updatePrices();
     }
 
     function changeSlide(productId, direction, total) {
@@ -614,28 +667,38 @@
     }
 
     function updatePrices() {
-      const activeFilterBtn = document.querySelector('.filter-btn.active');
-      const activeCategory = activeFilterBtn ? activeFilterBtn.textContent.replace('Medida ', '').replace('Todas', 'all').trim() : 'all';
-      filterCategory(activeCategory);
+      const rate = parseFloat(document.getElementById('exchange-rate').value) || 320;
+      products.forEach(product => {
+        const cupElem = document.getElementById(`price-cup-${product.id}`);
+        if (cupElem) {
+          const priceCUP = (product.priceUSD * rate).toLocaleString('es-CU');
+          cupElem.textContent = `o ≈ ${priceCUP} CUP`;
+        }
+      });
+    }
+
+    function sendWhatsApp(productId, title, priceUSD) {
+      const rate = parseFloat(document.getElementById('exchange-rate').value) || 320;
+      const priceCUP = (priceUSD * rate).toLocaleString('es-CU');
+
+      const name = document.getElementById(`name-${productId}`).value.trim();
+      const clientPhone = document.getElementById(`phone-${productId}`).value.trim();
+      const address = document.getElementById(`address-${productId}`).value.trim();
+      const date = document.getElementById(`date-${productId}`).value.trim();
+
+      let message = `📋 *SOLICITUD DE FACTURA / PEDIDO*\n\n`;
+      message += `🚲 *Producto:* ${title}\n`;
+      message += `💵 *Precio:* $${priceUSD} USD (≈ ${priceCUP} CUP)\n\n`;
+      message += `👤 *Cliente:* ${name || 'No especificado'}\n`;
+      message += `📞 *Teléfono:* ${clientPhone || 'No especificado'}\n`;
+      message += `🏠 *Dirección:* ${address || 'No especificada'}\n`;
+      message += `📅 *Día de entrega:* ${date || 'Inmediata'}`;
+
+      const encodedMessage = encodeURIComponent(message);
+      window.open(`https://wa.me/${phone}?text=${encodedMessage}`, '_blank');
     }
 
     function filterCategory(category) {
       document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.classList.remove('active');
-        if ((category === 'all' && btn.textContent.includes('Todas')) || btn.textContent.includes(category)) {
-          btn.classList.add('active');
-        }
-      });
-
-      if (category === 'all') {
-        renderCatalog(products);
-      } else {
-        const filtered = products.filter(p => p.category === category);
-        renderCatalog(filtered);
-      }
-    }
-
-    renderCatalog(products);
-  </script>
-</body>
-</html>
+        if ((category === 'all' && btn.textContent.includes('Todas')
