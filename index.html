@@ -12,7 +12,7 @@
   <!-- Open Graph para vista previa en WhatsApp y Redes Sociales -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="BicicletasAdan">
-  <meta property="og:description" content="Venta de bicicletas nuevas, repuestos y accesorios. ¡Consulta disponibilidad y compra directo por WhatsApp!">
+  <meta property="og:description" content="BicicletasAdan: Venta de bicicletas nuevas, repuestos y accesorios. ¡Consulta disponibilidad y compra directo por WhatsApp!">
   <meta property="og:image" content="https://adan9110.github.io/Bicicletas-Ventas-/portada.jpg">
   <meta property="og:url" content="https://adan9110.github.io/Bicicletas-Ventas-/">
 
@@ -141,7 +141,6 @@
       gap: 20px;
     }
 
-    /* Tarjetas con animación de entrada */
     .card {
       background: var(--card-bg);
       border-radius: 16px;
@@ -158,7 +157,7 @@
       box-shadow: 0 12px 20px -3px rgba(0, 0, 0, 0.12);
     }
 
-    /* Carrusel con Scroll Deslizable Corregido */
+    /* Carrusel Clásico con Desplazamiento por Bloques ID */
     .carousel {
       position: relative;
       width: 100%;
@@ -171,23 +170,13 @@
       display: flex;
       width: 100%;
       height: 100%;
-      overflow-x: scroll;
-      scroll-snap-type: x mandatory;
-      scroll-behavior: smooth;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-    }
-
-    .carousel-track::-webkit-scrollbar {
-      display: none;
+      transition: transform 0.35s ease-in-out;
     }
 
     .carousel-slide {
       min-width: 100%;
       width: 100%;
       height: 100%;
-      scroll-snap-align: start;
-      scroll-snap-stop: always;
       flex-shrink: 0;
       cursor: pointer;
     }
@@ -256,7 +245,6 @@
       border-radius: 4px;
     }
 
-    /* Visor de pantalla completa (Lightbox) */
     #lightbox {
       display: none;
       position: fixed;
@@ -525,6 +513,7 @@
     ];
 
     const phone = "5356255364";
+    const currentSlides = {};
 
     function renderCatalog(items) {
       const catalog = document.getElementById('catalog');
@@ -532,6 +521,10 @@
       const rate = parseFloat(document.getElementById('exchange-rate').value) || 320;
 
       items.forEach(product => {
+        if (currentSlides[product.id] === undefined) {
+          currentSlides[product.id] = 0;
+        }
+
         const priceCUP = (product.priceUSD * rate).toLocaleString('es-CU');
         const message = encodeURIComponent(`Hola, estoy interesado en comprar la ${product.title} de $${product.priceUSD} USD (o equivalente en CUP).`);
         const whatsappUrl = `https://wa.me/${phone}?text=${message}`;
@@ -541,19 +534,19 @@
 
         product.images.forEach((img, idx) => {
           slidesHTML += `<div class="carousel-slide" onclick="openLightbox('${img}')"><img src="${img}" alt="${product.title}" onerror="this.src='https://via.placeholder.com/400x300?text=Imagen+no+disponible'"></div>`;
-          dotsHTML += `<span class="dot ${idx === 0 ? 'active' : ''}" id="dot-${product.id}-${idx}" onclick="event.stopPropagation(); moveCarousel(${product.id}, ${idx})"></span>`;
+          dotsHTML += `<span class="dot ${idx === currentSlides[product.id] ? 'active' : ''}" onclick="event.stopPropagation(); goToSlide(${product.id}, ${idx}, ${product.images.length})"></span>`;
         });
 
         const card = document.createElement('div');
         card.className = 'card';
         card.innerHTML = `
           <div class="carousel" id="carousel-${product.id}">
-            <div class="carousel-track" id="track-${product.id}" onscroll="trackScrolled(${product.id}, ${product.images.length})">
+            <div class="carousel-track" id="track-${product.id}" style="transform: translateX(-${currentSlides[product.id] * 100}%);">
               ${slidesHTML}
             </div>
             ${product.images.length > 1 ? `
-              <button class="carousel-btn prev" onclick="event.stopPropagation(); scrollPrev(${product.id})">❮</button>
-              <button class="carousel-btn next" onclick="event.stopPropagation(); scrollNext(${product.id})">❯</button>
+              <button class="carousel-btn prev" onclick="event.stopPropagation(); changeSlide(${product.id}, -1,${product.images.length})">❮</button>
+              <button class="carousel-btn next" onclick="event.stopPropagation(); changeSlide(${product.id}, 1,${product.images.length})">❯</button>
               <div class="carousel-dots" id="dots-${product.id}">
                 ${dotsHTML}
               </div>
@@ -575,49 +568,36 @@
       });
     }
 
-    function moveCarousel(productId, index) {
-      const track = document.getElementById(`track-${productId}`);
-      const slide = track.querySelector('.carousel-slide');
-      if (slide) {
-        const slideWidth = slide.getBoundingClientRect().width;
-        track.scrollTo({ left: slideWidth * index, behavior: 'smooth' });
+    function changeSlide(productId, direction, total) {
+      if (currentSlides[productId] === undefined) currentSlides[productId] = 0;
+      currentSlides[productId] += direction;
+
+      if (currentSlides[productId] >= total) {
+        currentSlides[productId] = 0;
+      } else if (currentSlides[productId] < 0) {
+        currentSlides[productId] = total - 1;
       }
+
+      updateCarouselView(productId, total);
     }
 
-    function scrollPrev(productId) {
-      const track = document.getElementById(`track-${productId}`);
-      const slide = track.querySelector('.carousel-slide');
-      if (slide) {
-        const slideWidth = slide.getBoundingClientRect().width;
-        track.scrollBy({ left: -slideWidth, behavior: 'smooth' });
-      }
+    function goToSlide(productId, index, total) {
+      currentSlides[productId] = index;
+      updateCarouselView(productId, total);
     }
 
-    function scrollNext(productId) {
+    function updateCarouselView(productId, total) {
       const track = document.getElementById(`track-${productId}`);
-      const slide = track.querySelector('.carousel-slide');
-      if (slide) {
-        const slideWidth = slide.getBoundingClientRect().width;
-        if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 10) {
-          track.scrollTo({ left: 0, behavior: 'smooth' });
-        } else {
-          track.scrollBy({ left: slideWidth, behavior: 'smooth' });
-        }
+      if (track) {
+        track.style.transform = `translateX(-${currentSlides[productId] * 100}%)`;
       }
-    }
 
-    function trackScrolled(productId, total) {
-      const track = document.getElementById(`track-${productId}`);
-      const slide = track.querySelector('.carousel-slide');
-      if (slide) {
-        const slideWidth = slide.getBoundingClientRect().width;
-        const index = Math.round(track.scrollLeft / slideWidth);
-        for (let i = 0; i < total; i++) {
-          const dot = document.getElementById(`dot-${productId}-${i}`);
-          if (dot) {
-            dot.classList.toggle('active', i === index);
-          }
-        }
+      const dotsContainer = document.getElementById(`dots-${productId}`);
+      if (dotsContainer) {
+        const dots = dotsContainer.querySelectorAll('.dot');
+        dots.forEach((dot, idx) => {
+          dot.classList.toggle('active', idx === currentSlides[productId]);
+        });
       }
     }
 
