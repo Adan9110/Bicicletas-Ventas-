@@ -158,7 +158,7 @@
       box-shadow: 0 12px 20px -3px rgba(0, 0, 0, 0.12);
     }
 
-    /* Carrusel Moderno con Scroll Horizontal Deslizable */
+    /* Carrusel con Scroll Deslizable Corregido */
     .carousel {
       position: relative;
       width: 100%;
@@ -169,22 +169,25 @@
 
     .carousel-track {
       display: flex;
+      width: 100%;
       height: 100%;
-      overflow-x: auto;
+      overflow-x: scroll;
       scroll-snap-type: x mandatory;
       scroll-behavior: smooth;
       -webkit-overflow-scrolling: touch;
-      scrollbar-width: none; /* Ocultar barra en Firefox */
+      scrollbar-width: none;
     }
 
     .carousel-track::-webkit-scrollbar {
-      display: none; /* Ocultar barra en Chrome/Safari */
+      display: none;
     }
 
     .carousel-slide {
       min-width: 100%;
+      width: 100%;
       height: 100%;
       scroll-snap-align: start;
+      scroll-snap-stop: always;
       flex-shrink: 0;
       cursor: pointer;
     }
@@ -193,6 +196,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      display: block;
       transition: transform 0.3s ease;
     }
 
@@ -215,7 +219,7 @@
       align-items: center;
       justify-content: center;
       font-weight: bold;
-      z-index: 2;
+      z-index: 5;
       transition: background 0.2s, transform 0.2s;
     }
 
@@ -234,7 +238,7 @@
       display: flex;
       justify-content: center;
       gap: 6px;
-      z-index: 2;
+      z-index: 5;
     }
 
     .dot {
@@ -328,7 +332,7 @@
       font-weight: 600;
     }
 
-    /* Botón de WhatsApp Animado y Brillante */
+    /* Botón de WhatsApp Animado */
     .buy-btn {
       display: flex;
       align-items: center;
@@ -360,7 +364,6 @@
       margin-top: 40px;
     }
 
-    /* Animaciones CSS Personalizadas */
     @keyframes fadeInDown {
       from { opacity: 0; transform: translateY(-20px); }
       to { opacity: 1; transform: translateY(0); }
@@ -392,7 +395,6 @@
 
   <header>
     <div class="logo-container">
-      <!-- Banner / Logo SVG de BicicletasAdan -->
       <svg width="100%" height="auto" viewBox="0 0 500 110" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -441,7 +443,6 @@
     <div class="grid" id="catalog"></div>
   </div>
 
-  <!-- Visor de pantalla completa (Lightbox) -->
   <div id="lightbox" onclick="closeLightbox()">
     <span id="lightbox-close">&times;</span>
     <img id="lightbox-img" src="" alt="Ampliada">
@@ -552,7 +553,7 @@
             </div>
             ${product.images.length > 1 ? `
               <button class="carousel-btn prev" onclick="event.stopPropagation(); scrollPrev(${product.id})">❮</button>
-              <button class="carousel-btn next" onclick="event.stopPropagation(); scrollNext(${product.id},${product.images.length})">❯</button>
+              <button class="carousel-btn next" onclick="event.stopPropagation(); scrollNext(${product.id})">❯</button>
               <div class="carousel-dots" id="dots-${product.id}">
                 ${dotsHTML}
               </div>
@@ -576,33 +577,46 @@
 
     function moveCarousel(productId, index) {
       const track = document.getElementById(`track-${productId}`);
-      const slideWidth = track.clientWidth;
-      track.scrollTo({ left: slideWidth * index, behavior: 'smooth' });
+      const slide = track.querySelector('.carousel-slide');
+      if (slide) {
+        const slideWidth = slide.getBoundingClientRect().width;
+        track.scrollTo({ left: slideWidth * index, behavior: 'smooth' });
+      }
     }
 
     function scrollPrev(productId) {
       const track = document.getElementById(`track-${productId}`);
-      const slideWidth = track.clientWidth;
-      track.scrollBy({ left: -slideWidth, behavior: 'smooth' });
+      const slide = track.querySelector('.carousel-slide');
+      if (slide) {
+        const slideWidth = slide.getBoundingClientRect().width;
+        track.scrollBy({ left: -slideWidth, behavior: 'smooth' });
+      }
     }
 
-    function scrollNext(productId, total) {
+    function scrollNext(productId) {
       const track = document.getElementById(`track-${productId}`);
-      const slideWidth = track.clientWidth;
-      if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 10) {
-        track.scrollTo({ left: 0, behavior: 'smooth' }); // Vuelve al inicio si llega al final
-      } else {
-        track.scrollBy({ left: slideWidth, behavior: 'smooth' });
+      const slide = track.querySelector('.carousel-slide');
+      if (slide) {
+        const slideWidth = slide.getBoundingClientRect().width;
+        if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 10) {
+          track.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          track.scrollBy({ left: slideWidth, behavior: 'smooth' });
+        }
       }
     }
 
     function trackScrolled(productId, total) {
       const track = document.getElementById(`track-${productId}`);
-      const index = Math.round(track.scrollLeft / track.clientWidth);
-      for (let i = 0; i < total; i++) {
-        const dot = document.getElementById(`dot-${productId}-${i}`);
-        if (dot) {
-          dot.classList.toggle('active', i === index);
+      const slide = track.querySelector('.carousel-slide');
+      if (slide) {
+        const slideWidth = slide.getBoundingClientRect().width;
+        const index = Math.round(track.scrollLeft / slideWidth);
+        for (let i = 0; i < total; i++) {
+          const dot = document.getElementById(`dot-${productId}-${i}`);
+          if (dot) {
+            dot.classList.toggle('active', i === index);
+          }
         }
       }
     }
