@@ -12,7 +12,7 @@
   <!-- Open Graph para vista previa en WhatsApp y Redes Sociales -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="BicicletasAdan">
-  <meta property="og:description" content="BicicletasAdan: Venta de bicicletas nuevas, repuestos y accesorios. ¡Consulta disponibilidad y compra directo por WhatsApp!">
+  <meta property="og:description" content="Venta de bicicletas nuevas, repuestos y accesorios. ¡Consulta disponibilidad y compra directo por WhatsApp!">
   <meta property="og:image" content="https://adan9110.github.io/Bicicletas-Ventas-/portada.jpg">
   <meta property="og:url" content="https://adan9110.github.io/Bicicletas-Ventas-/">
 
@@ -46,6 +46,7 @@
       padding: 2.5rem 1rem;
       text-align: center;
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      animation: fadeInDown 0.8s ease-out;
     }
 
     .logo-container {
@@ -72,6 +73,7 @@
       justify-content: space-between;
       gap: 10px;
       width: 90%;
+      animation: fadeInUp 0.8s ease-out;
     }
 
     .converter-bar label {
@@ -112,11 +114,16 @@
       border-radius: 20px;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       font-size: 0.85rem;
     }
 
-    .filter-btn:hover, .filter-btn.active {
+    .filter-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.2);
+    }
+
+    .filter-btn.active, .filter-btn:hover {
       background: var(--accent);
       color: white;
       border-color: var(--accent);
@@ -134,6 +141,7 @@
       gap: 20px;
     }
 
+    /* Tarjetas con animación de entrada */
     .card {
       background: var(--card-bg);
       border-radius: 16px;
@@ -141,8 +149,16 @@
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
       display: flex;
       flex-direction: column;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: fadeInUp 0.6s ease-out;
     }
 
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 20px -3px rgba(0, 0, 0, 0.12);
+    }
+
+    /* Carrusel Moderno con Scroll Horizontal Deslizable */
     .carousel {
       position: relative;
       width: 100%;
@@ -153,15 +169,22 @@
 
     .carousel-track {
       display: flex;
-      width: 100%;
       height: 100%;
-      transition: transform 0.35s ease-in-out;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none; /* Ocultar barra en Firefox */
+    }
+
+    .carousel-track::-webkit-scrollbar {
+      display: none; /* Ocultar barra en Chrome/Safari */
     }
 
     .carousel-slide {
       min-width: 100%;
-      width: 100%;
       height: 100%;
+      scroll-snap-align: start;
       flex-shrink: 0;
       cursor: pointer;
     }
@@ -170,7 +193,11 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      display: block;
+      transition: transform 0.3s ease;
+    }
+
+    .carousel-slide img:hover {
+      transform: scale(1.03);
     }
 
     .carousel-btn {
@@ -188,7 +215,13 @@
       align-items: center;
       justify-content: center;
       font-weight: bold;
-      z-index: 5;
+      z-index: 2;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .carousel-btn:hover {
+      background: rgba(0, 0, 0, 0.85);
+      transform: translateY(-50%) scale(1.1);
     }
 
     .carousel-btn.prev { left: 10px; }
@@ -201,7 +234,7 @@
       display: flex;
       justify-content: center;
       gap: 6px;
-      z-index: 5;
+      z-index: 2;
     }
 
     .dot {
@@ -219,6 +252,7 @@
       border-radius: 4px;
     }
 
+    /* Visor de pantalla completa (Lightbox) */
     #lightbox {
       display: none;
       position: fixed;
@@ -230,6 +264,7 @@
       background: rgba(0, 0, 0, 0.92);
       justify-content: center;
       align-items: center;
+      animation: fadeIn 0.3s ease;
     }
 
     #lightbox img {
@@ -237,6 +272,7 @@
       max-height: 90%;
       border-radius: 8px;
       object-fit: contain;
+      animation: scaleUp 0.3s ease;
     }
 
     #lightbox-close {
@@ -275,53 +311,24 @@
     }
 
     .price-box {
-      margin-top: 5px;
-      padding-top: 8px;
+      margin-top: auto;
+      padding-top: 12px;
       border-top: 1px solid #f1f5f9;
-      margin-bottom: 12px;
     }
 
     .price-usd {
-      font-size: 1.3rem;
+      font-size: 1.4rem;
       font-weight: 800;
       color: #0f172a;
     }
 
     .price-cup {
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       color: #64748b;
       font-weight: 600;
     }
 
-    .invoice-form {
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 10px;
-      padding: 12px;
-      margin-top: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .invoice-form label {
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: #475569;
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-    }
-
-    .invoice-form input {
-      padding: 6px 10px;
-      border: 1px solid #cbd5e1;
-      border-radius: 6px;
-      font-size: 0.85rem;
-      color: #0f172a;
-      outline: none;
-    }
-
+    /* Botón de WhatsApp Animado y Brillante */
     .buy-btn {
       display: flex;
       align-items: center;
@@ -329,19 +336,20 @@
       gap: 8px;
       background: var(--primary);
       color: white;
-      padding: 11px;
-      border-radius: 8px;
+      text-decoration: none;
+      padding: 12px;
+      border-radius: 10px;
       font-weight: 700;
-      font-size: 0.95rem;
-      margin-top: 10px;
-      cursor: pointer;
-      border: none;
-      width: 100%;
-      transition: background 0.2s;
+      margin-top: 14px;
+      transition: all 0.3s ease;
+      animation: pulseWhatsApp 2s infinite;
+      box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
     }
 
     .buy-btn:hover {
       background: #1da851;
+      transform: scale(1.02);
+      box-shadow: 0 6px 15px rgba(37, 211, 102, 0.5);
     }
 
     footer {
@@ -351,12 +359,40 @@
       font-size: 0.85rem;
       margin-top: 40px;
     }
+
+    /* Animaciones CSS Personalizadas */
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes scaleUp {
+      from { transform: scale(0.9); }
+      to { transform: scale(1); }
+    }
+
+    @keyframes pulseWhatsApp {
+      0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5); }
+      70% { box-shadow: 0 0 0 10px rgba(37, 211, 102, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+    }
   </style>
 </head>
 <body>
 
   <header>
     <div class="logo-container">
+      <!-- Banner / Logo SVG de BicicletasAdan -->
       <svg width="100%" height="auto" viewBox="0 0 500 110" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -405,6 +441,7 @@
     <div class="grid" id="catalog"></div>
   </div>
 
+  <!-- Visor de pantalla completa (Lightbox) -->
   <div id="lightbox" onclick="closeLightbox()">
     <span id="lightbox-close">&times;</span>
     <img id="lightbox-img" src="" alt="Ampliada">
@@ -487,35 +524,35 @@
     ];
 
     const phone = "5356255364";
-    const currentSlides = {};
 
     function renderCatalog(items) {
       const catalog = document.getElementById('catalog');
       catalog.innerHTML = '';
+      const rate = parseFloat(document.getElementById('exchange-rate').value) || 320;
 
       items.forEach(product => {
-        if (currentSlides[product.id] === undefined) {
-          currentSlides[product.id] = 0;
-        }
+        const priceCUP = (product.priceUSD * rate).toLocaleString('es-CU');
+        const message = encodeURIComponent(`Hola, estoy interesado en comprar la ${product.title} de $${product.priceUSD} USD (o equivalente en CUP).`);
+        const whatsappUrl = `https://wa.me/${phone}?text=${message}`;
 
         let slidesHTML = '';
         let dotsHTML = '';
 
         product.images.forEach((img, idx) => {
           slidesHTML += `<div class="carousel-slide" onclick="openLightbox('${img}')"><img src="${img}" alt="${product.title}" onerror="this.src='https://via.placeholder.com/400x300?text=Imagen+no+disponible'"></div>`;
-          dotsHTML += `<span class="dot ${idx === currentSlides[product.id] ? 'active' : ''}" onclick="event.stopPropagation(); goToSlide(${product.id}, ${idx}, ${product.images.length})"></span>`;
+          dotsHTML += `<span class="dot ${idx === 0 ? 'active' : ''}" id="dot-${product.id}-${idx}" onclick="event.stopPropagation(); moveCarousel(${product.id}, ${idx})"></span>`;
         });
 
         const card = document.createElement('div');
         card.className = 'card';
         card.innerHTML = `
           <div class="carousel" id="carousel-${product.id}">
-            <div class="carousel-track" id="track-${product.id}" style="transform: translateX(-${currentSlides[product.id] * 100}%);">
+            <div class="carousel-track" id="track-${product.id}" onscroll="trackScrolled(${product.id}, ${product.images.length})">
               ${slidesHTML}
             </div>
             ${product.images.length > 1 ? `
-              <button class="carousel-btn prev" onclick="event.stopPropagation(); changeSlide(${product.id}, -1,${product.images.length})">❮</button>
-              <button class="carousel-btn next" onclick="event.stopPropagation(); changeSlide(${product.id}, 1,${product.images.length})">❯</button>
+              <button class="carousel-btn prev" onclick="event.stopPropagation(); scrollPrev(${product.id})">❮</button>
+              <button class="carousel-btn next" onclick="event.stopPropagation(); scrollNext(${product.id},${product.images.length})">❯</button>
               <div class="carousel-dots" id="dots-${product.id}">
                 ${dotsHTML}
               </div>
@@ -525,66 +562,48 @@
             <span class="badge">Medida ${product.category}</span>
             <h2 class="card-title">${product.title}</h2>
             <div class="price-box">
-              <div class="price-usd" id="price-usd-${product.id}">$${product.priceUSD} USD</div>
-              <div class="price-cup" id="price-cup-${product.id}">o ≈ ... CUP</div>
+              <div class="price-usd">$${product.priceUSD} USD</div>
+              <div class="price-cup">o ≈ ${priceCUP} CUP</div>
             </div>
-
-            <div class="invoice-form" onclick="event.stopPropagation()">
-              <label>Nombre del cliente:
-                <input type="text" id="name-${product.id}" placeholder="Ej. Carlos Pérez">
-              </label>
-              <label>Teléfono de contacto:
-                <input type="tel" id="phone-${product.id}" placeholder="Ej. +53 5xxxxxxx">
-              </label>
-              <label>Dirección de entrega:
-                <input type="text" id="address-${product.id}" placeholder="Ej. Calle 23 #45, La Habana">
-              </label>
-              <label>Día deseado para entrega:
-                <input type="date" id="date-${product.id}">
-              </label>
-            </div>
-
-            <button class="buy-btn" onclick="sendWhatsApp(${product.id}, '${product.title}', ${product.priceUSD})">
+            <a href="${whatsappUrl}" target="_blank" class="buy-btn" onclick="event.stopPropagation()">
                📱 Pedir por WhatsApp
-            </button>
+            </a>
           </div>
         `;
         catalog.appendChild(card);
       });
-
-      updatePrices();
     }
 
-    function changeSlide(productId, direction, total) {
-      if (currentSlides[productId] === undefined) currentSlides[productId] = 0;
-      currentSlides[productId] += direction;
-
-      if (currentSlides[productId] >= total) {
-        currentSlides[productId] = 0;
-      } else if (currentSlides[productId] < 0) {
-        currentSlides[productId] = total - 1;
-      }
-
-      updateCarouselView(productId, total);
-    }
-
-    function goToSlide(productId, index, total) {
-      currentSlides[productId] = index;
-      updateCarouselView(productId, total);
-    }
-
-    function updateCarouselView(productId, total) {
+    function moveCarousel(productId, index) {
       const track = document.getElementById(`track-${productId}`);
-      if (track) {
-        track.style.transform = `translateX(-${currentSlides[productId] * 100}%)`;
-      }
+      const slideWidth = track.clientWidth;
+      track.scrollTo({ left: slideWidth * index, behavior: 'smooth' });
+    }
 
-      const dotsContainer = document.getElementById(`dots-${productId}`);
-      if (dotsContainer) {
-        const dots = dotsContainer.querySelectorAll('.dot');
-        dots.forEach((dot, idx) => {
-          dot.classList.toggle('active', idx === currentSlides[productId]);
-        });
+    function scrollPrev(productId) {
+      const track = document.getElementById(`track-${productId}`);
+      const slideWidth = track.clientWidth;
+      track.scrollBy({ left: -slideWidth, behavior: 'smooth' });
+    }
+
+    function scrollNext(productId, total) {
+      const track = document.getElementById(`track-${productId}`);
+      const slideWidth = track.clientWidth;
+      if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 10) {
+        track.scrollTo({ left: 0, behavior: 'smooth' }); // Vuelve al inicio si llega al final
+      } else {
+        track.scrollBy({ left: slideWidth, behavior: 'smooth' });
+      }
+    }
+
+    function trackScrolled(productId, total) {
+      const track = document.getElementById(`track-${productId}`);
+      const index = Math.round(track.scrollLeft / track.clientWidth);
+      for (let i = 0; i < total; i++) {
+        const dot = document.getElementById(`dot-${productId}-${i}`);
+        if (dot) {
+          dot.classList.toggle('active', i === index);
+        }
       }
     }
 
@@ -601,35 +620,9 @@
     }
 
     function updatePrices() {
-      const rate = parseFloat(document.getElementById('exchange-rate').value) || 320;
-      products.forEach(product => {
-        const cupElem = document.getElementById(`price-cup-${product.id}`);
-        if (cupElem) {
-          const priceCUP = (product.priceUSD * rate).toLocaleString('es-CU');
-          cupElem.textContent = `o ≈ ${priceCUP} CUP`;
-        }
-      });
-    }
-
-    function sendWhatsApp(productId, title, priceUSD) {
-      const rate = parseFloat(document.getElementById('exchange-rate').value) || 320;
-      const priceCUP = (priceUSD * rate).toLocaleString('es-CU');
-
-      const name = document.getElementById(`name-${productId}`).value.trim();
-      const clientPhone = document.getElementById(`phone-${productId}`).value.trim();
-      const address = document.getElementById(`address-${productId}`).value.trim();
-      const date = document.getElementById(`date-${productId}`).value.trim();
-
-      let message = `📋 *SOLICITUD DE FACTURA / PEDIDO*\n\n`;
-      message += `🚲 *Producto:* ${title}\n`;
-      message += `💵 *Precio:* $${priceUSD} USD (≈ ${priceCUP} CUP)\n\n`;
-      message += `👤 *Cliente:* ${name || 'No especificado'}\n`;
-      message += `📞 *Teléfono:* ${clientPhone || 'No especificado'}\n`;
-      message += `🏠 *Dirección:* ${address || 'No especificada'}\n`;
-      message += `📅 *Día de entrega:* ${date || 'Inmediata'}`;
-
-      const encodedMessage = encodeURIComponent(message);
-      window.open(`https://wa.me/${phone}?text=${encodedMessage}`, '_blank');
+      const activeFilterBtn = document.querySelector('.filter-btn.active');
+      const activeCategory = activeFilterBtn ? activeFilterBtn.textContent.replace('Medida ', '').replace('Todas', 'all').trim() : 'all';
+      filterCategory(activeCategory);
     }
 
     function filterCategory(category) {
