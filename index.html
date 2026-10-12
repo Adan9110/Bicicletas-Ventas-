@@ -43,9 +43,10 @@
     header {
       background: linear-gradient(135deg, #0f172a, #1e293b);
       color: white;
-      padding: 2rem 1rem;
+      padding: 2.5rem 1rem;
       text-align: center;
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      animation: fadeInDown 0.8s ease-out;
     }
 
     .logo-container {
@@ -72,6 +73,7 @@
       justify-content: space-between;
       gap: 10px;
       width: 90%;
+      animation: fadeInUp 0.8s ease-out;
     }
 
     .converter-bar label {
@@ -112,8 +114,13 @@
       border-radius: 20px;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       font-size: 0.85rem;
+    }
+
+    .filter-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.2);
     }
 
     .filter-btn.active, .filter-btn:hover {
@@ -134,6 +141,7 @@
       gap: 20px;
     }
 
+    /* Tarjetas con animación de entrada */
     .card {
       background: var(--card-bg);
       border-radius: 16px;
@@ -141,8 +149,16 @@
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
       display: flex;
       flex-direction: column;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: fadeInUp 0.6s ease-out;
     }
 
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 20px -3px rgba(0, 0, 0, 0.12);
+    }
+
+    /* Carrusel Moderno con Scroll Horizontal Deslizable */
     .carousel {
       position: relative;
       width: 100%;
@@ -154,12 +170,22 @@
     .carousel-track {
       display: flex;
       height: 100%;
-      transition: transform 0.3s ease-in-out;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none; /* Ocultar barra en Firefox */
+    }
+
+    .carousel-track::-webkit-scrollbar {
+      display: none; /* Ocultar barra en Chrome/Safari */
     }
 
     .carousel-slide {
       min-width: 100%;
       height: 100%;
+      scroll-snap-align: start;
+      flex-shrink: 0;
       cursor: pointer;
     }
 
@@ -167,17 +193,22 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .carousel-slide img:hover {
+      transform: scale(1.03);
     }
 
     .carousel-btn {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      background: rgba(0,0,0,0.5);
+      background: rgba(0, 0, 0, 0.6);
       color: white;
       border: none;
-      width: 32px;
-      height: 32px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
       cursor: pointer;
       display: flex;
@@ -185,35 +216,43 @@
       justify-content: center;
       font-weight: bold;
       z-index: 2;
+      transition: background 0.2s, transform 0.2s;
     }
 
-    .carousel-btn.prev { left: 8px; }
-    .carousel-btn.next { right: 8px; }
+    .carousel-btn:hover {
+      background: rgba(0, 0, 0, 0.85);
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .carousel-btn.prev { left: 10px; }
+    .carousel-btn.next { right: 10px; }
 
     .carousel-dots {
       position: absolute;
-      bottom: 8px;
+      bottom: 10px;
       width: 100%;
       display: flex;
       justify-content: center;
-      gap: 5px;
+      gap: 6px;
       z-index: 2;
     }
 
     .dot {
       width: 8px;
       height: 8px;
-      background: rgba(255,255,255,0.5);
+      background: rgba(255, 255, 255, 0.6);
       border-radius: 50%;
       cursor: pointer;
+      transition: all 0.3s ease;
     }
 
     .dot.active {
       background: white;
-      width: 12px;
+      width: 16px;
       border-radius: 4px;
     }
 
+    /* Visor de pantalla completa (Lightbox) */
     #lightbox {
       display: none;
       position: fixed;
@@ -222,9 +261,10 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.9);
+      background: rgba(0, 0, 0, 0.92);
       justify-content: center;
       align-items: center;
+      animation: fadeIn 0.3s ease;
     }
 
     #lightbox img {
@@ -232,6 +272,7 @@
       max-height: 90%;
       border-radius: 8px;
       object-fit: contain;
+      animation: scaleUp 0.3s ease;
     }
 
     #lightbox-close {
@@ -245,7 +286,7 @@
     }
 
     .card-content {
-      padding: 15px;
+      padding: 18px;
       display: flex;
       flex-direction: column;
       flex-grow: 1;
@@ -261,8 +302,8 @@
       display: inline-block;
       background: #e0f2fe;
       color: #0369a1;
-      padding: 2px 8px;
-      border-radius: 4px;
+      padding: 3px 10px;
+      border-radius: 6px;
       font-size: 0.75rem;
       font-weight: 700;
       width: fit-content;
@@ -271,7 +312,7 @@
 
     .price-box {
       margin-top: auto;
-      padding-top: 10px;
+      padding-top: 12px;
       border-top: 1px solid #f1f5f9;
     }
 
@@ -287,6 +328,7 @@
       font-weight: 600;
     }
 
+    /* Botón de WhatsApp Animado y Brillante */
     .buy-btn {
       display: flex;
       align-items: center;
@@ -295,23 +337,54 @@
       background: var(--primary);
       color: white;
       text-decoration: none;
-      padding: 10px;
-      border-radius: 8px;
+      padding: 12px;
+      border-radius: 10px;
       font-weight: 700;
-      margin-top: 12px;
-      transition: background 0.2s;
+      margin-top: 14px;
+      transition: all 0.3s ease;
+      animation: pulseWhatsApp 2s infinite;
+      box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
     }
 
     .buy-btn:hover {
       background: #1da851;
+      transform: scale(1.02);
+      box-shadow: 0 6px 15px rgba(37, 211, 102, 0.5);
     }
 
     footer {
       text-align: center;
-      padding: 20px;
+      padding: 25px;
       color: #64748b;
       font-size: 0.85rem;
       margin-top: 40px;
+    }
+
+    /* Animaciones CSS Personalizadas */
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes scaleUp {
+      from { transform: scale(0.9); }
+      to { transform: scale(1); }
+    }
+
+    @keyframes pulseWhatsApp {
+      0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5); }
+      70% { box-shadow: 0 0 0 10px rgba(37, 211, 102, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
     }
   </style>
 </head>
@@ -467,19 +540,19 @@
 
         product.images.forEach((img, idx) => {
           slidesHTML += `<div class="carousel-slide" onclick="openLightbox('${img}')"><img src="${img}" alt="${product.title}" onerror="this.src='https://via.placeholder.com/400x300?text=Imagen+no+disponible'"></div>`;
-          dotsHTML += `<span class="dot ${idx === 0 ? 'active' : ''}" onclick="event.stopPropagation(); moveCarousel(${product.id}, ${idx})"></span>`;
+          dotsHTML += `<span class="dot ${idx === 0 ? 'active' : ''}" id="dot-${product.id}-${idx}" onclick="event.stopPropagation(); moveCarousel(${product.id}, ${idx})"></span>`;
         });
 
         const card = document.createElement('div');
         card.className = 'card';
         card.innerHTML = `
           <div class="carousel" id="carousel-${product.id}">
-            <div class="carousel-track" id="track-${product.id}">
+            <div class="carousel-track" id="track-${product.id}" onscroll="trackScrolled(${product.id}, ${product.images.length})">
               ${slidesHTML}
             </div>
             ${product.images.length > 1 ? `
-              <button class="carousel-btn prev" onclick="event.stopPropagation(); prevSlide(${product.id},${product.images.length})">❮</button>
-              <button class="carousel-btn next" onclick="event.stopPropagation(); nextSlide(${product.id},${product.images.length})">❯</button>
+              <button class="carousel-btn prev" onclick="event.stopPropagation(); scrollPrev(${product.id})">❮</button>
+              <button class="carousel-btn next" onclick="event.stopPropagation(); scrollNext(${product.id},${product.images.length})">❯</button>
               <div class="carousel-dots" id="dots-${product.id}">
                 ${dotsHTML}
               </div>
@@ -493,7 +566,7 @@
               <div class="price-cup">o ≈ ${priceCUP} CUP</div>
             </div>
             <a href="${whatsappUrl}" target="_blank" class="buy-btn" onclick="event.stopPropagation()">
-               Pedir por WhatsApp
+               📱 Pedir por WhatsApp
             </a>
           </div>
         `;
@@ -501,29 +574,37 @@
       });
     }
 
-    const currentSlides = {};
-
     function moveCarousel(productId, index) {
-      currentSlides[productId] = index;
       const track = document.getElementById(`track-${productId}`);
-      track.style.transform = `translateX(-${index * 100}%)`;
-
-      const dots = document.querySelectorAll(`#dots-${productId} .dot`);
-      dots.forEach((dot, idx) => {
-        dot.classList.toggle('active', idx === index);
-      });
+      const slideWidth = track.clientWidth;
+      track.scrollTo({ left: slideWidth * index, behavior: 'smooth' });
     }
 
-    function prevSlide(productId, total) {
-      let current = currentSlides[productId] || 0;
-      current = (current - 1 + total) % total;
-      moveCarousel(productId, current);
+    function scrollPrev(productId) {
+      const track = document.getElementById(`track-${productId}`);
+      const slideWidth = track.clientWidth;
+      track.scrollBy({ left: -slideWidth, behavior: 'smooth' });
     }
 
-    function nextSlide(productId, total) {
-      let current = currentSlides[productId] || 0;
-      current = (current + 1) % total;
-      moveCarousel(productId, current);
+    function scrollNext(productId, total) {
+      const track = document.getElementById(`track-${productId}`);
+      const slideWidth = track.clientWidth;
+      if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 10) {
+        track.scrollTo({ left: 0, behavior: 'smooth' }); // Vuelve al inicio si llega al final
+      } else {
+        track.scrollBy({ left: slideWidth, behavior: 'smooth' });
+      }
+    }
+
+    function trackScrolled(productId, total) {
+      const track = document.getElementById(`track-${productId}`);
+      const index = Math.round(track.scrollLeft / track.clientWidth);
+      for (let i = 0; i < total; i++) {
+        const dot = document.getElementById(`dot-${productId}-${i}`);
+        if (dot) {
+          dot.classList.toggle('active', i === index);
+        }
+      }
     }
 
     function openLightbox(imgSrc) {
