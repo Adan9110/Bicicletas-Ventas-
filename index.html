@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Título y Descripción para Google -->
+  <!-- SEO y Nombre Oficial de la Tienda -->
   <title>BicicletasAdan - Venta de Bicicletas y Accesorios</title>
   <meta name="description" content="BicicletasAdan: Venta de bicicletas nuevas, repuestos y accesorios. ¡Consulta disponibilidad y compra directo por WhatsApp!">
   <meta name="keywords" content="BicicletasAdan, venta de bicicletas, bicicletas, repuestos, accesorios">
 
-  <!-- Configuración de Vista Previa para WhatsApp y Redes Sociales -->
+  <!-- Open Graph para vista previa en WhatsApp y Redes Sociales -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="BicicletasAdan">
   <meta property="og:description" content="Venta de bicicletas nuevas, repuestos y accesorios. ¡Consulta disponibilidad y compra directo por WhatsApp!">
@@ -48,15 +48,15 @@
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     }
 
-    header h1 {
-      font-size: 1.8rem;
-      font-weight: 800;
-      margin-bottom: 0.5rem;
+    .logo-container {
+      max-width: 380px;
+      margin: 0 auto;
     }
 
     header p {
       color: #94a3b8;
       font-size: 0.95rem;
+      margin-top: 8px;
     }
 
     .converter-bar {
@@ -143,7 +143,6 @@
       flex-direction: column;
     }
 
-    /* Carousel Style */
     .carousel {
       position: relative;
       width: 100%;
@@ -215,7 +214,6 @@
       border-radius: 4px;
     }
 
-    /* Lightbox Modal Estilo Pantalla Completa */
     #lightbox {
       display: none;
       position: fixed;
@@ -320,7 +318,31 @@
 <body>
 
   <header>
-    <h1>BicicletasAdan</h1>
+    <div class="logo-container">
+      <!-- Banner / Logo SVG de BicicletasAdan -->
+      <svg width="100%" height="auto" viewBox="0 0 500 110" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#0284c7;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#25d366;stop-opacity:1" />
+          </linearGradient>
+        </defs>
+        <g stroke="url(#grad1)" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="40" cy="65" r="22" />
+          <circle cx="120" cy="65" r="22" />
+          <polyline points="40 65 65 30 100 30 120 65" />
+          <polyline points="65 30 80 65 120 65" />
+          <path d="M 60 25 L 70 25" />
+          <path d="M 95 23 L 105 30" />
+        </g>
+        <text x="155" y="60" font-family="'Segoe UI', Roboto, sans-serif" font-weight="900" font-size="36" fill="#ffffff">
+          Bicicletas<tspan fill="#25d366">Adan</tspan>
+        </text>
+        <text x="158" y="85" font-family="'Segoe UI', Roboto, sans-serif" font-weight="600" font-size="12" fill="#94a3b8" letter-spacing="1">
+          VENTA & ACCESORIOS
+        </text>
+      </svg>
+    </div>
     <p>Modelos disponibles para entrega inmediata</p>
   </header>
 
@@ -538,7 +560,6 @@
       }
     }
 
-    // Carga inicial
     renderCatalog(products);
   </script>
 </body>
