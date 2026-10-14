@@ -262,6 +262,7 @@
       border-radius: 4px;
     }
 
+    /* Visor Fullscreen Deslizable (Lightbox) */
     #lightbox {
       display: none;
       position: fixed;
@@ -270,19 +271,53 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.92);
+      background: rgba(0, 0, 0, 0.95);
       justify-content: center;
       align-items: center;
       animation: fadeIn 0.3s ease;
     }
 
-    #lightbox img {
+    .lightbox-container {
+      position: relative;
       max-width: 90%;
-      max-height: 90%;
+      max-height: 85%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #lightbox img {
+      max-width: 100%;
+      max-height: 80vh;
       border-radius: 8px;
       object-fit: contain;
-      animation: scaleUp 0.3s ease;
+      user-select: none;
     }
+
+    .lightbox-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: none;
+      font-size: 24px;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 1001;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lightbox-btn:hover {
+      background: rgba(255, 255, 255, 0.4);
+    }
+
+    .lightbox-btn.prev { left: 15px; }
+    .lightbox-btn.next { right: 15px; }
 
     #lightbox-close {
       position: absolute;
@@ -292,6 +327,71 @@
       font-size: 40px;
       font-weight: bold;
       cursor: pointer;
+      z-index: 1002;
+    }
+
+    /* Sección de Orden / Factura */
+    .invoice-section {
+      background: white;
+      border-radius: 16px;
+      padding: 25px;
+      margin: 40px auto;
+      max-width: 800px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    }
+
+    .invoice-section h2 {
+      font-size: 1.5rem;
+      color: var(--dark);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .invoice-section p {
+      font-size: 0.9rem;
+      color: #64748b;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+      color: #475569;
+    }
+
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      color: var(--dark);
+      outline: none;
+    }
+
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    @media (max-width: 600px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
     }
 
     .card-content {
@@ -352,6 +452,10 @@
       transition: all 0.3s ease;
       animation: pulseWhatsApp 2s infinite;
       box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
+      cursor: pointer;
+      border: none;
+      width: 100%;
+      font-size: 1rem;
     }
 
     .buy-btn:hover {
@@ -446,11 +550,64 @@
 
   <div class="container">
     <div class="grid" id="catalog"></div>
+
+    <!-- Sección Formulario / Factura Directa -->
+    <section class="invoice-section" id="orden-section">
+      <h2>📜 Generar Factura de Pedido</h2>
+      <p>Completa tus datos para enviarnos el pedido directo por WhatsApp con la foto del modelo seleccionado.</p>
+      
+      <form id="invoiceForm" onsubmit="sendInvoice(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="custName">Nombre Completo *</label>
+            <input type="text" id="custName" placeholder="Ej. Juan Pérez" required>
+          </div>
+          <div class="form-group">
+            <label for="custPhone">Teléfono de Contacto *</label>
+            <input type="tel" id="custPhone" placeholder="Ej. +53 51234567" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="custAddress">Dirección de Entrega *</label>
+            <input type="text" id="custAddress" placeholder="Calle, número, entre calles y municipio" required>
+          </div>
+          <div class="form-group">
+            <label for="deliveryDate">Fecha Solicitada de Entrega *</label>
+            <input type="date" id="deliveryDate" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="selectedProduct">Bicicleta Seleccionada *</label>
+          <select id="selectedProduct" onchange="updateSelectedPhotoPreview()" required>
+            <option value="">-- Selecciona un modelo --</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Foto de la bicicleta elegida:</label>
+          <div id="selectedPhotoContainer" style="font-size: 0.85rem; color: #64748b; font-style: italic;">
+            Selecciona un modelo arriba o presiona "Pedir por WhatsApp" en la tarjeta de la bici.
+          </div>
+        </div>
+
+        <button type="submit" class="buy-btn">
+          📱 Enviar Factura y Pedido por WhatsApp
+        </button>
+      </form>
+    </section>
   </div>
 
+  <!-- Visor Fullscreen Deslizable (Lightbox) -->
   <div id="lightbox" onclick="closeLightbox()">
     <span id="lightbox-close">&times;</span>
-    <img id="lightbox-img" src="" alt="Ampliada">
+    <button class="lightbox-btn prev" onclick="event.stopPropagation(); changeLightboxImage(-1)">❮</button>
+    <div class="lightbox-container" onclick="event.stopPropagation()">
+      <img id="lightbox-img" src="" alt="Foto Ampliada">
+    </div>
+    <button class="lightbox-btn next" onclick="event.stopPropagation(); changeLightboxImage(1)">❯</button>
   </div>
 
   <footer>
@@ -530,6 +687,10 @@
     ];
 
     const phone = "5356255364";
+    const baseUrl = "https://adan9110.github.io/Bicicletas-Ventas-/";
+
+    let currentGallery = [];
+    let currentGalleryIndex = 0;
 
     function renderCatalog(items) {
       const catalog = document.getElementById('catalog');
@@ -538,14 +699,12 @@
 
       items.forEach(product => {
         const priceCUP = (product.priceUSD * rate).toLocaleString('es-CU');
-        const message = encodeURIComponent(`Hola, estoy interesado en comprar la ${product.title} de $${product.priceUSD} USD (o equivalente en CUP).`);
-        const whatsappUrl = `https://wa.me/${phone}?text=${message}`;
 
         let slidesHTML = '';
         let dotsHTML = '';
 
         product.images.forEach((img, idx) => {
-          slidesHTML += `<div class="carousel-slide" onclick="openLightbox('${img}')"><img src="${img}" alt="${product.title}" onerror="this.src='https://via.placeholder.com/400x300?text=Imagen+no+disponible'"></div>`;
+          slidesHTML += `<div class="carousel-slide" onclick="openLightbox(${product.id}, ${idx})"><img src="${img}" alt="${product.title}" onerror="this.src='https://via.placeholder.com/400x300?text=Imagen+no+disponible'"></div>`;
           dotsHTML += `<span class="dot ${idx === 0 ? 'active' : ''}" id="dot-${product.id}-${idx}" onclick="event.stopPropagation(); moveCarousel(${product.id}, ${idx})"></span>`;
         });
 
@@ -571,13 +730,89 @@
               <div class="price-usd">$${product.priceUSD} USD</div>
               <div class="price-cup">o ≈ ${priceCUP} CUP</div>
             </div>
-            <a href="${whatsappUrl}" target="_blank" class="buy-btn" onclick="event.stopPropagation()">
-               📱 Pedir por WhatsApp
-            </a>
+            <button class="buy-btn" onclick="selectProductForInvoice(${product.id})">
+               📋 Ordenar / Pedir Factura
+            </button>
           </div>
         `;
         catalog.appendChild(card);
       });
+
+      populateProductSelect();
+    }
+
+    function populateProductSelect() {
+      const select = document.getElementById('selectedProduct');
+      select.innerHTML = '<option value="">-- Selecciona un modelo --</option>';
+      products.forEach(p => {
+        const opt = document.createElement('option');
+        opt.value = p.id;
+        opt.textContent = `${p.title} - $${p.priceUSD} USD`;
+        select.appendChild(opt);
+      });
+    }
+
+    function selectProductForInvoice(productId) {
+      document.getElementById('selectedProduct').value = productId;
+      updateSelectedPhotoPreview();
+      document.getElementById('orden-section').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function updateSelectedPhotoPreview() {
+      const productId = document.getElementById('selectedProduct').value;
+      const container = document.getElementById('selectedPhotoContainer');
+      
+      if (!productId) {
+        container.innerHTML = 'Selecciona un modelo arriba o presiona "Pedir por WhatsApp" en la tarjeta de la bici.';
+        return;
+      }
+
+      const product = products.find(p => p.id == productId);
+      if (product && product.images.length > 0) {
+        const mainImage = product.images[0];
+        container.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 12px; margin-top: 6px;">
+            <img src="${mainImage}" style="width: 80px; height: 60px; object-fit: cover; border-radius: 6px; border: 1px solid #cbd5e1;">
+            <div>
+              <strong>${product.title}</strong><br>
+              <span style="font-size: 0.8rem; color: #64748b;">Enlace de la imagen: ${baseUrl}${mainImage}</span>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function sendInvoice(event) {
+      event.preventDefault();
+      
+      const name = document.getElementById('custName').value;
+      const phoneNum = document.getElementById('custPhone').value;
+      const address = document.getElementById('custAddress').value;
+      const date = document.getElementById('deliveryDate').value;
+      const productId = document.getElementById('selectedProduct').value;
+
+      if (!productId) {
+        alert("Por favor selecciona un modelo de bicicleta.");
+        return;
+      }
+
+      const product = products.find(p => p.id == productId);
+      const rate = parseFloat(document.getElementById('exchange-rate').value) || 320;
+      const priceCUP = (product.priceUSD * rate).toLocaleString('es-CU');
+      const photoUrl = `${baseUrl}${product.images[0]}`;
+
+      const message = `🧾 *FACTURA DE PEDIDO - BICICLETASADAN*\n\n` +
+        `👤 *Cliente:* ${name}\n` +
+        `📞 *Teléfono:* ${phoneNum}\n` +
+        `📍 *Dirección de Entrega:* ${address}\n` +
+        `📅 *Fecha de Entrega Deseada:* ${date}\n\n` +
+        `🚲 *PRODUCTO SOLICITADO:*\n` +
+        `• Modelo: ${product.title}\n` +
+        `• Precio: $${product.priceUSD} USD (≈ ${priceCUP} CUP)\n\n` +
+        `🖼️ *Foto del modelo elegido:* ${photoUrl}`;
+
+      const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+      window.open(whatsappUrl, '_blank');
     }
 
     function moveCarousel(productId, index) {
@@ -613,16 +848,35 @@
       }
     }
 
-    function openLightbox(imgSrc) {
-      const lightbox = document.getElementById('lightbox');
-      const lightboxImg = document.getElementById('lightbox-img');
-      lightboxImg.src = imgSrc;
-      lightbox.style.display = 'flex';
+    /* Lightbox Deslizable / Fullscreen */
+    function openLightbox(productId, imageIndex) {
+      const product = products.find(p => p.id === productId);
+      if (!product) return;
+
+      currentGallery = product.images;
+      currentGalleryIndex = imageIndex;
+
+      updateLightboxImage();
+      document.getElementById('lightbox').style.display = 'flex';
+    }
+
+    function updateLightboxImage() {
+      const img = document.getElementById('lightbox-img');
+      img.src = currentGallery[currentGalleryIndex];
+    }
+
+    function changeLightboxImage(direction) {
+      currentGalleryIndex += direction;
+      if (currentGalleryIndex < 0) {
+        currentGalleryIndex = currentGallery.length - 1;
+      } else if (currentGalleryIndex >= currentGallery.length) {
+        currentGalleryIndex = 0;
+      }
+      updateLightboxImage();
     }
 
     function closeLightbox() {
-      const lightbox = document.getElementById('lightbox');
-      lightbox.style.display = 'none';
+      document.getElementById('lightbox').style.display = 'none';
     }
 
     function updatePrices() {
