@@ -262,7 +262,7 @@
       border-radius: 4px;
     }
 
-    /* Visor con deslizamiento horizontal */
+    /* Visor deslizante en pantalla completa */
     #lightbox {
       display: none;
       position: fixed;
@@ -274,12 +274,13 @@
       background: rgba(0, 0, 0, 0.92);
       justify-content: center;
       align-items: center;
+      flex-direction: column;
       animation: fadeIn 0.3s ease;
     }
 
     #lightbox-img {
       max-width: 85%;
-      max-height: 85%;
+      max-height: 75%;
       border-radius: 8px;
       object-fit: contain;
     }
@@ -308,6 +309,18 @@
       color: white;
       font-size: 40px;
       font-weight: bold;
+      cursor: pointer;
+      z-index: 1001;
+    }
+
+    .lightbox-select-btn {
+      margin-top: 15px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-weight: 700;
       cursor: pointer;
       z-index: 1001;
     }
@@ -369,8 +382,9 @@
       margin-top: 14px;
       transition: all 0.3s ease;
       animation: pulseWhatsApp 2s infinite;
-      box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
       cursor: pointer;
+      border: none;
+      width: 100%;
     }
 
     .buy-btn:hover {
@@ -378,7 +392,7 @@
       transform: scale(1.02);
     }
 
-    /* Estilos de la Factura y Formulario */
+    /* Estilos de Factura / Formulario */
     .invoice-section {
       background: white;
       max-width: 800px;
@@ -413,16 +427,21 @@
       font-size: 1rem;
     }
 
-    .photo-preview {
+    .photo-preview-box {
       margin-top: 10px;
       text-align: center;
+      background: #f8fafc;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px dashed #cbd5e1;
     }
 
-    .photo-preview img {
-      max-width: 150px;
+    .photo-preview-box img {
+      max-width: 180px;
+      max-height: 180px;
       border-radius: 8px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-      display: none;
+      object-fit: contain;
     }
 
     footer {
@@ -446,11 +465,6 @@
     @keyframes fadeIn {
       from { opacity: 0; }
       to { opacity: 1; }
-    }
-
-    @keyframes scaleUp {
-      from { transform: scale(0.9); }
-      to { transform: scale(1); }
     }
 
     @keyframes pulseWhatsApp {
@@ -533,7 +547,7 @@
         <input type="date" id="deliveryDate" required>
       </div>
       <div class="form-group">
-        <label for="selectedProduct">Selecciona la Bicicleta o Modelo:</label>
+        <label for="selectedProduct">Bicicleta Seleccionada:</label>
         <select id="selectedProduct" onchange="updatePhotoOptions()" required>
           <option value="">-- Elige un modelo --</option>
           <option value="Bicicleta Medida 12">Bicicleta Medida 12 ($150 USD)</option>
@@ -544,27 +558,29 @@
         </select>
       </div>
       <div class="form-group">
-        <label for="selectedPhoto">Elige la foto exacta de la bicicleta:</label>
+        <label for="selectedPhoto">Foto Exacta del Modelo que Quiere:</label>
         <select id="selectedPhoto" onchange="previewSelectedPhoto()">
           <option value="">-- Selecciona el modelo primero --</option>
         </select>
-        <div class="photo-preview">
-          <img id="previewImg" src="" alt="Vista previa de la bicicleta">
+        <div class="photo-preview-box">
+          <p style="font-size:0.85rem; color:#64748b; margin-bottom:5px;">Foto seleccionada para la factura:</p>
+          <img id="previewImg" src="" alt="Vista previa" style="display:none;">
         </div>
       </div>
 
-      <button type="submit" class="buy-btn" style="width: 100%; font-size: 1.1rem; border: none;">
+      <button type="submit" class="buy-btn" style="font-size: 1.1rem;">
         📲 Enviar Factura y Pedido por WhatsApp
       </button>
     </form>
   </div>
 
-  <!-- Visor deslizante de fotos (Lightbox) -->
+  <!-- Visor de Fotos en Pantalla Completa (Lightbox) -->
   <div id="lightbox">
     <span id="lightbox-close" onclick="closeLightbox()">&times;</span>
     <button class="lightbox-nav lightbox-prev" onclick="navLightbox(-1)">❮</button>
     <img id="lightbox-img" src="" alt="Ampliada">
     <button class="lightbox-nav lightbox-next" onclick="navLightbox(1)">❯</button>
+    <button class="lightbox-select-btn" onclick="selectCurrentPhotoFromLightbox()">✅ Elegir esta foto para mi pedido</button>
   </div>
 
   <footer>
@@ -614,6 +630,7 @@
     const baseUrl = "https://adan9110.github.io/Bicicletas-Ventas-/";
     let currentGallery = [];
     let currentPhotoIdx = 0;
+    let currentProductTitle = "";
 
     function renderCatalog(items) {
       const catalog = document.getElementById('catalog');
@@ -653,7 +670,7 @@
               <div class="price-usd">$${product.priceUSD} USD</div>
               <div class="price-cup">o ≈ ${priceCUP} CUP</div>
             </div>
-            <button class="buy-btn" onclick="selectForOrder('${product.title}')">
+            <button class="buy-btn" onclick="selectActiveSlideForOrder(${product.id})">
                📱 Pedir / Hacer Factura
             </button>
           </div>
@@ -662,24 +679,40 @@
       });
     }
 
-    function selectForOrder(title) {
-      const select = document.getElementById('selectedProduct');
-      select.value = title;
-      updatePhotoOptions();
+    // Detectar qué foto tiene en pantalla el carrusel al presionar "Pedir"
+    function selectActiveSlideForOrder(productId) {
+      const product = products.find(p => p.id === productId);
+      if (!product) return;
+
+      const track = document.getElementById(`track-${productId}`);
+      const activeIdx = Math.round(track.scrollLeft / track.clientWidth) || 0;
+      const selectedImgName = product.images[activeIdx] || product.images[0];
+
+      setProductAndPhotoInForm(product.title, selectedImgName);
       document.getElementById('order-form-section').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function setProductAndPhotoInForm(title, imgName) {
+      const selectProduct = document.getElementById('selectedProduct');
+      selectProduct.value = title;
+      updatePhotoOptions();
+
+      const selectPhoto = document.getElementById('selectedPhoto');
+      selectPhoto.value = imgName;
+      previewSelectedPhoto();
     }
 
     function updatePhotoOptions() {
       const selectedTitle = document.getElementById('selectedProduct').value;
       const photoSelect = document.getElementById('selectedPhoto');
-      photoSelect.innerHTML = '<option value="">-- Selecciona una foto específica --</option>';
+      photoSelect.innerHTML = '<option value="">-- Selecciona una foto --</option>';
 
       const product = products.find(p => p.title === selectedTitle);
       if (product) {
         product.images.forEach((img, idx) => {
           const opt = document.createElement('option');
           opt.value = img;
-          opt.textContent = `Foto Opción #${idx + 1} (${img})`;
+          opt.textContent = `Foto Modelo Opción #${idx + 1}`;
           photoSelect.appendChild(opt);
         });
       }
@@ -706,16 +739,16 @@
       const productTitle = document.getElementById('selectedProduct').value;
       const photoName = document.getElementById('selectedPhoto').value;
 
-      let photoLink = photoName ? `${baseUrl}${photoName}` : "Sin foto específica seleccionada";
+      let photoLink = photoName ? `${baseUrl}${photoName}` : "Foto no seleccionada";
 
       const message = `📋 *NUEVA FACTURA DE PEDIDO - BICICLETASADAN*\n\n` +
                       `👤 *Cliente:* ${name}\n` +
                       `📞 *Teléfono:* ${phoneClient}\n` +
                       `📍 *Dirección de Entrega:* ${address}\n` +
-                      `📅 *Fecha requerida:* ${date}\n` +
-                      `🚲 *Producto:* ${productTitle}\n` +
-                      `🖼️ *Foto exacta seleccionada:* ${photoLink}\n\n` +
-                      `Por favor confirme disponibilidad para completar el pedido.`;
+                      `📅 *Fecha de Entrega:* ${date}\n` +
+                      `🚲 *Bicicleta Elegida:* ${productTitle}\n` +
+                      `🖼️ *Foto Exacta Seleccionada:* ${photoLink}\n\n` +
+                      `Favor de confirmar disponibilidad para el envío.`;
 
       const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
       window.open(whatsappUrl, '_blank');
@@ -726,8 +759,18 @@
       if (product) {
         currentGallery = product.images;
         currentPhotoIdx = index;
+        currentProductTitle = product.title;
         document.getElementById('lightbox-img').src = currentGallery[currentPhotoIdx];
         document.getElementById('lightbox').style.display = 'flex';
+      }
+    }
+
+    function selectCurrentPhotoFromLightbox() {
+      if (currentGallery.length > 0) {
+        const photoName = currentGallery[currentPhotoIdx];
+        setProductAndPhotoInForm(currentProductTitle, photoName);
+        closeLightbox();
+        document.getElementById('order-form-section').scrollIntoView({ behavior: 'smooth' });
       }
     }
 
