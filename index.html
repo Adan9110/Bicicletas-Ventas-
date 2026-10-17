@@ -55,21 +55,31 @@
     header {
       background: linear-gradient(135deg, #0f172a, #1e293b);
       color: white;
-      padding: 2.5rem 1rem;
+      padding: 2rem 1rem;
       text-align: center;
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
       animation: fadeInDown 0.8s ease-out;
     }
 
     .logo-container {
-      max-width: 380px;
+      max-width: 280px;
       margin: 0 auto;
+    }
+
+    .logo-container img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      border-radius: 12px;
+      background: #ffffff;
+      padding: 5px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
 
     header p {
       color: #94a3b8;
       font-size: 0.95rem;
-      margin-top: 8px;
+      margin-top: 10px;
     }
 
     .converter-bar {
@@ -478,28 +488,8 @@
 
   <header>
     <div class="logo-container">
-      <svg width="100%" height="auto" viewBox="0 0 500 110" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" style="stop-color:#0284c7;stop-opacity:1" />
-            <stop offset="100%" style="stop-color:#25d366;stop-opacity:1" />
-          </linearGradient>
-        </defs>
-        <g stroke="url(#grad1)" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="40" cy="65" r="22" />
-          <circle cx="120" cy="65" r="22" />
-          <polyline points="40 65 65 30 100 30 120 65" />
-          <polyline points="65 30 80 65 120 65" />
-          <path d="M 60 25 L 70 25" />
-          <path d="M 95 23 L 105 30" />
-        </g>
-        <text x="155" y="60" font-family="'Segoe UI', Roboto, sans-serif" font-weight="900" font-size="36" fill="#ffffff">
-          Bicicletas<tspan fill="#25d366">Adan</tspan>
-        </text>
-        <text x="158" y="85" font-family="'Segoe UI', Roboto, sans-serif" font-weight="600" font-size="12" fill="#94a3b8" letter-spacing="1">
-          VENTA & ACCESORIOS
-        </text>
-      </svg>
+      <!-- LOGO NUEVO INTEGRADO -->
+      <img src="logo.png" alt="BicicletasAdan Logo">
     </div>
     <p>Modelos disponibles para entrega inmediata</p>
   </header>
@@ -627,10 +617,6 @@
     ];
 
     const phone = "5356255364";
-    const baseUrl = "https://adan9110.github.io/Bicicletas-Ventas-/";
-    let currentGallery = [];
-    let currentPhotoIdx = 0;
-    let currentProductTitle = "";
 
     function renderCatalog(items) {
       const catalog = document.getElementById('catalog');
@@ -644,7 +630,7 @@
         let dotsHTML = '';
 
         product.images.forEach((img, idx) => {
-          slidesHTML += `<div class="carousel-slide" onclick="openLightbox(${product.id}, ${idx})"><img src="${img}" alt="${product.title}" onerror="this.src='https://via.placeholder.com/400x300?text=Imagen+no+disponible'"></div>`;
+          slidesHTML += `<div class="carousel-slide" onclick="openLightbox('${product.title}', ${idx})"><img src="${img}" alt="${product.title}" onerror="this.src='https://via.placeholder.com/400x300?text=Imagen+no+disponible'"></div>`;
           dotsHTML += `<span class="dot ${idx === 0 ? 'active' : ''}" id="dot-${product.id}-${idx}" onclick="event.stopPropagation(); moveCarousel(${product.id}, ${idx})"></span>`;
         });
 
@@ -670,7 +656,7 @@
               <div class="price-usd">$${product.priceUSD} USD</div>
               <div class="price-cup">o ≈ ${priceCUP} CUP</div>
             </div>
-            <button class="buy-btn" onclick="selectActiveSlideForOrder(${product.id})">
+            <button class="buy-btn" onclick="prepareOrder('${product.title}')">
                📱 Pedir / Hacer Factura
             </button>
           </div>
@@ -679,114 +665,22 @@
       });
     }
 
-    // Detectar qué foto tiene en pantalla el carrusel al presionar "Pedir"
-    function selectActiveSlideForOrder(productId) {
-      const product = products.find(p => p.id === productId);
-      if (!product) return;
-
-      const track = document.getElementById(`track-${productId}`);
-      const activeIdx = Math.round(track.scrollLeft / track.clientWidth) || 0;
-      const selectedImgName = product.images[activeIdx] || product.images[0];
-
-      setProductAndPhotoInForm(product.title, selectedImgName);
-      document.getElementById('order-form-section').scrollIntoView({ behavior: 'smooth' });
+    function updatePrices() {
+      const activeBtn = document.querySelector('.filter-btn.active');
+      const currentCategory = activeBtn ? activeBtn.getAttribute('onclick').match(/'([^']+)'/)[1] : 'all';
+      filterCategory(currentCategory);
     }
 
-    function setProductAndPhotoInForm(title, imgName) {
-      const selectProduct = document.getElementById('selectedProduct');
-      selectProduct.value = title;
-      updatePhotoOptions();
+    function filterCategory(cat) {
+      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+      event && event.target.classList.add('active');
 
-      const selectPhoto = document.getElementById('selectedPhoto');
-      selectPhoto.value = imgName;
-      previewSelectedPhoto();
-    }
-
-    function updatePhotoOptions() {
-      const selectedTitle = document.getElementById('selectedProduct').value;
-      const photoSelect = document.getElementById('selectedPhoto');
-      photoSelect.innerHTML = '<option value="">-- Selecciona una foto --</option>';
-
-      const product = products.find(p => p.title === selectedTitle);
-      if (product) {
-        product.images.forEach((img, idx) => {
-          const opt = document.createElement('option');
-          opt.value = img;
-          opt.textContent = `Foto Modelo Opción #${idx + 1}`;
-          photoSelect.appendChild(opt);
-        });
-      }
-      previewSelectedPhoto();
-    }
-
-    function previewSelectedPhoto() {
-      const photoName = document.getElementById('selectedPhoto').value;
-      const img = document.getElementById('previewImg');
-      if (photoName) {
-        img.src = photoName;
-        img.style.display = 'inline-block';
+      if (cat === 'all') {
+        renderCatalog(products);
       } else {
-        img.style.display = 'none';
+        const filtered = products.filter(p => p.category === cat);
+        renderCatalog(filtered);
       }
-    }
-
-    function sendInvoiceWhatsApp(e) {
-      e.preventDefault();
-      const name = document.getElementById('clientName').value;
-      const phoneClient = document.getElementById('clientPhone').value;
-      const address = document.getElementById('deliveryAddress').value;
-      const date = document.getElementById('deliveryDate').value;
-      const productTitle = document.getElementById('selectedProduct').value;
-      const photoName = document.getElementById('selectedPhoto').value;
-
-      let photoLink = photoName ? `${baseUrl}${photoName}` : "Foto no seleccionada";
-
-      const message = `📋 *NUEVA FACTURA DE PEDIDO - BICICLETASADAN*\n\n` +
-                      `👤 *Cliente:* ${name}\n` +
-                      `📞 *Teléfono:* ${phoneClient}\n` +
-                      `📍 *Dirección de Entrega:* ${address}\n` +
-                      `📅 *Fecha de Entrega:* ${date}\n` +
-                      `🚲 *Bicicleta Elegida:* ${productTitle}\n` +
-                      `🖼️ *Foto Exacta Seleccionada:* ${photoLink}\n\n` +
-                      `Favor de confirmar disponibilidad para el envío.`;
-
-      const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-      window.open(whatsappUrl, '_blank');
-    }
-
-    function openLightbox(productId, index) {
-      const product = products.find(p => p.id === productId);
-      if (product) {
-        currentGallery = product.images;
-        currentPhotoIdx = index;
-        currentProductTitle = product.title;
-        document.getElementById('lightbox-img').src = currentGallery[currentPhotoIdx];
-        document.getElementById('lightbox').style.display = 'flex';
-      }
-    }
-
-    function selectCurrentPhotoFromLightbox() {
-      if (currentGallery.length > 0) {
-        const photoName = currentGallery[currentPhotoIdx];
-        setProductAndPhotoInForm(currentProductTitle, photoName);
-        closeLightbox();
-        document.getElementById('order-form-section').scrollIntoView({ behavior: 'smooth' });
-      }
-    }
-
-    function navLightbox(direction) {
-      if (currentGallery.length === 0) return;
-      currentPhotoIdx = (currentPhotoIdx + direction + currentGallery.length) % currentGallery.length;
-      document.getElementById('lightbox-img').src = currentGallery[currentPhotoIdx];
-    }
-
-    function closeLightbox() {
-      document.getElementById('lightbox').style.display = 'none';
-    }
-
-    function moveCarousel(productId, index) {
-      const track = document.getElementById(`track-${productId}`);
-      track.scrollTo({ left: track.clientWidth * index, behavior: 'smooth' });
     }
 
     function scrollPrev(productId) {
@@ -794,7 +688,7 @@
       track.scrollBy({ left: -track.clientWidth, behavior: 'smooth' });
     }
 
-    function scrollNext(productId) {
+    function scrollNext(productId, totalImages) {
       const track = document.getElementById(`track-${productId}`);
       if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 10) {
         track.scrollTo({ left: 0, behavior: 'smooth' });
@@ -803,37 +697,103 @@
       }
     }
 
-    function trackScrolled(productId, total) {
+    function trackScrolled(productId, totalImages) {
       const track = document.getElementById(`track-${productId}`);
       const index = Math.round(track.scrollLeft / track.clientWidth);
-      for (let i = 0; i < total; i++) {
+      for (let i = 0; i < totalImages; i++) {
         const dot = document.getElementById(`dot-${productId}-${i}`);
-        if (dot) dot.classList.toggle('active', i === index);
-      }
-    }
-
-    function updatePrices() {
-      const activeFilterBtn = document.querySelector('.filter-btn.active');
-      const activeCategory = activeFilterBtn ? activeFilterBtn.textContent.replace('Medida ', '').replace('Todas', 'all').trim() : 'all';
-      filterCategory(activeCategory);
-    }
-
-    function filterCategory(category) {
-      document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.classList.remove('active');
-        if ((category === 'all' && btn.textContent.includes('Todas')) || btn.textContent.includes(category)) {
-          btn.classList.add('active');
+        if (dot) {
+          if (i === index) dot.classList.add('active');
+          else dot.classList.remove('active');
         }
-      });
-
-      if (category === 'all') {
-        renderCatalog(products);
-      } else {
-        renderCatalog(products.filter(p => p.category === category));
       }
     }
 
-    renderCatalog(products);
+    function moveCarousel(productId, idx) {
+      const track = document.getElementById(`track-${productId}`);
+      track.scrollTo({ left: track.clientWidth * idx, behavior: 'smooth' });
+    }
+
+    function prepareProductSelects() {
+      const selectProd = document.getElementById('selectedProduct');
+      selectProd.innerHTML = '<option value="">-- Elige un modelo --</option>';
+      products.forEach(p => {
+        const opt = document.createElement('option');
+        opt.value = p.title;
+        opt.textContent = `${p.title} ($${p.priceUSD} USD)`;
+        selectProd.appendChild(opt);
+      });
+    }
+
+    function updatePhotoOptions() {
+      const productTitle = document.getElementById('selectedProduct').value;
+      const selectPhoto = document.getElementById('selectedPhoto');
+      selectPhoto.innerHTML = '<option value="">-- Selecciona la foto --</option>';
+      
+      const prod = products.find(p => p.title === productTitle);
+      if (prod) {
+        prod.images.forEach((img, idx) => {
+          const opt = document.createElement('option');
+          opt.value = img;
+          opt.textContent = `Foto opción ${idx + 1} (${img})`;
+          selectPhoto.appendChild(opt);
+        });
+      }
+      document.getElementById('previewImg').style.display = 'none';
+    }
+
+    function previewSelectedPhoto() {
+      const imgVal = document.getElementById('selectedPhoto').value;
+      const preview = document.getElementById('previewImg');
+      if (imgVal) {
+        preview.src = imgVal;
+        preview.style.display = 'block';
+      } else {
+        preview.style.display = 'none';
+      }
+    }
+
+    function prepareOrder(title) {
+      document.getElementById('selectedProduct').value = title;
+      updatePhotoOptions();
+      document.getElementById('order-form-section').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function sendInvoiceWhatsApp(e) {
+      e.preventDefault();
+      const name = document.getElementById('clientName').value;
+      const clientPhone = document.getElementById('clientPhone').value;
+      const address = document.getElementById('deliveryAddress').value;
+      const date = document.getElementById('deliveryDate').value;
+      const product = document.getElementById('selectedProduct').value;
+      const photo = document.getElementById('selectedPhoto').value;
+      const rate = document.getElementById('exchange-rate').value;
+
+      const prodObj = products.find(p => p.title === product);
+      let priceInfo = "";
+      if (prodObj) {
+        const cup = (prodObj.priceUSD * rate).toLocaleString('es-CU');
+        priceInfo = `*Precio:* $${prodObj.priceUSD} USD (≈ ${cup} CUP)`;
+      }
+
+      const message = `*📄 NUEVA FACTURA DE PEDIDO - BicicletasAdan*%0A%0A` +
+                      `👤 *Cliente:* ${name}%0A` +
+                      `📞 *Teléfono:* ${clientPhone}%0A` +
+                      `📍 *Dirección:* ${address}%0A` +
+                      `📅 *Fecha de entrega:* ${date}%0A` +
+                      `🚲 *Modelo:* ${product}%0A` +
+                      `${priceInfo}%0A` +
+                      `📸 *Foto seleccionada:* ${photo ? window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1) + photo : 'Ninguna especificada'}%0A%0A` +
+                      `_Enviado desde el catálogo web de BicicletasAdan_`;
+
+      window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
+    }
+
+    // Inicializar al cargar la página
+    window.onload = function() {
+      renderCatalog(products);
+      prepareProductSelects();
+    };
   </script>
 </body>
 </html>
