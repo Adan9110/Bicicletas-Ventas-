@@ -488,8 +488,8 @@
 
   <header>
     <div class="logo-container">
-      <!-- LOGO VINCULADO DIRECTAMENTE A TU ARCHIVO -->
-      <img src="Gallery_1792262447120.png" onerror="this.onerror=null; this.src='Gallery_1792262447120.jpg';" alt="BicicletasAdan Logo">
+      <!-- LOGO VINCULADO AL NUEVO NOMBRE -->
+      <img src="logo-bicicletas-adan.png" onerror="this.onerror=null; this.src='logo-bicicletas-adan.jpg';" alt="BicicletasAdan Logo">
     </div>
     <p>Modelos disponibles para entrega inmediata</p>
   </header>
@@ -697,102 +697,155 @@
       }
     }
 
+    function moveCarousel(productId, index) {
+      const track = document.getElementById(`track-${productId}`);
+      const slideWidth = track.clientWidth;
+      track.scrollTo({ left: slideWidth * index, behavior: 'smooth' });
+    }
+
     function trackScrolled(productId, totalImages) {
       const track = document.getElementById(`track-${productId}`);
-      const index = Math.round(track.scrollLeft / track.clientWidth);
+      const slideWidth = track.clientWidth;
+      const currentIndex = Math.round(track.scrollLeft / slideWidth);
+
       for (let i = 0; i < totalImages; i++) {
         const dot = document.getElementById(`dot-${productId}-${i}`);
         if (dot) {
-          if (i === index) dot.classList.add('active');
-          else dot.classList.remove('active');
+          if (i === currentIndex) {
+            dot.classList.add('active');
+          } else {
+            dot.classList.remove('active');
+          }
         }
       }
     }
 
-    function moveCarousel(productId, idx) {
-      const track = document.getElementById(`track-${productId}`);
-      track.scrollTo({ left: track.clientWidth * idx, behavior: 'smooth' });
+    // Variables para el Visor (Lightbox)
+    let currentLightboxImages = [];
+    let currentLightboxIndex = 0;
+    let currentLightboxProductTitle = "";
+
+    function openLightbox(productTitle, imageIndex) {
+      const product = products.find(p => p.title === productTitle);
+      if (!product) return;
+
+      currentLightboxProductTitle = product.title;
+      currentLightboxImages = product.images;
+      currentLightboxIndex = imageIndex;
+
+      updateLightboxImage();
+      document.getElementById('lightbox').style.display = 'flex';
     }
 
-    function prepareProductSelects() {
-      const selectProd = document.getElementById('selectedProduct');
-      selectProd.innerHTML = '<option value="">-- Elige un modelo --</option>';
-      products.forEach(p => {
-        const opt = document.createElement('option');
-        opt.value = p.title;
-        opt.textContent = `${p.title} ($${p.priceUSD} USD)`;
-        selectProd.appendChild(opt);
-      });
+    function closeLightbox() {
+      document.getElementById('lightbox').style.display = 'none';
+    }
+
+    function navLightbox(direction) {
+      currentLightboxIndex += direction;
+      if (currentLightboxIndex < 0) {
+        currentLightboxIndex = currentLightboxImages.length - 1;
+      } else if (currentLightboxIndex >= currentLightboxImages.length) {
+        currentLightboxIndex = 0;
+      }
+      updateLightboxImage();
+    }
+
+    function updateLightboxImage() {
+      const imgElem = document.getElementById('lightbox-img');
+      imgElem.src = currentLightboxImages[currentLightboxIndex];
+    }
+
+    function selectCurrentPhotoFromLightbox() {
+      const selectedImg = currentLightboxImages[currentLightboxIndex];
+      
+      // Selecciona automáticamente el producto en el formulario
+      document.getElementById('selectedProduct').value = currentLightboxProductTitle;
+      updatePhotoOptions();
+
+      // Selecciona la foto exacta en el desplegable de fotos
+      const photoSelect = document.getElementById('selectedPhoto');
+      photoSelect.value = selectedImg;
+      previewSelectedPhoto();
+
+      closeLightbox();
+
+      // Desplaza suavemente la pantalla hasta el formulario de pedido
+      document.getElementById('order-form-section').scrollIntoView({ behavior: 'smooth' });
     }
 
     function updatePhotoOptions() {
       const productTitle = document.getElementById('selectedProduct').value;
-      const selectPhoto = document.getElementById('selectedPhoto');
-      selectPhoto.innerHTML = '<option value="">-- Selecciona la foto --</option>';
-      
-      const prod = products.find(p => p.title === productTitle);
-      if (prod) {
-        prod.images.forEach((img, idx) => {
+      const photoSelect = document.getElementById('selectedPhoto');
+      photoSelect.innerHTML = '<option value="">-- Selecciona una foto --</option>';
+
+      const product = products.find(p => p.title === productTitle);
+      if (product) {
+        product.images.forEach((img, idx) => {
           const opt = document.createElement('option');
           opt.value = img;
-          opt.textContent = `Foto opción ${idx + 1} (${img})`;
-          selectPhoto.appendChild(opt);
+          opt.textContent = `Foto ${idx + 1} (${img})`;
+          photoSelect.appendChild(opt);
         });
       }
       document.getElementById('previewImg').style.display = 'none';
     }
 
     function previewSelectedPhoto() {
-      const imgVal = document.getElementById('selectedPhoto').value;
-      const preview = document.getElementById('previewImg');
-      if (imgVal) {
-        preview.src = imgVal;
-        preview.style.display = 'block';
+      const photoSelect = document.getElementById('selectedPhoto').value;
+      const previewImg = document.getElementById('previewImg');
+
+      if (photoSelect) {
+        previewImg.src = photoSelect;
+        previewImg.style.display = 'block';
       } else {
-        preview.style.display = 'none';
+        previewImg.style.display = 'none';
       }
     }
 
-    function prepareOrder(title) {
-      document.getElementById('selectedProduct').value = title;
+    function prepareOrder(productTitle) {
+      document.getElementById('selectedProduct').value = productTitle;
       updatePhotoOptions();
       document.getElementById('order-form-section').scrollIntoView({ behavior: 'smooth' });
     }
 
-    function sendInvoiceWhatsApp(e) {
-      e.preventDefault();
+    function sendInvoiceWhatsApp(event) {
+      event.preventDefault();
+
       const name = document.getElementById('clientName').value;
       const clientPhone = document.getElementById('clientPhone').value;
       const address = document.getElementById('deliveryAddress').value;
       const date = document.getElementById('deliveryDate').value;
       const product = document.getElementById('selectedProduct').value;
-      const photo = document.getElementById('selectedPhoto').value;
+      const photo = document.getElementById('selectedPhoto').value || "No especificada";
       const rate = document.getElementById('exchange-rate').value;
 
-      const prodObj = products.find(p => p.title === product);
-      let priceInfo = "";
-      if (prodObj) {
-        const cup = (prodObj.priceUSD * rate).toLocaleString('es-CU');
-        priceInfo = `*Precio:* $${prodObj.priceUSD} USD (≈ ${cup} CUP)`;
-      }
+      let priceUSD = 150;
+      if (product.includes("16")) priceUSD = 165;
+      if (product.includes("20")) priceUSD = 190;
+      if (product.includes("24")) priceUSD = 220;
+      if (product.includes("26")) priceUSD = 250;
 
-      const message = `*📄 NUEVA FACTURA DE PEDIDO - BicicletasAdan*%0A%0A` +
-                      `👤 *Cliente:* ${name}%0A` +
-                      `📞 *Teléfono:* ${clientPhone}%0A` +
-                      `📍 *Dirección:* ${address}%0A` +
-                      `📅 *Fecha de entrega:* ${date}%0A` +
-                      `🚲 *Modelo:* ${product}%0A` +
-                      `${priceInfo}%0A` +
-                      `📸 *Foto seleccionada:* ${photo ? window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1) + photo : 'Ninguna especificada'}%0A%0A` +
-                      `_Enviado desde el catálogo web de BicicletasAdan_`;
+      const priceCUP = (priceUSD * rate).toLocaleString('es-CU');
 
-      window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
+      const message = `📄 *FACTURA DE PEDIDO - BicicletasAdan* 📄\n\n` +
+                      `👤 *Cliente:* ${name}\n` +
+                      `📞 *Teléfono:* ${clientPhone}\n` +
+                      `📍 *Dirección:* ${address}\n` +
+                      `📅 *Fecha de entrega:* ${date}\n\n` +
+                      `🚲 *Modelo:* ${product}\n` +
+                      `🖼️ *Foto elegida:* ${photo}\n` +
+                      `💵 *Precio:* $${priceUSD} USD (≈ ${priceCUP} CUP)\n` +
+                      `💱 *Tasa aplicada:* 1 USD = ${rate} CUP\n\n` +
+                      `¡Hola! Confirmo mi pedido con estos datos. Por favor, avísenme para coordinar la entrega.`;
+
+      const encodedMessage = encodeURIComponent(message);
+      window.open(`https://api.whatsapp.com/send?phone=${phone}&text=${encodedMessage}`, '_blank');
     }
 
-    // Inicializar al cargar la página
+    // Inicializar el catálogo al cargar la página
     window.onload = function() {
       renderCatalog(products);
-      prepareProductSelects();
     };
   </script>
 </body>
