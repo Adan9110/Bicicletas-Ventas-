@@ -1,6 +1,7 @@
 {
   "name": "BicicletasAdan",
   "short_name": "BicicletasAdan",
+  "description": "BicicletasAdan: Catálogo de bicicletas nuevas, repuestos y accesorios en Cuba.",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0f172a",
