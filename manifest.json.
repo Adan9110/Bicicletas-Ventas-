@@ -1,0 +1,20 @@
+{
+  "name": "BicicletasAdan",
+  "short_name": "BicicletasAdan",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "icons": [
+    {
+      "src": "logo-bicicletas-adan.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "logo-bicicletas-adan.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
