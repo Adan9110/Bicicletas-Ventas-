@@ -9,6 +9,16 @@
   <meta name="description" content="BicicletasAdan: Catálogo de bicicletas nuevas medidas 12, 16, 20, 24 y 26, repuestos y accesorios. Consulta precios en USD/CUP y pide directo por WhatsApp.">
   <meta name="keywords" content="BicicletasAdan, Bicicletas Adan, venta de bicicletas, bicicletas medida 12, bicicletas medida 16, bicicletas medida 20, bicicletas medida 24, bicicletas medida 26, repuestos de bicicleta">
 
+  <!-- Configuración PWA (App Móvil) -->
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="BicicletasAdan">
+
+  <!-- Librería para efectos 3D fluidos (Vanilla-Tilt) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+
   <!-- Open Graph / Redes Sociales / WhatsApp -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="BicicletasAdan">
@@ -50,20 +60,23 @@
       color: var(--text);
       line-height: 1.5;
       padding-bottom: 60px;
+      perspective: 1000px; /* Perspectiva global para efectos 3D */
     }
 
     header {
       background: linear-gradient(135deg, #0f172a, #1e293b);
       color: white;
-      padding: 2rem 1rem;
+      padding: 2.5rem 1rem;
       text-align: center;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-      animation: fadeInDown 0.8s ease-out;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+      animation: fadeInDown 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      transform-style: preserve-3d;
     }
 
     .logo-container {
       max-width: 280px;
       margin: 0 auto;
+      transform: translateZ(30px); /* Efecto de profundidad 3D en el logo */
     }
 
     .logo-container img {
@@ -73,29 +86,36 @@
       border-radius: 12px;
       background: #ffffff;
       padding: 5px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      transition: transform 0.4s ease;
+    }
+
+    .logo-container img:hover {
+      transform: scale(1.05) rotateY(5deg);
     }
 
     header p {
       color: #94a3b8;
       font-size: 0.95rem;
       margin-top: 10px;
+      transform: translateZ(15px);
     }
 
     .converter-bar {
       background: #ffffff;
       max-width: 800px;
-      margin: -20px auto 20px;
-      padding: 15px 20px;
-      border-radius: 12px;
-      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+      margin: -25px auto 20px;
+      padding: 15px 25px;
+      border-radius: 16px;
+      box-shadow: 0 15px 30px -5px rgba(0,0,0,0.12);
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
       gap: 10px;
       width: 90%;
-      animation: fadeInUp 0.8s ease-out;
+      animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 1px solid rgba(255,255,255,0.8);
     }
 
     .converter-bar label {
@@ -114,16 +134,23 @@
       width: 100px;
       padding: 8px 12px;
       border: 1px solid #cbd5e1;
-      border-radius: 6px;
+      border-radius: 8px;
       font-weight: 700;
       color: #0f172a;
+      transition: all 0.3s ease;
+    }
+
+    .converter-input-group input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.2);
     }
 
     .filters {
       display: flex;
       justify-content: center;
       gap: 8px;
-      margin: 1.5rem auto;
+      margin: 1.8rem auto;
       flex-wrap: wrap;
       max-width: 800px;
       padding: 0 10px;
@@ -132,23 +159,25 @@
     .filter-btn {
       background: white;
       border: 1px solid #cbd5e1;
-      padding: 8px 16px;
+      padding: 9px 18px;
       border-radius: 20px;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       font-size: 0.85rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.02);
     }
 
     .filter-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.2);
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 6px 15px rgba(2, 132, 199, 0.25);
     }
 
-    .filter-btn.active, .filter-btn:hover {
+    .filter-btn.active {
       background: var(--accent);
       color: white;
       border-color: var(--accent);
+      box-shadow: 0 6px 15px rgba(2, 132, 199, 0.35);
     }
 
     .container {
@@ -160,23 +189,26 @@
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 20px;
+      gap: 25px;
     }
 
+    /* Tarjetas con efecto 3D dinámico */
     .card {
       background: var(--card-bg);
-      border-radius: 16px;
+      border-radius: 20px;
       overflow: hidden;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
       display: flex;
       flex-direction: column;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      transform-style: preserve-3d;
+      transform: perspective(1000px);
+      transition: box-shadow 0.4s ease;
       animation: fadeInUp 0.6s ease-out;
+      border: 1px solid rgba(226, 232, 240, 0.8);
     }
 
     .card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 12px 20px -3px rgba(0, 0, 0, 0.12);
+      box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.18);
     }
 
     .carousel {
@@ -185,6 +217,7 @@
       height: 250px;
       background: #e2e8f0;
       overflow: hidden;
+      transform: translateZ(20px); /* Eleva la imagen en 3D dentro de la tarjeta */
     }
 
     .carousel-track {
@@ -213,22 +246,22 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.3s ease;
+      transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
 
     .carousel-slide img:hover {
-      transform: scale(1.03);
+      transform: scale(1.06);
     }
 
     .carousel-btn {
       position: absolute;
       top: 50%;
-      transform: translateY(-50%);
+      transform: translateY(-50%) translateZ(30px);
       background: rgba(0, 0, 0, 0.6);
       color: white;
       border: none;
-      width: 36px;
-      height: 36px;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
       cursor: pointer;
       display: flex;
@@ -241,7 +274,7 @@
 
     .carousel-btn:hover {
       background: rgba(0, 0, 0, 0.85);
-      transform: translateY(-50%) scale(1.1);
+      transform: translateY(-50%) scale(1.15) translateZ(30px);
     }
 
     .carousel-btn.prev { left: 10px; }
@@ -255,6 +288,7 @@
       justify-content: center;
       gap: 6px;
       z-index: 2;
+      transform: translateZ(20px);
     }
 
     .dot {
@@ -268,11 +302,11 @@
 
     .dot.active {
       background: white;
-      width: 16px;
+      width: 18px;
       border-radius: 4px;
     }
 
-    /* Visor deslizante en pantalla completa */
+    /* Visor de Fotos en Pantalla Completa (Lightbox) */
     #lightbox {
       display: none;
       position: fixed;
@@ -281,7 +315,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.92);
+      background: rgba(0, 0, 0, 0.94);
       justify-content: center;
       align-items: center;
       flex-direction: column;
@@ -291,22 +325,30 @@
     #lightbox-img {
       max-width: 85%;
       max-height: 75%;
-      border-radius: 8px;
+      border-radius: 12px;
       object-fit: contain;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+      animation: zoomIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .lightbox-nav {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      background: rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.25);
       color: white;
       border: none;
       font-size: 2rem;
-      padding: 10px 15px;
+      padding: 12px 18px;
       cursor: pointer;
-      border-radius: 8px;
+      border-radius: 12px;
       z-index: 1001;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .lightbox-nav:hover {
+      background: rgba(255, 255, 255, 0.45);
+      transform: translateY(-50%) scale(1.1);
     }
 
     .lightbox-prev { left: 20px; }
@@ -321,53 +363,67 @@
       font-weight: bold;
       cursor: pointer;
       z-index: 1001;
+      transition: transform 0.2s;
+    }
+
+    #lightbox-close:hover {
+      transform: scale(1.2);
     }
 
     .lightbox-select-btn {
-      margin-top: 15px;
+      margin-top: 20px;
       background: var(--primary);
       color: white;
       border: none;
-      padding: 12px 20px;
-      border-radius: 8px;
+      padding: 14px 24px;
+      border-radius: 12px;
       font-weight: 700;
       cursor: pointer;
       z-index: 1001;
+      box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .lightbox-select-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 25px rgba(37, 211, 102, 0.6);
     }
 
     .card-content {
-      padding: 18px;
+      padding: 20px;
       display: flex;
       flex-direction: column;
       flex-grow: 1;
+      transform: translateZ(15px); /* Eleva los textos e información en 3D */
     }
 
     .card-title {
-      font-size: 1.2rem;
+      font-size: 1.25rem;
       font-weight: 700;
       margin-bottom: 5px;
+      color: #0f172a;
     }
 
     .badge {
       display: inline-block;
       background: #e0f2fe;
       color: #0369a1;
-      padding: 3px 10px;
+      padding: 4px 12px;
       border-radius: 6px;
       font-size: 0.75rem;
       font-weight: 700;
       width: fit-content;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
 
     .price-box {
       margin-top: auto;
-      padding-top: 12px;
+      padding-top: 15px;
       border-top: 1px solid #f1f5f9;
     }
 
     .price-usd {
-      font-size: 1.4rem;
+      font-size: 1.45rem;
       font-weight: 800;
       color: #0f172a;
     }
@@ -386,90 +442,102 @@
       background: var(--primary);
       color: white;
       text-decoration: none;
-      padding: 12px;
-      border-radius: 10px;
+      padding: 13px;
+      border-radius: 12px;
       font-weight: 700;
-      margin-top: 14px;
-      transition: all 0.3s ease;
+      margin-top: 16px;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
       animation: pulseWhatsApp 2s infinite;
       cursor: pointer;
       border: none;
       width: 100%;
+      box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+      transform: translateZ(10px);
     }
 
     .buy-btn:hover {
       background: #1da851;
-      transform: scale(1.02);
+      transform: scale(1.03) translateZ(15px);
+      box-shadow: 0 8px 20px rgba(37, 211, 102, 0.5);
     }
 
     /* Estilos de Factura / Formulario */
     .invoice-section {
       background: white;
       max-width: 800px;
-      margin: 40px auto;
-      padding: 25px;
-      border-radius: 16px;
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+      margin: 50px auto;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(226, 232, 240, 0.8);
     }
 
     .invoice-section h2 {
       text-align: center;
       color: #0f172a;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
     }
 
     .form-group {
-      margin-bottom: 15px;
+      margin-bottom: 18px;
     }
 
     .form-group label {
       display: block;
       font-weight: 600;
-      margin-bottom: 5px;
+      margin-bottom: 6px;
       color: #475569;
     }
 
     .form-group input, .form-group select {
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       border: 1px solid #cbd5e1;
-      border-radius: 8px;
+      border-radius: 10px;
       font-size: 1rem;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .form-group input:focus, .form-group select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.2);
     }
 
     .photo-preview-box {
-      margin-top: 10px;
+      margin-top: 12px;
       text-align: center;
       background: #f8fafc;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px dashed #cbd5e1;
+      padding: 12px;
+      border-radius: 10px;
+      border: 2px dashed #cbd5e1;
     }
 
     .photo-preview-box img {
       max-width: 180px;
       max-height: 180px;
       border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
       object-fit: contain;
     }
 
     footer {
       text-align: center;
-      padding: 25px;
+      padding: 30px;
       color: #64748b;
       font-size: 0.85rem;
       margin-top: 40px;
     }
 
+    /* Animaciones Clave 3D y de Desplazamiento */
     @keyframes fadeInDown {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
+      from { opacity: 0; transform: translateY(-30px) translateZ(-50px); }
+      to { opacity: 1; transform: translateY(0) translateZ(0); }
     }
 
     @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+      from { opacity: 0; transform: translateY(30px) scale(0.95); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
     }
 
     @keyframes fadeIn {
@@ -477,9 +545,14 @@
       to { opacity: 1; }
     }
 
+    @keyframes zoomIn {
+      from { transform: scale(0.85); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
     @keyframes pulseWhatsApp {
       0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5); }
-      70% { box-shadow: 0 0 0 10px rgba(37, 211, 102, 0); }
+      70% { box-shadow: 0 0 0 12px rgba(37, 211, 102, 0); }
       100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
     }
   </style>
@@ -488,7 +561,6 @@
 
   <header>
     <div class="logo-container">
-      <!-- LOGO VINCULADO AL NUEVO NOMBRE -->
       <img src="logo-bicicletas-adan.png" onerror="this.onerror=null; this.src='logo-bicicletas-adan.jpg';" alt="BicicletasAdan Logo">
     </div>
     <p>Modelos disponibles para entrega inmediata</p>
@@ -542,8 +614,8 @@
           <option value="">-- Elige un modelo --</option>
           <option value="Bicicleta Medida 12">Bicicleta Medida 12 ($140 USD)</option>
           <option value="Bicicleta Medida 16">Bicicleta Medida 16 ($155 USD)</option>
-          <option value="Bicicleta Medida 20">Bicicleta Medida 20 ($180 USD)</option>
-          <option value="Bicicleta Medida 24">Bicicleta Medida 24 ($220 USD)</option>
+          <option value="Bicicleta Medida 20">Bicicleta Medida 20 ($175 USD)</option>
+          <option value="Bicicleta Medida 24">Bicicleta Medida 24 ($210 USD)</option>
           <option value="Bicicleta Medida 26">Bicicleta Medida 26 ($240 USD)</option>
         </select>
       </div>
@@ -583,35 +655,35 @@
         id: 1,
         title: "Bicicleta Medida 12",
         category: "12",
-        priceUSD: 150,
+        priceUSD: 140,
         images: ["medida12jpg.jpg", "medida122jpg.jpg", "medida123jpg.jpg", "medida124jpg.jpg"]
       },
       {
         id: 2,
         title: "Bicicleta Medida 16",
         category: "16",
-        priceUSD: 165,
+        priceUSD: 155,
         images: ["medida161jpg.jpg", "medida162jpg.jpg", "medida163jpg.jpg", "medida164jpg.jpg", "medida165jpg.jpg", "medida166jpg.jpg", "medida167jpg.jpg", "medida168jpg.jpg"]
       },
       {
         id: 3,
         title: "Bicicleta Medida 20",
         category: "20",
-        priceUSD: 190,
+        priceUSD: 175,
         images: ["medida201jpg.jpg", "medida202jpg.jpg", "medida203jpg.jpg", "medida204jpg.jpg", "medida205jpg.jpg", "medida206jpg.jpg", "medida207jpg.jpg", "medida208jpg.jpg", "medida209jpg.jpg", "medida2010jpg.jpg"]
       },
       {
         id: 4,
         title: "Bicicleta Medida 24",
         category: "24",
-        priceUSD: 220,
+        priceUSD: 210,
         images: ["medida241jpg.jpg", "medida242jpg.jpg", "medida243jpg.jpg", "medida244jpg.jpg"]
       },
       {
         id: 5,
         title: "Bicicleta Medida 26",
         category: "26",
-        priceUSD: 250,
+        priceUSD: 240,
         images: ["medida261jpg.jpg", "medida262jpg.jpg"]
       }
     ];
@@ -621,7 +693,7 @@
     function renderCatalog(items) {
       const catalog = document.getElementById('catalog');
       catalog.innerHTML = '';
-      const rate = parseFloat(document.getElementById('exchange-rate').value) || 320;
+      const rate = parseFloat(document.getElementById('exchange-rate').value) || 810;
 
       items.forEach(product => {
         const priceCUP = (product.priceUSD * rate).toLocaleString('es-CU');
@@ -662,6 +734,14 @@
           </div>
         `;
         catalog.appendChild(card);
+      });
+
+      // Inicializa el efecto 3D interactivo en cada tarjeta generada
+      VanillaTilt.init(document.querySelectorAll(".card"), {
+        max: 8,             // Grados máximos de inclinación 3D
+        speed: 400,         // Velocidad de respuesta al movimiento
+        glare: true,        // Brillo sutil de luz sobre la tarjeta
+        "max-glare": 0.15   // Intensidad máxima del brillo
       });
     }
 
@@ -720,7 +800,6 @@
       }
     }
 
-    // Variables para el Visor (Lightbox)
     let currentLightboxImages = [];
     let currentLightboxIndex = 0;
     let currentLightboxProductTitle = "";
@@ -759,18 +838,14 @@
     function selectCurrentPhotoFromLightbox() {
       const selectedImg = currentLightboxImages[currentLightboxIndex];
       
-      // Selecciona automáticamente el producto en el formulario
       document.getElementById('selectedProduct').value = currentLightboxProductTitle;
       updatePhotoOptions();
 
-      // Selecciona la foto exacta en el desplegable de fotos
       const photoSelect = document.getElementById('selectedPhoto');
       photoSelect.value = selectedImg;
       previewSelectedPhoto();
 
       closeLightbox();
-
-      // Desplaza suavemente la pantalla hasta el formulario de pedido
       document.getElementById('order-form-section').scrollIntoView({ behavior: 'smooth' });
     }
 
@@ -820,11 +895,11 @@
       const photo = document.getElementById('selectedPhoto').value || "No especificada";
       const rate = document.getElementById('exchange-rate').value;
 
-      let priceUSD = 150;
-      if (product.includes("16")) priceUSD = 165;
-      if (product.includes("20")) priceUSD = 190;
-      if (product.includes("24")) priceUSD = 220;
-      if (product.includes("26")) priceUSD = 250;
+      let priceUSD = 140;
+      if (product.includes("16")) priceUSD = 155;
+      if (product.includes("20")) priceUSD = 175;
+      if (product.includes("24")) priceUSD = 210;
+      if (product.includes("26")) priceUSD = 240;
 
       const priceCUP = (priceUSD * rate).toLocaleString('es-CU');
 
@@ -843,7 +918,15 @@
       window.open(`https://api.whatsapp.com/send?phone=${phone}&text=${encodedMessage}`, '_blank');
     }
 
-    // Inicializar el catálogo al cargar la página
+    // Registro del Service Worker para funcionamiento PWA
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => console.log('Service Worker registrado correctamente', reg))
+          .catch(err => console.log('Error al registrar Service Worker', err));
+      });
+    }
+
     window.onload = function() {
       renderCatalog(products);
     };
